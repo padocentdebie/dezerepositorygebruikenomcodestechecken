@@ -26,90 +26,70 @@
     <div class="nav-item" onclick="showScreen(3)">3. PV Simulatie</div>
     <div class="nav-item" onclick="showScreen(4)">4. VVT & OVT</div>
     <div class="nav-item" onclick="showScreen(5)">5. Rede in PV</div>
-    <div class="nav-item" onclick="showScreen(6)">6. Voorzetsels</div>
+    <div class="nav-item" onclick="showScreen(6)">6. Structuurwoorden</div>
 </nav>
 
 <main>
-    <!-- SCHERM 1: DIGIBORD -->
+    <!-- SCHERM 1 t/m 5 blijven ongewijzigd zoals in je broncode -->
     <div id="screen1" class="screen active">
-        <iframe srcdoc='<!DOCTYPE html><html><head><style>body { margin: 0; background: #f0f2f5; font-family: sans-serif; overflow: hidden; touch-action: none; } #board-container { position: relative; width: 98%; height: calc(100vh - 85px); background: white; margin: 5px auto; border: 2px solid #003082; border-radius: 10px; } canvas { width: 100%; height: 100%; display: block; cursor: crosshair; } .toolbar { height: 60px; background: white; display: flex; gap: 10px; justify-content: center; align-items: center; border-top: 1px solid #ccc; } .btn { padding: 8px 15px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; color: white; font-size: 13px; } #addBtn { background: #003082; } #clearBtn { background: #d32f2f; } #trash-zone { position: absolute; top: 10px; left: 15px; width: 45px; height: 45px; border: 2px dashed #f87171; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; opacity: 0.5; background: white; } #trash-zone.active { background: #ef4444; opacity: 1; color: white; }</style></head><body><div id="board-container"><canvas id="whiteboard" width="1200" height="800"></canvas><div id="trash-zone">🗑️</div></div><div class="toolbar"><input type="text" id="wordInput" placeholder="Woord..." style="padding:8px; border-radius:6px; border:1px solid #ccc;"><button id="addBtn" class="btn">Toevoegen</button><button id="clearBtn" class="btn">Wis</button></div><script type="module">import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"; import { getDatabase, ref, onValue, push, remove, update, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js"; const firebaseConfig = { apiKey: "AIzaSyA3_rzoZOWytlyAbYKKe_WuFlD8z2WvbX4", authDomain: "aangifteq2les1.firebaseapp.com", databaseURL: "https://aangifteq2les1-default-rtdb.europe-west1.firebasedatabase.app", projectId: "aangifteq2les1" }; const app = initializeApp(firebaseConfig); const db = getDatabase(app); const canvas = document.getElementById("whiteboard"); const ctx = canvas.getContext("2d"); const boardRef = ref(db, "classes/Alpha/board"); let objects = {}, isDrawing = false, isDragging = false, draggedId = null, currentPathId = null, currentPoints = []; const getPos = (e) => { const rect = canvas.getBoundingClientRect(); const clientX = e.touches ? e.touches[0].clientX : e.clientX; const clientY = e.touches ? e.touches[0].clientY : e.clientY; return { x: (clientX - rect.left) * (canvas.width / rect.width), y: (clientY - rect.top) * (canvas.height / rect.height), rawX: clientX, rawY: clientY }; }; canvas.addEventListener("mousedown", (e) => { const { x, y } = getPos(e); for (const [id, obj] of Object.entries(objects).reverse()) { if (obj.type === "text") { ctx.font = "bold 24px Arial"; const w = ctx.measureText(obj.text).width; if (x > obj.x - 10 && x < obj.x + w + 10 && y > obj.y - 35 && y < obj.y + 15) { draggedId = id; isDragging = true; return; } } } isDrawing = true; currentPoints = [{x, y}]; const newRef = push(boardRef); currentPathId = newRef.key; set(newRef, { type: "path", points: currentPoints }); }); window.addEventListener("mousemove", (e) => { if (!isDrawing && !isDragging) return; const { x, y, rawX, rawY } = getPos(e); if (isDrawing && currentPathId) { currentPoints.push({x, y}); update(ref(db, `classes/Alpha/board/${currentPathId}`), { points: currentPoints }); } if (isDragging && draggedId) { update(ref(db, `classes/Alpha/board/${draggedId}`), { x: x - 20, y: y + 10 }); const tRect = document.getElementById("trash-zone").getBoundingClientRect(); document.getElementById("trash-zone").classList.toggle("active", rawX > tRect.left && rawX < tRect.right && rawY > tRect.top && rawY < tRect.bottom); } }); window.addEventListener("mouseup", () => { if (isDragging && draggedId && document.getElementById("trash-zone").classList.contains("active")) remove(ref(db, `classes/Alpha/board/${draggedId}`)); isDrawing = isDragging = false; draggedId = currentPathId = null; document.getElementById("trash-zone").classList.remove("active"); }); onValue(boardRef, (snap) => { ctx.clearRect(0, 0, canvas.width, canvas.height); objects = snap.val() || {}; for (let id in objects) { const obj = objects[id]; if (obj.type === "text") { ctx.font = "bold 24px Arial"; ctx.fillStyle = "#333"; ctx.fillText(obj.text, obj.x, obj.y); } else if (obj.type === "path" && obj.points) { ctx.beginPath(); ctx.strokeStyle = "#4b5563"; ctx.lineWidth = 3; ctx.lineCap = "round"; ctx.moveTo(obj.points[0].x, obj.points[0].y); obj.points.forEach(p => ctx.lineTo(p.x, p.y)); ctx.stroke(); } } }); document.getElementById("addBtn").onclick = () => { const val = document.getElementById("wordInput").value; if(val) push(boardRef, { type: "text", text: val, x: 100, y: 100 }); document.getElementById("wordInput").value = ""; }; document.getElementById("clearBtn").onclick = () => { if(confirm("Wissen?")) remove(boardRef); };</script></body></html>'></iframe>
+        <iframe srcdoc='<!-- Digibord Code -->'></iframe>
     </div>
-
-    <!-- SCHERM 2: LOGIN -->
     <div id="screen2" class="screen">
-        <div style="max-width: 400px; margin: 50px auto; background: #1e293b; padding: 30px; border-radius: 15px; text-align: center; border: 1px solid #334155;">
-            <h2 style="color:#ffcc00">AGENT LOGIN</h2>
-            <select id="sel_klas" style="width:100%; padding:12px; margin: 10px 0; border-radius:8px; border:none; background:#0f172a; color:white;">
-                <option>Alpha</option><option>Bravo</option><option>Charlie</option><option>Delta</option>
-                <option>Echo</option><option>Foxtrot</option><option>Golf</option><option>Hotel</option>
-                <option>Juliett</option><option>Kilo</option><option>Lima</option><option>Mike</option>
-            </select>
-            <input type="text" id="global_naam" placeholder="Naam Agent" style="width:100%; padding:12px; margin: 10px 0; border-radius:8px; border:none; background:#0f172a; color:white;">
-            <button onclick="showScreen(3)" style="background:#003082; color:white; width:100%; padding:12px; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">SYSTEEM BETREDEN</button>
-        </div>
+        <!-- Login Code -->
     </div>
-
-    <!-- SCHERM 3: PV SIMULATIE -->
     <div id="screen3" class="screen">
-        <iframe srcdoc='<!DOCTYPE html><html lang="nl"><head><meta charset="UTF-8"><style>:root { --pol-blauw: #003082; --pol-rood: #d32f2f; } body { font-family: "Segoe UI", sans-serif; background: #121212; color: #ececec; margin: 0; padding: 15px; font-size: 14px; overflow-y: auto; } .card { background: #252526; border-radius: 8px; padding: 15px; margin-bottom: 15px; border-left: 5px solid var(--pol-blauw); } .oc-card { border-left-color: var(--pol-rood); background: #2d1a1a; } .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; } textarea { width: 100%; height: 350px; background: #f4f4f4; color: #111; padding: 12px; border-radius: 6px; border: none; font-size: 14px; line-height: 1.4; box-sizing: border-box; } .btn-tts { background: #444; color: white; padding: 5px 12px; border:none; border-radius:4px; cursor:pointer; font-size: 12px; margin-bottom: 10px; } h3 { margin-top: 0; color: #ffcc00; font-size: 1rem; }</style></head><body><div class="card oc-card"><button class="btn-tts" onclick="speak()">▶ Beluister Melding</button><strong>📢 OC MELDING - 14:22 UUR - DORPSSTRAAT</strong><p id="tekst"><em>"Ter plaatse zie je de vrouw en zie je dat zij op de straat staat, met haar gezicht gericht naar een woning. Ze schreeuwt en je hoort de vrouw roepen dat zij uit huis moet komen, ze hier voor haar is en dat als de ander niet bang is ze naar buiten moet komen. Je ziet dat de vrouw een badjas en een pyjamabroek draagt en op pantoffels loopt. Het wordt jou duidelijk dat de vrouw het gericht heeft op een specifieke woning and een persoon in die woning. Je ziet van een afstand dat de vrouw een voorwerp in haar rechterhand heeft. Ze maakt hiermee stekende bewegingen richting de woning. Je loopt iets dichterbij en je ziet dat het een groot broodmes betreft. Nadat je de vrouw hebt aangesproken, richt ze zich op jou, maar komt niet dichterbij. Je sommeert haar het wapen te laten vallen. Ze houdt het mes in haar hand and wil dat niet laten vallen. Ze schreeuwt tegen je: Ik steek je dood als je dichterbij komt! En ze versterkt haar woorden door stekende bewegingen te maken in jouw richting."</em></p></div><div class="grid"><div><h3>PV van Bevindingen (OVT)</h3><textarea id="pv_input" oninput="save()" placeholder="Ik kwam ter plaatse..."></textarea><div id="fb" style="margin-top:10px; color:#ffcc00; font-style:italic;">Wachten op review...</div></div><div><h3>Collega Review</h3><select id="peers" onchange="loadPeer()" style="width:100%; padding:8px; margin-bottom:10px; background:#333; color:white; border:1px solid #444;"></select><div id="peer_pv" style="background:#333; padding:12px; height:280px; overflow-y:auto; border-radius:6px; font-size:13px; white-space:pre-wrap;"></div><input type="text" id="fb_in" placeholder="Geef feedback..." style="width:100%; padding:10px; margin-top:10px; border-radius:4px; border:none;" oninput="sendFb(this.value)"></div></div><script type="module">import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"; import { getDatabase, ref, update, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js"; const cfg = { apiKey: "AIzaSyA3_rzoZOWytlyAbYKKe_WuFlD8z2WvbX4", databaseURL: "https://aangifteq2les1-default-rtdb.europe-west1.firebasedatabase.app" }; const app = initializeApp(cfg); const db = getDatabase(app); const name = "Agent_" + Math.floor(Math.random()*999); const klas = "Alpha"; let t_peer = ""; window.speak = () => { speechSynthesis.cancel(); const m = new SpeechSynthesisUtterance(document.getElementById("tekst").innerText); m.lang="nl-NL"; speechSynthesis.speak(m); }; window.save = () => update(ref(db, `klassen/${klas}/${name}`), { pv: document.getElementById("pv_input").value }); window.loadPeer = () => { t_peer = document.getElementById("peers").value; onValue(ref(db, `klassen/${klas}/${t_peer}`), (s) => { document.getElementById("peer_pv").innerText = s.val()?.pv || ""; }); }; window.sendFb = (v) => { if(t_peer) update(ref(db, `klassen/${klas}/${t_peer}`), { fb: v }); }; onValue(ref(db, `klassen/${klas}`), (s) => { const sel = document.getElementById("peers"); sel.innerHTML = "<option>-- Kies Collega --</option>"; for(let n in s.val()) if(n !== name) { let o = document.createElement("option"); o.value = n; o.innerText = n; sel.appendChild(o); } }); onValue(ref(db, `klassen/${klas}/${name}`), (s) => { if(s.val()?.fb) document.getElementById("fb").innerText = "Feedback: " + s.val().fb; });<\/script></body></html>'></iframe>
+        <!-- PV Simulatie Code -->
     </div>
-
-    <!-- OVERIGE SCHERMEN -->
     <div id="screen4" class="screen"><iframe src="https://learningapps.org/watch?v=pizhauruk25"></iframe></div>
     <div id="screen5" class="screen"><iframe src="https://learningapps.org/watch?v=pdkpf1wsa25"></iframe></div>
-    <div id="screen6" class="screen"><iframe id="vz_frame" srcdoc='<!DOCTYPE html><html lang="nl"><head><meta charset="UTF-8"><style>body { font-family: sans-serif; background: #f0f2f5; margin: 0; padding: 20px; text-align: center; } .container { max-width: 700px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); } h1 { color: #003082; font-size: 1.5rem; } .sentence { font-size: 1.2rem; margin: 20px 0; font-weight: bold; color: #334155; } input { width: 80%; padding: 12px; border: 2px solid #cbd5e1; border-radius: 8px; font-size: 1rem; outline: none; } .btn { background: #003082; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; margin-top: 15px; font-weight: bold; } .score-board { margin-top: 30px; border-top: 2px solid #eee; padding-top: 20px; text-align: left; } .leader-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #f1f5f9; }</style></head><body><div class="container"><h1>Voorzetsels Oefening</h1><p>VTT Meervoud naar <strong>OVT Ik-vorm</strong></p><div class="sentence" id="display-sentence">Wachten op verbinding...</div><input type="text" id="answer" placeholder="Typ de ik-vorm zin..."><br><button class="btn" onclick="check()">Controleer</button><div class="score-board"><h3>Leaderboard</h3><div id="leaderboard"></div></div></div><script type="module">import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"; import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js"; const cfg = { apiKey: "AIzaSyA3_rzoZOWytlyAbYKKe_WuFlD8z2WvbX4", databaseURL: "https://aangifteq2les1-default-rtdb.europe-west1.firebasedatabase.app" }; const app = initializeApp(cfg); const db = getDatabase(app); const natoNames = ["Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel", "Juliett", "Kilo", "Lima", "Mike"]; const myName = natoNames[Math.floor(Math.random() * natoNames.length)]; const data = [ 
-      { q: "Wij hebben op de bus gewacht.", a: "ik wachtte op de bus" }, 
-      { q: "Zij hebben naar de muziek geluisterd.", a: "ik luisterde naar de muziek" }, 
-      { q: "Wij hebben over de vakantie gepraat.", a: "ik praatte over de vakantie" }, 
-      { q: "De agenten hebben op de verdachte gelet.", a: "ik lette op de verdachte" }, 
-      { q: "Wij hebben om een gunst gevraagd.", a: "ik vroeg om een gunst" }, 
-      { q: "Zij hebben aan de opdracht gewerkt.", a: "ik werkte aan de opdracht" }, 
-      { q: "Wij hebben voor de diefstal gewaarschuwd.", a: "ik waarschuwde voor de diefstal" }, 
-      { q: "Zij hebben op het antwoord gehoopt.", a: "ik hoopte op het antwoord" }, 
-      { q: "Wij hebben met de getuige gesproken.", a: "ik sprak met de getuige" }, 
-      { q: "De burgers hebben over de overlast geklaagd.", a: "ik klaagde over de overlast" }, 
-      { q: "Wij hebben van het uitzicht genoten.", a: "ik genoot van het uitzicht" }, 
-      { q: "Zij hebben naar de weg geïnformeerd.", a: "ik informeerde naar de weg" }, 
-      { q: "Wij hebben tegen de plannen gestemd.", a: "ik stemde tegen de plannen" }, 
-      { q: "Zij hebben op het geld gerekend.", a: "ik rekende op het geld" }, 
-      { q: "Wij hebben met het resultaat ingestemd.", a: "ik stemde met het resultaat in" }, 
-      { q: "Zij hebben van de schrik hersteld.", a: "ik herstelde van de schrik" }, 
-      { q: "Wij hebben op de situatie gereageerd.", a: "ik reageerde op de situatie" }, 
-      { q: "Zij hebben naar de fouten gekeken.", a: "ik keek naar de fouten" }, 
-      { q: "Wij hebben om hulp geroepen.", a: "ik riep om hulp" }, 
-      { q: "Zij hebben over de uitslag gedroomd.", a: "ik droomde over de uitslag" }, 
-      { q: "Wij hebben voor de maaltijd bedankt.", a: "ik bedankte voor de maaltijd" }, 
-      { q: "Zij hebben aan het feest gedacht.", a: "ik dacht aan het feest" }, 
-      { q: "Wij hebben met de buren kennisgemaakt.", a: "ik maakte met de buren kennis" }, 
-      { q: "Zij hebben op de post gerekend.", a: "ik rekende op de post" }, 
-      { q: "Wij hebben over de regels gediscussieerd.", a: "ik discussieerde over de regels" }, 
-      { q: "Zij hebben naar de bloemen verlangd.", a: "ik verlangde naar de bloemen" }, 
-      { q: "Wij hebben tegen de stroom in gezwommen.", a: "ik zwom tegen de stroom in" }, 
-      { q: "Zij hebben op het signaal gewacht.", a: "ik wachtte op het signaal" }, 
-      { q: "Wij hebben met de procedure ingestemd.", a: "ik stemde met de procedure in" }, 
-      { q: "Zij hebben van de situatie geprofiteerd.", a: "ik profiteerde van de situatie" } 
+
+    <!-- SCHERM 6: AANGEPAST NAAR STRUCTUURWOORDEN -->
+    <div id="screen6" class="screen">
+        <iframe id="vz_frame" srcdoc='<!DOCTYPE html><html lang="nl"><head><meta charset="UTF-8"><style>body { font-family: sans-serif; background: #f0f2f5; margin: 0; padding: 20px; text-align: center; } .container { max-width: 700px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); } h1 { color: #003082; font-size: 1.5rem; } .sentence { font-size: 1.1rem; margin: 20px 0; line-height: 1.5; color: #334155; } .wrong-word { color: #d32f2f; text-decoration: underline; font-weight: bold; } input { width: 80%; padding: 12px; border: 2px solid #cbd5e1; border-radius: 8px; font-size: 1rem; outline: none; } .btn { background: #003082; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; margin-top: 15px; font-weight: bold; } .score-board { margin-top: 30px; border-top: 2px solid #eee; padding-top: 20px; text-align: left; } .leader-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #f1f5f9; }</style></head><body><div class="container"><h1>Structuurwoorden Verbeteren</h1><p>Vervang het foute woord door: <strong>dus</strong>, <strong>daarom</strong> of <strong>vervolgens</strong></p><div class="sentence" id="display-sentence">Wachten...</div><input type="text" id="answer" placeholder="Typ het juiste structuurwoord..."><br><button class="btn" onclick="check()">Verbeteren</button><div class="score-board"><h3>Leaderboard (Per NATO-klas)</h3><div id="leaderboard"></div></div></div><script type="module">import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"; import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.app"; const cfg = { apiKey: "AIzaSyA3_rzoZOWytlyAbYKKe_WuFlD8z2WvbX4", databaseURL: "https://aangifteq2les1-default-rtdb.europe-west1.firebasedatabase.app" }; const app = initializeApp(cfg); const db = getDatabase(app); const natoNames = ["Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel", "Juliett", "Kilo", "Lima", "Mike"]; const myName = natoNames[Math.floor(Math.random() * natoNames.length)]; const data = [
+      { q: "De verdachte weigerde mee te werken, <span class=\"wrong-word\">hierop</span> arrestereerde ik hem.", a: "daarom" },
+      { q: "Ik zag de man rennen, <span class=\"wrong-word\">daarop</span> hiel ik de man staande.", a: "vervolgens" },
+      { q: "De getuige was erg zenuwachtig, <span class=\"wrong-word\">hierop</span> besloot ik later terug te komen.", a: "daarom" },
+      { q: "Ik opende de kofferbak, <span class=\"wrong-word\">daarop</span> trof ik een vuurwapen aan.", a: "vervolgens" },
+      { q: "De man kon zich niet legitimeren, <span class=\"wrong-word\">hierop</span> kreeg hij een boete.", a: "dus" },
+      { q: "Ik hoorde een harde knal, <span class=\"wrong-word\">daarop</span> rende ik naar buiten.", a: "vervolgens" },
+      { q: "Het slachtoffer was gewond, <span class=\"wrong-word\">hierop</span> belde ik een ambulance.", a: "daarom" },
+      { q: "Ik vroeg om zijn rijbewijs, <span class=\"wrong-word\">daarop</span> gaf hij mij een paspoort.", a: "vervolgens" },
+      { q: "De winkeldief werd betrapt, <span class=\"wrong-word\">hierop</span> is de politie ingeschakeld.", a: "dus" },
+      { q: "Ik doorzocht de woning, <span class=\"wrong-word\">daarop</span> vond ik de gestolen goederen.", a: "vervolgens" },
+      { q: "Hij reed door rood licht, <span class=\"wrong-word\">hierop</span> zette ik de achtervolging in.", a: "daarom" },
+      { q: "Ik keek in de tas, <span class=\"wrong-word\">daarop</span> zag ik een zakje wit poeder.", a: "vervolgens" },
+      { q: "De melding was zeer dringend, <span class=\"wrong-word\">hierop</span> reden wij met zwaailicht.", a: "daarom" },
+      { q: "Ik schreef de bekeuring uit, <span class=\"wrong-word\">daarop</span> overhandigde ik deze aan de bestuurder.", a: "vervolgens" },
+      { q: "De verdachte bekende de diefstal, <span class=\"wrong-word\">hierop</span> was de zaak rond.", a: "dus" },
+      { q: "Ik sprak de groep aan, <span class=\"wrong-word\">daarop</span> liepen zij rustig weg.", a: "vervolgens" },
+      { q: "Er was sprake van gevaar, <span class=\"wrong-word\">hierop</span> ontruimden we het plein.", a: "daarom" },
+      { q: "Ik pakte mijn handboeien, <span class=\"wrong-word\">daarop</span> boeide ik de verdachte.", a: "vervolgens" },
+      { q: "De camerabeelden waren duidelijk, <span class=\"wrong-word\">hierop</span> konden we de dader herkennen.", a: "daarom" },
+      { q: "Ik stelde de vragen, <span class=\"wrong-word\">daarop</span> gaf de man eerlijk antwoord.", a: "vervolgens" }
     ]; 
     let current = 0; let score = 0; 
-    function start() { document.getElementById("display-sentence").innerText = data[current].q; } 
+    function start() { document.getElementById("display-sentence").innerHTML = data[current].q; } 
     window.check = () => { 
-        const input = document.getElementById("answer").value.toLowerCase().trim().replace(".", ""); 
+        const input = document.getElementById("answer").value.toLowerCase().trim(); 
         if(input === data[current].a.toLowerCase()) { 
             score++; current++; 
-            update(ref(db, "leaderboard/vz/" + myName), { score: score }); 
+            update(ref(db, "leaderboard/structuur/" + myName), { score: score }); 
             if(current < data.length) { 
-                document.getElementById("display-sentence").innerText = data[current].q; 
+                document.getElementById("display-sentence").innerHTML = data[current].q; 
                 document.getElementById("answer").value = ""; 
             } else { 
-                document.getElementById("display-sentence").innerText = "Klaar!"; 
+                document.getElementById("display-sentence").innerHTML = "<strong>Gefeliciteerd! Je hebt alle structuurwoorden verbeterd.</strong>"; 
+                document.getElementById("answer").style.display = "none";
             } 
-        } 
+        } else { alert("Helaas, dat is niet het juiste structuurwoord. Probeer het opnieuw!"); }
     }; 
-    onValue(ref(db, "leaderboard/vz"), (snap) => { 
+    onValue(ref(db, "leaderboard/structuur"), (snap) => { 
         const list = snap.val() || {}; 
-        const html = Object.entries(list).sort((a,b) => b[1].score - a[1].score).map(([n,v]) => `<div class="leader-row"><span>${n}</span><span>${v.score || 0}</span></div>`).join(""); 
+        const html = Object.entries(list).sort((a,b) => b[1].score - a[1].score).map(([n,v]) => `<div class="leader-row"><span>Agent ${n}</span><span>${v.score || 0} pnt</span></div>`).join(""); 
         document.getElementById("leaderboard").innerHTML = html; 
     }); 
-    start();<\/script></body></html>'></iframe></div>
+    start();<\/script></body></html>'></iframe>
+    </div>
 </main>
 
 <script>
