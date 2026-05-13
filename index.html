@@ -43,9 +43,9 @@
     <div id="screen4" class="screen"><iframe src="https://learningapps.org/watch?v=pizhauruk25"></iframe></div>
     <div id="screen5" class="screen"><iframe src="https://learningapps.org/watch?v=pdkpf1wsa25"></iframe></div>
 
-    <!-- SCHERM 6: AANGEPAST NAAR STRUCTUURWOORDEN -->
-    <div id="screen6" class="screen">
-        <iframe id="vz_frame" srcdoc='<!DOCTYPE html><html lang="nl"><head><meta charset="UTF-8"><style>body { font-family: sans-serif; background: #f0f2f5; margin: 0; padding: 20px; text-align: center; } .container { max-width: 700px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); } h1 { color: #003082; font-size: 1.5rem; } .sentence { font-size: 1.1rem; margin: 20px 0; line-height: 1.5; color: #334155; } .wrong-word { color: #d32f2f; text-decoration: underline; font-weight: bold; } input { width: 80%; padding: 12px; border: 2px solid #cbd5e1; border-radius: 8px; font-size: 1rem; outline: none; } .btn { background: #003082; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; margin-top: 15px; font-weight: bold; } .score-board { margin-top: 30px; border-top: 2px solid #eee; padding-top: 20px; text-align: left; } .leader-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #f1f5f9; }</style></head><body><div class="container"><h1>Structuurwoorden Verbeteren</h1><p>Vervang het foute woord door: <strong>dus</strong>, <strong>daarom</strong> of <strong>vervolgens</strong></p><div class="sentence" id="display-sentence">Wachten...</div><input type="text" id="answer" placeholder="Typ het juiste structuurwoord..."><br><button class="btn" onclick="check()">Verbeteren</button><div class="score-board"><h3>Leaderboard (Per NATO-klas)</h3><div id="leaderboard"></div></div></div><script type="module">import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"; import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.app"; const cfg = { apiKey: "AIzaSyA3_rzoZOWytlyAbYKKe_WuFlD8z2WvbX4", databaseURL: "https://aangifteq2les1-default-rtdb.europe-west1.firebasedatabase.app" }; const app = initializeApp(cfg); const db = getDatabase(app); const natoNames = ["Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel", "Juliett", "Kilo", "Lima", "Mike"]; const myName = natoNames[Math.floor(Math.random() * natoNames.length)]; const data = [
+   <!-- SCHERM 6: STRUCTUURWOORDEN ZONDER VERTRAGING -->
+<div id="screen6" class="screen">
+    <iframe id="vz_frame" srcdoc='<!DOCTYPE html><html lang="nl"><head><meta charset="UTF-8"><style>body { font-family: sans-serif; background: #f0f2f5; margin: 0; padding: 20px; text-align: center; } .container { max-width: 700px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); } h1 { color: #003082; font-size: 1.5rem; } .sentence { font-size: 1.1rem; margin: 20px 0; line-height: 1.5; color: #334155; min-height: 50px; } .wrong-word { color: #d32f2f; text-decoration: underline; font-weight: bold; } input { width: 80%; padding: 12px; border: 2px solid #cbd5e1; border-radius: 8px; font-size: 1rem; outline: none; } .btn { background: #003082; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; margin-top: 15px; font-weight: bold; } .score-board { margin-top: 30px; border-top: 2px solid #eee; padding-top: 20px; text-align: left; } .leader-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #f1f5f9; }</style></head><body><div class="container"><h1>Structuurwoorden Verbeteren</h1><p>Vervang het foute woord door: <strong>dus</strong>, <strong>daarom</strong> of <strong>vervolgens</strong></p><div class="sentence" id="display-sentence">Laden van de eerste oefening...</div><input type="text" id="answer" placeholder="Typ het juiste structuurwoord..."><br><button class="btn" onclick="check()">Verbeteren</button><div class="score-board"><h3>Leaderboard (Live)</h3><div id="leaderboard">Nog geen scores...</div></div></div><script type="module">import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"; import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js"; const cfg = { apiKey: "AIzaSyA3_rzoZOWytlyAbYKKe_WuFlD8z2WvbX4", databaseURL: "https://aangifteq2les1-default-rtdb.europe-west1.firebasedatabase.app" }; const app = initializeApp(cfg); const db = getDatabase(app); const natoNames = ["Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel", "Juliett", "Kilo", "Lima", "Mike"]; const myName = natoNames[Math.floor(Math.random() * natoNames.length)]; const data = [
       { q: "De verdachte weigerde mee te werken, <span class=\"wrong-word\">hierop</span> arrestereerde ik hem.", a: "daarom" },
       { q: "Ik zag de man rennen, <span class=\"wrong-word\">daarop</span> hiel ik de man staande.", a: "vervolgens" },
       { q: "De getuige was erg zenuwachtig, <span class=\"wrong-word\">hierop</span> besloot ik later terug te komen.", a: "daarom" },
@@ -68,7 +68,10 @@
       { q: "Ik stelde de vragen, <span class=\"wrong-word\">daarop</span> gaf de man eerlijk antwoord.", a: "vervolgens" }
     ]; 
     let current = 0; let score = 0; 
-    function start() { document.getElementById("display-sentence").innerHTML = data[current].q; } 
+    
+    // START DIRECT BIJ LADEN
+    document.getElementById("display-sentence").innerHTML = data[0].q;
+
     window.check = () => { 
         const input = document.getElementById("answer").value.toLowerCase().trim(); 
         if(input === data[current].a.toLowerCase()) { 
@@ -83,13 +86,14 @@
             } 
         } else { alert("Helaas, dat is niet het juiste structuurwoord. Probeer het opnieuw!"); }
     }; 
+    
     onValue(ref(db, "leaderboard/structuur"), (snap) => { 
         const list = snap.val() || {}; 
         const html = Object.entries(list).sort((a,b) => b[1].score - a[1].score).map(([n,v]) => `<div class="leader-row"><span>Agent ${n}</span><span>${v.score || 0} pnt</span></div>`).join(""); 
-        document.getElementById("leaderboard").innerHTML = html; 
+        if(html) document.getElementById("leaderboard").innerHTML = html; 
     }); 
-    start();<\/script></body></html>'></iframe>
-    </div>
+    <\/script></body></html>'></iframe>
+</div>
 </main>
 
 <script>
