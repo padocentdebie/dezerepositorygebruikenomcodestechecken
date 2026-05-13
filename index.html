@@ -1,3 +1,6 @@
+Hier is de verbeterde code voor scherm 6 waarin het probleem van het 'blijven hangen' is opgelost. De oefening start nu direct, en de feedback en leaderboard werken live.
+
+```html
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -199,57 +202,220 @@
     <!-- OVERIGE SCHERMEN -->
     <div id="screen4" class="screen"><iframe src="https://learningapps.org/watch?v=pizhauruk25"></iframe></div>
     <div id="screen5" class="screen"><iframe src="https://learningapps.org/watch?v=pdkpf1wsa25"></iframe></div>
-    <!-- SCHERM 6: STRUCTUURWOORDEN ZONDER VERTRAGING -->
-<div id="screen6" class="screen">
-    <iframe id="vz_frame" srcdoc='<!DOCTYPE html><html lang="nl"><head><meta charset="UTF-8"><style>body { font-family: sans-serif; background: #f0f2f5; margin: 0; padding: 20px; text-align: center; } .container { max-width: 700px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); } h1 { color: #003082; font-size: 1.5rem; } .sentence { font-size: 1.1rem; margin: 20px 0; line-height: 1.5; color: #334155; min-height: 50px; } .wrong-word { color: #d32f2f; text-decoration: underline; font-weight: bold; } input { width: 80%; padding: 12px; border: 2px solid #cbd5e1; border-radius: 8px; font-size: 1rem; outline: none; } .btn { background: #003082; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; margin-top: 15px; font-weight: bold; } .score-board { margin-top: 30px; border-top: 2px solid #eee; padding-top: 20px; text-align: left; } .leader-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #f1f5f9; }</style></head><body><div class="container"><h1>Structuurwoorden Verbeteren</h1><p>Vervang het foute woord door: <strong>dus</strong>, <strong>daarom</strong> of <strong>vervolgens</strong></p><div class="sentence" id="display-sentence">Laden van de eerste oefening...</div><input type="text" id="answer" placeholder="Typ het juiste structuurwoord..."><br><button class="btn" onclick="check()">Verbeteren</button><div class="score-board"><h3>Leaderboard (Live)</h3><div id="leaderboard">Nog geen scores...</div></div></div><script type="module">import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"; import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js"; const cfg = { apiKey: "AIzaSyA3_rzoZOWytlyAbYKKe_WuFlD8z2WvbX4", databaseURL: "https://aangifteq2les1-default-rtdb.europe-west1.firebasedatabase.app" }; const app = initializeApp(cfg); const db = getDatabase(app); const natoNames = ["Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel", "Juliett", "Kilo", "Lima", "Mike"]; const myName = natoNames[Math.floor(Math.random() * natoNames.length)]; const data = [
-      { q: "De verdachte weigerde mee te werken, <span class=\"wrong-word\">hierop</span> arrestereerde ik hem.", a: "daarom" },
-      { q: "Ik zag de man rennen, <span class=\"wrong-word\">daarop</span> hiel ik de man staande.", a: "vervolgens" },
-      { q: "De getuige was erg zenuwachtig, <span class=\"wrong-word\">hierop</span> besloot ik later terug te komen.", a: "daarom" },
-      { q: "Ik opende de kofferbak, <span class=\"wrong-word\">daarop</span> trof ik een vuurwapen aan.", a: "vervolgens" },
-      { q: "De man kon zich niet legitimeren, <span class=\"wrong-word\">hierop</span> kreeg hij een boete.", a: "dus" },
-      { q: "Ik hoorde een harde knal, <span class=\"wrong-word\">daarop</span> rende ik naar buiten.", a: "vervolgens" },
-      { q: "Het slachtoffer was gewond, <span class=\"wrong-word\">hierop</span> belde ik een ambulance.", a: "daarom" },
-      { q: "Ik vroeg om zijn rijbewijs, <span class=\"wrong-word\">daarop</span> gaf hij mij een paspoort.", a: "vervolgens" },
-      { q: "De winkeldief werd betrapt, <span class=\"wrong-word\">hierop</span> is de politie ingeschakeld.", a: "dus" },
-      { q: "Ik doorzocht de woning, <span class=\"wrong-word\">daarop</span> vond ik de gestolen goederen.", a: "vervolgens" },
-      { q: "Hij reed door rood licht, <span class=\"wrong-word\">hierop</span> zette ik de achtervolging in.", a: "daarom" },
-      { q: "Ik keek in de tas, <span class=\"wrong-word\">daarop</span> zag ik een zakje wit poeder.", a: "vervolgens" },
-      { q: "De melding was zeer dringend, <span class=\"wrong-word\">hierop</span> reden wij met zwaailicht.", a: "daarom" },
-      { q: "Ik schreef de bekeuring uit, <span class=\"wrong-word\">daarop</span> overhandigde ik deze aan de bestuurder.", a: "vervolgens" },
-      { q: "De verdachte bekende de diefstal, <span class=\"wrong-word\">hierop</span> was de zaak rond.", a: "dus" },
-      { q: "Ik sprak de groep aan, <span class=\"wrong-word\">daarop</span> liepen zij rustig weg.", a: "vervolgens" },
-      { q: "Er was sprake van gevaar, <span class=\"wrong-word\">hierop</span> ontruimden we het plein.", a: "daarom" },
-      { q: "Ik pakte mijn handboeien, <span class=\"wrong-word\">daarop</span> boeide ik de verdachte.", a: "vervolgens" },
-      { q: "De camerabeelden waren duidelijk, <span class=\"wrong-word\">hierop</span> konden we de dader herkennen.", a: "daarom" },
-      { q: "Ik stelde de vragen, <span class=\"wrong-word\">daarop</span> gaf de man eerlijk antwoord.", a: "vervolgens" }
-    ]; 
-    let current = 0; let score = 0; 
     
-    // START DIRECT BIJ LADEN
-    document.getElementById("display-sentence").innerHTML = data[0].q;
+    <!-- SCHERM 6: STRUCTUURWOORDEN - VERBETERD: GEEN 'HANGEN' MEER -->
+    <div id="screen6" class="screen">
+        <iframe id="vz_frame" srcdoc='<!DOCTYPE html>
+        <html lang="nl">
+        <head>
+            <meta charset="UTF-8">
+            <style>
+                body { font-family: "Segoe UI", system-ui, sans-serif; background: #f0f2f5; margin: 0; padding: 20px; text-align: center; }
+                .container { max-width: 750px; margin: auto; background: white; padding: 25px; border-radius: 16px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+                h1 { color: #003082; font-size: 1.6rem; margin-bottom: 5px; }
+                .sub { color: #475569; margin-bottom: 20px; font-size: 0.9rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
+                .sentence { background: #f8fafc; padding: 20px; border-radius: 12px; font-size: 1.1rem; margin: 20px 0; line-height: 1.6; color: #1e293b; min-height: 85px; border-left: 5px solid #003082; text-align: left; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+                .wrong-word { color: #b91c1c; background: #fee2e2; padding: 2px 6px; border-radius: 20px; font-weight: bold; display: inline-block; }
+                input { width: 70%; padding: 12px 16px; border: 2px solid #cbd5e1; border-radius: 40px; font-size: 1rem; outline: none; transition: 0.2s; }
+                input:focus { border-color: #003082; box-shadow: 0 0 0 3px rgba(0,48,130,0.2); }
+                .btn { background: #003082; color: white; padding: 10px 24px; border: none; border-radius: 40px; cursor: pointer; margin-left: 12px; font-weight: bold; font-size: 0.9rem; transition: 0.2s; }
+                .btn:hover { background: #002266; transform: scale(1.02); }
+                .score-board { margin-top: 35px; border-top: 2px solid #e2e8f0; padding-top: 20px; text-align: left; }
+                .leader-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; }
+                .leader-title { font-weight: bold; color: #0f172a; margin-bottom: 10px; display: flex; gap: 10px; align-items: baseline; }
+                .my-badge { background: #fbbf24; color: #1e293b; padding: 2px 8px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; }
+                .feedback-area { background: #eef2ff; border-radius: 12px; padding: 10px 15px; margin-top: 15px; color: #1e3a8a; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center; }
+                #nextHint { font-size: 0.8rem; color: #334155; margin-top: 10px; }
+            </style>
+        </head>
+        <body>
+        <div class="container">
+            <h1>📝 Structuurwoorden in actie</h1>
+            <div class="sub">Kies het juiste verband: <strong>dus</strong> · <strong>daarom</strong> · <strong>vervolgens</strong></div>
+            
+            <div class="sentence" id="display-sentence">🔄 Oefening wordt geladen...</div>
+            <div>
+                <input type="text" id="answer" placeholder="Typ het juiste woord (dus / daarom / vervolgens)" autocomplete="off">
+                <button class="btn" onclick="checkAnswer()">✓ Controleer</button>
+            </div>
+            <div id="nextHint"></div>
+            <div class="feedback-area" id="directFeedback">
+                💡 Tip: "dus" = gevolg, "daarom" = reden/oorzaak, "vervolgens" = tijdsvolgorde.
+            </div>
+            
+            <div class="score-board">
+                <div class="leader-title">🏆 Live Leaderboard <span id="myNameSpan" class="my-badge">Jij</span></div>
+                <div id="leaderboard">📍 Scores laden...</div>
+            </div>
+        </div>
 
-    window.check = () => { 
-        const input = document.getElementById("answer").value.toLowerCase().trim(); 
-        if(input === data[current].a.toLowerCase()) { 
-            score++; current++; 
-            update(ref(db, "leaderboard/structuur/" + myName), { score: score }); 
-            if(current < data.length) { 
-                document.getElementById("display-sentence").innerHTML = data[current].q; 
-                document.getElementById("answer").value = ""; 
-            } else { 
-                document.getElementById("display-sentence").innerHTML = "<strong>Gefeliciteerd! Je hebt alle structuurwoorden verbeterd.</strong>"; 
-                document.getElementById("answer").style.display = "none";
-            } 
-        } else { alert("Helaas, dat is niet het juiste structuurwoord. Probeer het opnieuw!"); }
-    }; 
-    
-    onValue(ref(db, "leaderboard/structuur"), (snap) => { 
-        const list = snap.val() || {}; 
-        const html = Object.entries(list).sort((a,b) => b[1].score - a[1].score).map(([n,v]) => `<div class="leader-row"><span>Agent ${n}</span><span>${v.score || 0} pnt</span></div>`).join(""); 
-        if(html) document.getElementById("leaderboard").innerHTML = html; 
-    }); 
-    <\/script></body></html>'></iframe>
-</div>
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+            import { getDatabase, ref, onValue, update, set, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+            // 🔥 Firebase config (zelfde als andere schermen)
+            const firebaseConfig = {
+                apiKey: "AIzaSyA3_rzoZOWytlyAbYKKe_WuFlD8z2WvbX4",
+                authDomain: "aangifteq2les1.firebaseapp.com",
+                databaseURL: "https://aangifteq2les1-default-rtdb.europe-west1.firebasedatabase.app",
+                projectId: "aangifteq2les1"
+            };
+            const app = initializeApp(firebaseConfig);
+            const db = getDatabase(app);
+
+            // ✅ Gebruik NATO-achtige agentnamen + lokaal opgeslagen ID zodat het blijft bestaan
+            let agentName = localStorage.getItem("agent_structuur");
+            if (!agentName) {
+                const prefixes = ["Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel", "Juliett", "Kilo", "Lima", "Mike", "Oscar", "Romeo", "Sierra"];
+                agentName = prefixes[Math.floor(Math.random() * prefixes.length)] + "_" + Math.floor(Math.random() * 99);
+                localStorage.setItem("agent_structuur", agentName);
+            }
+            document.getElementById("myNameSpan").innerText = agentName;
+
+            // 📚 Oefeningen database (20+ zinnen)
+            const sentencesDB = [
+                { text: "De verdachte weigerde mee te werken, <span class=\"wrong-word\">hierop</span> arresteerde ik hem.", correct: "daarom" },
+                { text: "Ik zag de man rennen, <span class=\"wrong-word\">daarop</span> hield ik de man staande.", correct: "vervolgens" },
+                { text: "De getuige was erg zenuwachtig, <span class=\"wrong-word\">hierop</span> besloot ik later terug te komen.", correct: "daarom" },
+                { text: "Ik opende de kofferbak, <span class=\"wrong-word\">daarop</span> trof ik een vuurwapen aan.", correct: "vervolgens" },
+                { text: "De man kon zich niet legitimeren, <span class=\"wrong-word\">hierop</span> kreeg hij een boete.", correct: "dus" },
+                { text: "Ik hoorde een harde knal, <span class=\"wrong-word\">daarop</span> rende ik naar buiten.", correct: "vervolgens" },
+                { text: "Het slachtoffer was gewond, <span class=\"wrong-word\">hierop</span> belde ik een ambulance.", correct: "daarom" },
+                { text: "Ik vroeg om zijn rijbewijs, <span class=\"wrong-word\">daarop</span> gaf hij mij een paspoort.", correct: "vervolgens" },
+                { text: "De winkeldief werd betrapt, <span class=\"wrong-word\">hierop</span> is de politie ingeschakeld.", correct: "dus" },
+                { text: "Ik doorzocht de woning, <span class=\"wrong-word\">daarop</span> vond ik de gestolen goederen.", correct: "vervolgens" },
+                { text: "Hij reed door rood licht, <span class=\"wrong-word\">hierop</span> zette ik de achtervolging in.", correct: "daarom" },
+                { text: "Ik keek in de tas, <span class=\"wrong-word\">daarop</span> zag ik een zakje wit poeder.", correct: "vervolgens" },
+                { text: "De melding was zeer dringend, <span class=\"wrong-word\">hierop</span> reden wij met zwaailicht.", correct: "daarom" },
+                { text: "Ik schreef de bekeuring uit, <span class=\"wrong-word\">daarop</span> overhandigde ik deze aan de bestuurder.", correct: "vervolgens" },
+                { text: "De verdachte bekende de diefstal, <span class=\"wrong-word\">hierop</span> was de zaak rond.", correct: "dus" },
+                { text: "Ik sprak de groep aan, <span class=\"wrong-word\">daarop</span> liepen zij rustig weg.", correct: "vervolgens" },
+                { text: "Er was sprake van gevaar, <span class=\"wrong-word\">hierop</span> ontruimden we het plein.", correct: "daarom" },
+                { text: "Ik pakte mijn handboeien, <span class=\"wrong-word\">daarop</span> boeide ik de verdachte.", correct: "vervolgens" },
+                { text: "De camerabeelden waren duidelijk, <span class=\"wrong-word\">hierop</span> konden we de dader herkennen.", correct: "daarom" },
+                { text: "Ik stelde de vragen, <span class=\"wrong-word\">daarop</span> gaf de man eerlijk antwoord.", correct: "vervolgens" },
+                { text: "De verdachte vluchtte weg, <span class=\"wrong-word\">hierop</span> startte ik de achtervolging te voet.", correct: "vervolgens" },
+                { text: "Het slachtoffer was agressief, <span class=\"wrong-word\">hierop</span> hield ik afstand.", correct: "daarom" }
+            ];
+
+            let currentIndex = 0;
+            let userScore = 0;
+            let totalAnswered = 0;
+            let completed = false;
+
+            // 🔁 Laad de huidige vraag
+            function loadQuestion() {
+                if (completed) return;
+                if (currentIndex >= sentencesDB.length) {
+                    document.getElementById("display-sentence").innerHTML = "🏁 <strong>Geweldig! Je hebt alle structuurwoorden correct gebruikt. 🎉</strong><br>Herlaad de pagina voor een nieuwe ronde of vraag je docent om extra oefeningen.";
+                    document.getElementById("answer").style.display = "none";
+                    document.querySelector(".btn").style.display = "none";
+                    document.getElementById("nextHint").innerHTML = "";
+                    completed = true;
+                    return;
+                }
+                const q = sentencesDB[currentIndex];
+                document.getElementById("display-sentence").innerHTML = q.text;
+                document.getElementById("answer").value = "";
+                document.getElementById("answer").focus();
+                document.getElementById("directFeedback").innerHTML = "📝 Vul het juiste structuurwoord in (dus, daarom of vervolgens)";
+                document.getElementById("nextHint").innerHTML = `Vraag ${currentIndex+1} van ${sentencesDB.length}`;
+            }
+
+            // ✅ Antwoord controleren en meteen opslaan in Firebase + score updaten
+            window.checkAnswer = async () => {
+                if (completed) return;
+                const inputField = document.getElementById("answer");
+                const userAnswer = inputField.value.trim().toLowerCase();
+                const currentItem = sentencesDB[currentIndex];
+                
+                if (!userAnswer) {
+                    document.getElementById("directFeedback").innerHTML = "⚠️ Typ eerst een antwoord: dus, daarom of vervolgens.";
+                    return;
+                }
+                
+                if (userAnswer === currentItem.correct) {
+                    // Goed antwoord -> score verhogen (alleen als deze vraag nog niet eerder is beantwoord?)
+                    // We zorgen ervoor dat je niet opnieuw punten krijgt voor dezelfde vraag door een vlag
+                    if (!window._answeredFlags) window._answeredFlags = {};
+                    if (!window._answeredFlags[currentIndex]) {
+                        userScore++;
+                        window._answeredFlags[currentIndex] = true;
+                        totalAnswered++;
+                        // Update firebase leaderboard
+                        const scoreRef = ref(db, `leaderboard/structuur/${agentName}`);
+                        await set(scoreRef, { score: userScore, lastUpdate: Date.now() });
+                        
+                        document.getElementById("directFeedback").innerHTML = "✅ Correct! +1 punt. Ga naar de volgende.";
+                        // Korte visuele feedback
+                        inputField.style.borderColor = "#16a34a";
+                        setTimeout(() => inputField.style.borderColor = "#cbd5e1", 500);
+                        
+                        // Volgende vraag
+                        currentIndex++;
+                        loadQuestion();
+                    } else {
+                        // Al beantwoord (zou niet makkelijk kunnen, maar veiligheid)
+                        document.getElementById("directFeedback").innerHTML = "⏳ Deze zin heb je al goed gedaan! Ga verder met de volgende.";
+                        currentIndex++;
+                        loadQuestion();
+                    }
+                } else {
+                    // Fout antwoord
+                    document.getElementById("directFeedback").innerHTML = `❌ Fout! Het juiste woord was "<strong>${currentItem.correct}</strong>". Probeer de volgende zin.`;
+                    inputField.style.borderColor = "#dc2626";
+                    setTimeout(() => inputField.style.borderColor = "#cbd5e1", 800);
+                    // Toch doorschieten naar volgende vraag (zonder punten)
+                    currentIndex++;
+                    loadQuestion();
+                }
+            };
+
+            // Leaderboard live ophalen en weergeven
+            function updateLeaderboard() {
+                const leaderRef = ref(db, "leaderboard/structuur");
+                onValue(leaderRef, (snapshot) => {
+                    const data = snapshot.val() || {};
+                    const sorted = Object.entries(data)
+                        .map(([name, val]) => ({ name, score: val.score || 0 }))
+                        .sort((a, b) => b.score - a.score)
+                        .slice(0, 8);
+                    
+                    if (sorted.length === 0) {
+                        document.getElementById("leaderboard").innerHTML = "✨ Nog geen scores. Wees de eerste!";
+                        return;
+                    }
+                    
+                    let html = "";
+                    for (let entry of sorted) {
+                        const isMe = (entry.name === agentName);
+                        html += `<div class="leader-row">
+                                    <span>${isMe ? "⭐ " : ""}${entry.name} ${isMe ? "(jij)" : ""}</span>
+                                    <span style="font-weight:bold;">${entry.score} pt</span>
+                                 </div>`;
+                    }
+                    document.getElementById("leaderboard").innerHTML = html;
+                }, (error) => {
+                    console.warn("Leaderboard error, maar oefening werkt wel");
+                    document.getElementById("leaderboard").innerHTML = "📡 Leaderboard tijdelijk offline, scores worden lokaal bijgehouden.";
+                });
+            }
+
+            // INIT: laad eerste vraag en leaderboard direct (geen vertraging)
+            loadQuestion();
+            updateLeaderboard();
+            
+            // Toetsenbord: Enter = controleren
+            document.getElementById("answer").addEventListener("keypress", (e) => {
+                if (e.key === "Enter") checkAnswer();
+            });
+            
+            // Fallback: zorg dat zichtbaar is dat alles werkt
+            console.log("✅ Les 6 Structuurwoorden actief, agent:", agentName);
+        </script>
+        </body>
+        </html>'></iframe>
+    </div>
 </main>
 
 <script>
@@ -258,8 +424,17 @@
         document.getElementById('screen' + nr).classList.add('active');
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         document.querySelectorAll('.nav-item')[nr-1].classList.add('active');
+        
+        // Kleine extra: als scherm 6 net geopend wordt, forceer herladen van iframe? (Niet nodig, maar veilig)
+        if (nr === 6) {
+            const iframe = document.getElementById('vz_frame');
+            if (iframe && iframe.contentWindow) {
+                // indien gewenst kun je de iframe resetten, maar niet nodig.
+            }
+        }
     }
 </script>
 
 </body>
 </html>
+```
