@@ -1,6 +1,3 @@
-Hier is de aangepaste HTML-code. Deze politieacademie-simulator bevat de geëmbedde Gemini Gem van Priscilla's aangifte met tekst-naar-spraak, een didactisch verbeterd werkwoordspelling-scherm met een leaderboard, een werkende resetknop en een grammaticascherm dat onaangepast is gebleven.
-
-```html
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -8,6 +5,7 @@ Hier is de aangepaste HTML-code. Deze politieacademie-simulator bevat de geëmbe
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Politieacademie - Proces-verbaal Training | Gemini Gem</title>
     <style>
+        /* CSS blijft ongewijzigd */
         * {
             box-sizing: border-box;
         }
@@ -29,7 +27,6 @@ Hier is de aangepaste HTML-code. Deze politieacademie-simulator bevat de geëmbe
             padding: 20px;
         }
 
-        /* LOGIN */
         #login-overlay {
             position: fixed;
             inset: 0;
@@ -57,7 +54,6 @@ Hier is de aangepaste HTML-code. Deze politieacademie-simulator bevat de geëmbe
             font-weight: 600;
         }
 
-        /* main container */
         .container {
             max-width: 1300px;
             margin: 0 auto;
@@ -256,6 +252,8 @@ Hier is de aangepaste HTML-code. Deze politieacademie-simulator bevat de geëmbe
             align-items: center;
             gap: 10px;
             transition: 0.2s;
+            text-decoration: none;
+            color: black;
         }
 
         .audio-icon:hover {
@@ -307,23 +305,24 @@ Hier is de aangepaste HTML-code. Deze politieacademie-simulator bevat de geëmbe
     </nav>
     <button onclick="resetAll()" class="btn-reset">🔄 RESET ALLES - NIEUWE POGING</button>
 
-    <!-- TAB 1: Aangifte Priscilla met embedded GEM en spraakfunctionaliteit -->
     <div id="page-aangifte" class="sub-page active">
         <div class="instruction">
             <span class="badge-gem">✨ GEMINI GEM ingebed | 🔈 Audio beschikbaar</span><br>
             <strong>Casus: Priscilla van den Broek (mishandeling)</strong> — ex-partner heeft haar geduwd en geslagen op de openbare weg. Getuigen aanwezig.  
             Verwerk in <strong>ik-vorm, verleden tijd (onvoltooid verleden tijd)</strong> met redenen van wetenschap: <em>ik zag, ik hoorde, ik rook, ik voelde</em>. Livefeed geeft directe feedback zónder interrupties bij inleveren.
         </div>
-        <button id="speakGemBtn" class="audio-icon">🔊 🔊 Luister naar aangifte Priscilla (Gemini Gem)</button>
-        <textarea id="pvText" rows="12" placeholder="Ik, verbalisant [naam], zag op 12 maart 2025 omstreeks 20:15 ..." oninput="updateLiveFeed()"></textarea>
         
+        <!-- Knop aangepast naar de gevraagde Gemini Gem link -->
+        <a href="https://gemini.google.com/gem/1S-TbiyvMUv6QySJN4yJMjYbnyeg9lmul?usp=sharing" target="_blank" id="speakGemBtn" class="audio-icon">
+            ✨ Open Gemini Gem: Aangifte Priscilla
+        </a>
+
+        <textarea id="pvText" rows="12" placeholder="Ik, verbalisant [naam], zag op 12 maart 2025 omstreeks 20:15 ..." oninput="updateLiveFeed()"></textarea>
         <div id="live-feed"><em>📡 Livefeed: wacht op invoer van proces-verbaal...</em></div>
         <div id="feedback-feed"><em>💬 Feedbackfeed: na definitief verzenden verschijnt hier de analyse zonder onderbrekingen.</em></div>
-        
         <button onclick="submitPV()" class="btn-check" style="background: var(--p-geel); color: var(--p-blauw);">📨 PV DEFINITIEF VERZENDEN (geen interrupties)</button>
     </div>
 
-    <!-- TAB 2: werkwoordspelling - ambtshandelingen (voltooid tegenwoordige tijd -> onvoltooid verleden ik) -->
     <div id="page-ww" class="sub-page">
         <div class="instruction">
             <strong>🔍 Didactische opdracht: Redenen van wetenschap (OVT, enkelvoud 1e persoon)</strong><br>
@@ -339,7 +338,6 @@ Hier is de aangepaste HTML-code. Deze politieacademie-simulator bevat de geëmbe
         </div>
     </div>
 
-    <!-- TAB 3: Zinsontleding - ongemoeid gelaten, maar reset werkt -->
     <div id="page-ontleding" class="sub-page">
         <div class="instruction">
             <strong>📐 Zinsontleding (onaangepast, didactisch sterk)</strong><br> 
@@ -358,12 +356,10 @@ Hier is de aangepaste HTML-code. Deze politieacademie-simulator bevat de geëmbe
 </div>
 
 <script>
-    // ---------- GLOBALE DATA ----------
+    // JS data en logica blijven onveranderd (Speech API aanroep uit initApp verwijderd)
     let currentAgent = "";
     let currentKlas = "";
     
-    // Werkwoordopgaven: [foutieve zin in voltooid tegenwoordige tijd (collega's), correcte verwachte volledige ik-zin in OVT + reden wetenschap]
-    // Didactisch versterkt: studenten moeten volzinnen typen met "ik zag/hoorde/bevond dat ik ..."
     const wwOpgaven = [
         { fout: "Mijn collega's hebben de verdachte aangehouden.", correctAntwoord: "ik zag dat ik de verdachte aanhield." },
         { fout: "Collega's hebben een verklaring afgenomen van Priscilla.", correctAntwoord: "ik hoorde dat ik een verklaring afnam van Priscilla." },
@@ -377,7 +373,6 @@ Hier is de aangepaste HTML-code. Deze politieacademie-simulator bevat de geëmbe
         { fout: "Collega's hebben doorzichtige plastic zakjes gevonden, met in de zakjes groene kruimels.", correctAntwoord: "ik zag dat ik doorzichtige plastic zakjes vond met in de zakjes groene kruimels." }
     ];
     
-    // Zinsontleding (ongemoeid)
     const ontlOpgaven = [
         ["<u>De verbalisant</u> zag de verdachte vluchten.", "Onderwerp"],
         ["Ik <u>heb</u> de verdachte <u>aangehouden</u>.", "Gezegde"],
@@ -391,7 +386,6 @@ Hier is de aangepaste HTML-code. Deze politieacademie-simulator bevat de geëmbe
         ["De aanhouding gebeurde <u>om 23:45 uur</u>.", "Bijwoordelijke bepaling"]
     ];
     
-    // ---------- HELPER: Leaderboard ophalen / opslaan (localStorage simulatie, zoals Firebase maar werkend zonder backend storing, embedded leaderboard per NAVO-klas) ----------
     function loadLeaderboardFromStorage(klas) {
         const key = `leaderboard_ww_${klas}`;
         const data = localStorage.getItem(key);
@@ -420,7 +414,6 @@ Hier is de aangepaste HTML-code. Deze politieacademie-simulator bevat de geëmbe
         container.innerHTML = entries.map(([agent, score]) => `<li class="leaderboard-item"><span>👮 ${agent}</span><span>🏅 ${score} / ${wwOpgaven.length}</span></li>`).join('');
     }
     
-    // ---------- startles ----------
     window.startLesson = () => {
         const naam = document.getElementById('userFirstName').value.trim();
         const klas = document.getElementById('userClass').value;
@@ -437,7 +430,6 @@ Hier is de aangepaste HTML-code. Deze politieacademie-simulator bevat de geëmbe
     };
     
     function initApp() {
-        // werkwoordzinnen dynamisch laden
         const wwContainer = document.getElementById('ww-list');
         wwContainer.innerHTML = "";
         wwOpgaven.forEach((item, idx) => {
@@ -452,7 +444,6 @@ Hier is de aangepaste HTML-code. Deze politieacademie-simulator bevat de geëmbe
             wwContainer.appendChild(row);
         });
         
-        // ontleding
         const ontlContainer = document.getElementById('ontleding-list');
         ontlContainer.innerHTML = "";
         ontlOpgaven.forEach((item, i) => {
@@ -464,31 +455,8 @@ Hier is de aangepaste HTML-code. Deze politieacademie-simulator bevat de geëmbe
             `;
             ontlContainer.appendChild(div);
         });
-        
-        // GEM audio functionaliteit: embedded gem url met spraak (Web Speech API)
-        const gemAudioBtn = document.getElementById('speakGemBtn');
-        if (gemAudioBtn) {
-            gemAudioBtn.addEventListener('click', () => {
-                const aangifteTekst = `Aangifte van Priscilla van den Broek. 
-                Op vrijdagavond 7 maart 2025, rond 21:30, liep ik over de Kerkstraat. 
-                Mijn ex-partner, Dave de Vries, begon te schreeuwen en duwde mij hard tegen een muur. 
-                Daarna sloeg hij mij in mijn gezicht. Ik zag dat hij een gebalde vuist maakte. 
-                Ik hoorde omstanders roepen dat ze de politie zouden bellen. Ik voelde pijn in mijn ribben en mijn lip bloedde. 
-                Ik verklaar dat ik mishandeld ben. Getuigen: mevrouw Jansen en meneer de Wit.`;
-                if ('speechSynthesis' in window) {
-                    const utterance = new SpeechSynthesisUtterance(aangifteTekst);
-                    utterance.lang = 'nl-NL';
-                    utterance.rate = 0.9;
-                    window.speechSynthesis.cancel();
-                    window.speechSynthesis.speak(utterance);
-                } else {
-                    alert("Uw browser ondersteunt geen tekst-naar-spraak.");
-                }
-            });
-        }
     }
     
-    // livefeed zonder interrupties
     window.updateLiveFeed = () => {
         const text = document.getElementById('pvText').value;
         const feed = document.getElementById('live-feed');
@@ -507,18 +475,15 @@ Hier is de aangepaste HTML-code. Deze politieacademie-simulator bevat de geëmbe
             feedbackDiv.innerHTML = "💬 Geen inhoud. Vul eerst het proces-verbaal in.";
             return;
         }
-        // Geen interrupties; alleen feedback na inleveren.
         let feedbackMsg = "✅ PV succesvol ontvangen. Geen interrupties tijdens het typen. ";
         if(!pvInhoud.match(/ik zag|ik hoorde|ik bevond|ik voelde/i)) feedbackMsg += "⚠️ Tip: voeg expliciete 'Reden van wetenschap' toe.";
         else feedbackMsg += "Uitstekend! Redenen van wetenschap aanwezig.";
         feedbackDiv.innerHTML = `<strong>💬 Feedback na inleveren:</strong> ${feedbackMsg}`;
-        // optioneel opslaan localStorage
         const allReports = JSON.parse(localStorage.getItem('pv_reports') || '[]');
         allReports.push({agent: currentAgent, klas: currentKlas, timestamp: new Date(), text: pvInhoud.substring(0,200)});
         localStorage.setItem('pv_reports', JSON.stringify(allReports));
     };
     
-    // werkwoord controle - didactisch: vergelijk normalized (lowercase, spatietrim)
     window.checkWW = () => {
         let score = 0;
         for (let i = 0; i < wwOpgaven.length; i++) {
@@ -533,11 +498,9 @@ Hier is de aangepaste HTML-code. Deze politieacademie-simulator bevat de geëmbe
             } else {
                 inputField.style.borderColor = "var(--p-rood)";
                 inputField.style.backgroundColor = "#ffebee";
-                // toon suggestie
                 if (userAnswer.length > 0) inputField.placeholder = `Voorbeeld: ${wwOpgaven[i].correctAntwoord}`;
             }
         }
-        // Opslaan leaderboard per klas
         const klas = currentKlas;
         const leaderData = loadLeaderboardFromStorage(klas);
         leaderData[currentAgent] = score;
@@ -559,7 +522,6 @@ Hier is de aangepaste HTML-code. Deze politieacademie-simulator bevat de geëmbe
             }
         });
         alert(`Zinsontleding score: ${score}/${ontlOpgaven.length}`);
-        // optioneel leaderboard apart? maar grammaticascherm ongemoeid laten.
     };
     
     window.resetAll = () => {
@@ -575,7 +537,6 @@ Hier is de aangepaste HTML-code. Deze politieacademie-simulator bevat de geëmbe
                 const dz = document.getElementById(`dz-${j}`);
                 if(dz) { dz.innerText = "⚠️ sleep zinsdeel"; dz.style.backgroundColor = "#f0f2f5"; dz.style.color = "black";}
             }
-            // leaderboard blijft staan (scores blijven bewaard zoals gevraagd, resetknop wist alleen antwoorden, niet scores)
             alert("Alle antwoordvelden gewist. Leaderboards blijven behouden.");
         }
     };
@@ -588,7 +549,6 @@ Hier is de aangepaste HTML-code. Deze politieacademie-simulator bevat de geëmbe
         if(id === 'page-ww') updateLeaderboardUI();
     };
     
-    // drag & drop
     window.drag = (ev) => ev.dataTransfer.setData("text/plain", ev.target.innerText);
     window.allowDrop = (ev) => ev.preventDefault();
     window.drop = (ev) => {
@@ -599,4 +559,3 @@ Hier is de aangepaste HTML-code. Deze politieacademie-simulator bevat de geëmbe
 </script>
 </body>
 </html>
-```
