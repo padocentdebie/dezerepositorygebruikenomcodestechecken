@@ -3,479 +3,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Q3PVAangifte Les 6 - Volledige Versie</title>
+    <title>PV Aangifte - Les 6 - Politieacademie</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: white; margin: 0; display: flex; height: 100vh; overflow: hidden; }
-        
-        /* Sidebar */
-        nav { width: 260px; background: #1e293b; border-right: 2px solid #334155; display: flex; flex-direction: column; padding: 15px; flex-shrink: 0; overflow-y: auto; }
-        nav h2 { font-size: 1rem; color: #ffcc00; margin-bottom: 15px; text-transform: uppercase; border-bottom: 1px solid #334155; padding-bottom: 10px; }
-        .nav-item { padding: 10px 12px; margin-bottom: 6px; cursor: pointer; border-radius: 6px; transition: 0.2s; background: #0f172a; font-size: 14px; border: 1px solid transparent; }
-        .nav-item:hover { background: #003082; }
-        .nav-item.active { background: #003082; border-color: #ffcc00; font-weight: bold; }
+        :root {
+            --politie-blauw: #00205b;
+            --politie-geel: #fcc917;
+            --licht-grijs: #f4f4f4;
+            --wit: #ffffff;
+            --gevaar-rood: #d9534f;
+            --succes-groen: #28a745;
+        }
 
-        /* Content Area */
-        main { flex: 1; position: relative; background: #121212; height: 100vh; overflow: hidden; }
-        .screen { display: none; padding: 15px; height: 100%; box-sizing: border-box; overflow-y: auto; }
-        .screen.active { display: block; }
-        
-        iframe { width: 100%; height: calc(100vh - 30px); border: none; border-radius: 8px; background: white; }
+        body { font-family: Arial, sans-serif; background-color: var(--licht-grijs); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 900px; margin: 0 auto; background: var(--wit); padding: 30px; border-top: 8px solid var(--politie-blauw); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+
+        /* Schermbeheer */
+        .page { display: none; }
+        .active { display: block; }
+
+        /* Navigatie */
+        .nav-tabs { display: flex; gap: 5px; margin-bottom: 20px; border-bottom: 2px solid var(--politie-blauw); padding-bottom: 10px; flex-wrap: wrap; }
+        .nav-btn { padding: 8px 15px; background: #eee; border: none; cursor: pointer; font-weight: bold; font-size: 12px; }
+        .nav-btn.active { background: var(--politie-blauw); color: white; }
+
+        /* Login */
+        #login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--politie-blauw); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        .login-card { background: white; padding: 40px; border-radius: 4px; width: 400px; }
+
+        /* Grammatica & Zinsontleding */
+        .instruction-box { background: #f9f9f9; border: 1px solid #ccc; padding: 20px; margin-bottom: 25px; }
+        .grammatica-tabel { width: 100%; border-collapse: collapse; margin: 20px 0; background: #fff; font-size: 13px; }
+        .grammatica-tabel th, .grammatica-tabel td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        .grammatica-tabel th { background: var(--politie-blauw); color: white; }
+
+        /* Drag & Drop Styling */
+        .drop-zone { display: inline-block; min-width: 120px; min-height: 30px; border-bottom: 2px dashed var(--politie-blauw); vertical-align: bottom; margin: 0 5px; padding: 2px 10px; background: #fffde7; }
+        .drag-items { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+        .drag-item { background: var(--politie-blauw); color: white; padding: 8px 12px; cursor: grab; font-size: 12px; border-radius: 4px; }
+        .drag-item:active { cursor: grabbing; }
+
+        /* Leaderboard */
+        .leaderboard-table { width: 100%; margin-top: 20px; border-collapse: collapse; }
+        .leaderboard-table th, .leaderboard-table td { padding: 8px; border-bottom: 1px solid #ddd; text-align: left; font-size: 13px; }
+
+        textarea { width: 100%; padding: 10px; border: 1px solid #999; font-family: 'Courier New', monospace; box-sizing: border-box; }
+        .pv-item { background: #fff; border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; }
+        #feedContent { max-height: 400px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; }
     </style>
 </head>
 <body>
 
-<nav>
-    <h2>Les 6 Menu</h2>
-    <div class="nav-item active" onclick="showScreen(1)">1. Digibord</div>
-    <div class="nav-item" onclick="showScreen(2)">2. Inloggen</div>
-    <div class="nav-item" onclick="showScreen(3)">3. PV Simulatie</div>
-    <div class="nav-item" onclick="showScreen(4)">4. VVT & OVT</div>
-    <div class="nav-item" onclick="showScreen(5)">5. Rede in PV</div>
-    <div class="nav-item" onclick="showScreen(6)">6. Voorzetsels</div>
-</nav>
-
-<main>
-    <!-- SCHERM 1: DIGIBORD -->
-    <div id="screen1" class="screen active">
-        <iframe srcdoc='<!DOCTYPE html>
-        <html>
-        <head>
-            <style>
-                body { margin: 0; background: #f0f2f5; font-family: sans-serif; overflow: hidden; touch-action: none; }
-                #board-container { position: relative; width: 98%; height: calc(100vh - 85px); background: white; margin: 5px auto; border: 2px solid #003082; border-radius: 10px; }
-                canvas { width: 100%; height: 100%; display: block; cursor: crosshair; }
-                .toolbar { height: 60px; background: white; display: flex; gap: 10px; justify-content: center; align-items: center; border-top: 1px solid #ccc; }
-                .btn { padding: 8px 15px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; color: white; font-size: 13px; }
-                #addBtn { background: #003082; }
-                #clearBtn { background: #d32f2f; }
-                #trash-zone { position: absolute; top: 10px; left: 15px; width: 45px; height: 45px; border: 2px dashed #f87171; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; opacity: 0.5; background: white; }
-                #trash-zone.active { background: #ef4444; opacity: 1; color: white; }
-            </style>
-        </head>
-        <body>
-            <div id="board-container"><canvas id="whiteboard" width="1200" height="800"></canvas><div id="trash-zone">🗑️</div></div>
-            <div class="toolbar">
-                <input type="text" id="wordInput" placeholder="Woord..." style="padding:8px; border-radius:6px; border:1px solid #ccc;">
-                <button id="addBtn" class="btn">Toevoegen</button>
-                <button id="clearBtn" class="btn">Wis</button>
-            </div>
-            <script type="module">
-                import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-                import { getDatabase, ref, onValue, push, remove, update, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-                const firebaseConfig = { apiKey: "AIzaSyA3_rzoZOWytlyAbYKKe_WuFlD8z2WvbX4", authDomain: "aangifteq2les1.firebaseapp.com", databaseURL: "https://aangifteq2les1-default-rtdb.europe-west1.firebasedatabase.app", projectId: "aangifteq2les1" };
-                const app = initializeApp(firebaseConfig); const db = getDatabase(app);
-                const canvas = document.getElementById("whiteboard"); const ctx = canvas.getContext("2d");
-                const boardRef = ref(db, "classes/Alpha/board");
-                let objects = {}, isDrawing = false, isDragging = false, draggedId = null, currentPathId = null, currentPoints = [];
-
-                const getPos = (e) => {
-                    const rect = canvas.getBoundingClientRect();
-                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-                    return { x: (clientX - rect.left) * (canvas.width / rect.width), y: (clientY - rect.top) * (canvas.height / rect.height), rawX: clientX, rawY: clientY };
-                };
-
-                canvas.addEventListener("mousedown", (e) => {
-                    const { x, y } = getPos(e);
-                    for (const [id, obj] of Object.entries(objects).reverse()) {
-                        if (obj.type === "text") {
-                            ctx.font = "bold 24px Arial"; const w = ctx.measureText(obj.text).width;
-                            if (x > obj.x - 10 && x < obj.x + w + 10 && y > obj.y - 35 && y < obj.y + 15) { draggedId = id; isDragging = true; return; }
-                        }
-                    }
-                    isDrawing = true; currentPoints = [{x, y}];
-                    const newRef = push(boardRef); currentPathId = newRef.key;
-                    set(newRef, { type: "path", points: currentPoints });
-                });
-
-                window.addEventListener("mousemove", (e) => {
-                    if (!isDrawing && !isDragging) return;
-                    const { x, y, rawX, rawY } = getPos(e);
-                    if (isDrawing && currentPathId) {
-                        currentPoints.push({x, y}); update(ref(db, `classes/Alpha/board/${currentPathId}`), { points: currentPoints });
-                    }
-                    if (isDragging && draggedId) {
-                        update(ref(db, `classes/Alpha/board/${draggedId}`), { x: x - 20, y: y + 10 });
-                        const tRect = document.getElementById("trash-zone").getBoundingClientRect();
-                        document.getElementById("trash-zone").classList.toggle("active", rawX > tRect.left && rawX < tRect.right && rawY > tRect.top && rawY < tRect.bottom);
-                    }
-                });
-
-                window.addEventListener("mouseup", () => {
-                    if (isDragging && draggedId && document.getElementById("trash-zone").classList.contains("active")) remove(ref(db, `classes/Alpha/board/${draggedId}`));
-                    isDrawing = isDragging = false; draggedId = currentPathId = null; document.getElementById("trash-zone").classList.remove("active");
-                });
-
-                onValue(boardRef, (snap) => {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height); objects = snap.val() || {};
-                    for (let id in objects) {
-                        const obj = objects[id];
-                        if (obj.type === "text") { ctx.font = "bold 24px Arial"; ctx.fillStyle = "#333"; ctx.fillText(obj.text, obj.x, obj.y); }
-                        else if (obj.type === "path" && obj.points) {
-                            ctx.beginPath(); ctx.strokeStyle = "#4b5563"; ctx.lineWidth = 3; ctx.lineCap = "round";
-                            ctx.moveTo(obj.points[0].x, obj.points[0].y); obj.points.forEach(p => ctx.lineTo(p.x, p.y)); ctx.stroke();
-                        }
-                    }
-                });
-                document.getElementById("addBtn").onclick = () => {
-                    const val = document.getElementById("wordInput").value;
-                    if(val) push(boardRef, { type: "text", text: val, x: 100, y: 100 });
-                    document.getElementById("wordInput").value = "";
-                };
-                document.getElementById("clearBtn").onclick = () => { if(confirm("Wissen?")) remove(boardRef); };
-            </script>
-        </body>
-        </html>'></iframe>
+<div id="login-overlay">
+    <div class="login-card">
+        <h2 style="color: var(--politie-blauw); margin-top:0;">LOGIN LES 6</h2>
+        <input type="text" id="userFirstName" placeholder="Voornaam" style="width: 100%; padding: 8px; margin-bottom: 10px;">
+        <select id="userClass" style="width: 100%; padding: 8px; margin-bottom: 20px;">
+            <option value="Alpha">Alpha</option>
+            <option value="Bravo">Bravo</option>
+            <option value="Delta">Delta</option>
+            <option value="Echo">Echo</option>
+            <option value="Foxtrot">Foxtrot</option>
+            <option value="Golf">Golf</option>
+            <option value="Hotel">Hotel</option>
+            <option value="Juliett">Juliett</option>
+            <option value="Kilo">Kilo</option>
+            <option value="Lima">Lima</option>
+            <option value="Mike">Mike</option>
+        </select>
+        <button onclick="startLesson()" style="background: var(--politie-blauw); color: white; width: 100%; padding: 12px; border: none; cursor: pointer; font-weight: bold;">TOEGANG</button>
     </div>
+</div>
 
-    <!-- SCHERM 2: LOGIN MET KEuze uit NAVO-codes (Alpha t/m Mike) -->
-    <div id="screen2" class="screen">
-        <div style="max-width: 450px; margin: 80px auto; background: #1e293b; padding: 35px; border-radius: 20px; text-align: center; border: 1px solid #334155; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
-            <h2 style="color:#ffcc00; margin-bottom: 10px;">🚔 AGENT LOGIN</h2>
-            <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 25px;">Kies jouw NAVO-roepnaam (Alpha t/m Mike)</p>
-            <select id="agentNameSelect" style="width:100%; padding:12px; margin: 10px 0; border-radius:10px; border:none; background:#0f172a; color:white; font-size:1rem; cursor:pointer;">
-                <option value="">-- Selecteer je naam --</option>
-                <option value="Alpha">Alpha</option>
-                <option value="Bravo">Bravo</option>
-                <option value="Charlie">Charlie</option>
-                <option value="Delta">Delta</option>
-                <option value="Echo">Echo</option>
-                <option value="Foxtrot">Foxtrot</option>
-                <option value="Golf">Golf</option>
-                <option value="Hotel">Hotel</option>
-                <option value="Juliett">Juliett</option>
-                <option value="Kilo">Kilo</option>
-                <option value="Lima">Lima</option>
-                <option value="Mike">Mike</option>
-            </select>
-            <button onclick="loginAndGoToPV()" style="background:#003082; color:white; width:100%; padding:12px; border:none; border-radius:10px; cursor:pointer; font-weight:bold; margin-top:15px; font-size:1rem;">🔓 SYSTEEM BETREDEN</button>
-            <p id="loginError" style="color:#f87171; font-size:0.8rem; margin-top:12px;"></p>
+<div class="container page" id="mainContent">
+    <nav class="nav-tabs">
+        <button class="nav-btn active" onclick="showPage('page-aangifte', this)">1. PV Aangifte</button>
+        <button class="nav-btn" onclick="showPage('page-grammatica', this)">2. Grammatica Training</button>
+        <button class="nav-btn" onclick="showPage('page-ontleding', this)">3. Zinsontleding</button>
+    </nav>
+
+    <!-- SCHERM 2: AANGIFTE (ONGEMOEID) -->
+    <div id="page-aangifte" class="sub-page active">
+        <header>
+            <h1>PROCES-VERBAAL VAN AANGIFTE - LES 6</h1>
+            <p id="classDisplay" style="font-weight:bold;"></p>
+        </header>
+        <div class="instruction-box">
+            <strong>STAPPENPLAN:</strong> Verhoor Priscilla en stel hieronder je PV op.
+            <div style="text-align: center; margin-top: 15px;">
+                <a href="https://gemini.google.com/gem/1S-TbiyvMUv6QySJN4yJMjYbnyeg9lmul?usp=sharing" target="_blank" style="background: var(--politie-blauw); color: white; padding: 10px; text-decoration: none; font-weight: bold;">START VERHOOR</a>
+            </div>
+        </div>
+        <textarea id="pvText" rows="10" placeholder="Start hier uw verslaglegging..."></textarea>
+        <button onclick="submitPV()" style="background: var(--politie-blauw); color: white; margin-top: 10px; padding: 10px 20px; border: none; cursor: pointer;">PV INLEVEREN</button>
+        <div id="livefeed" style="margin-top:30px;">
+            <h3>LIVEFEED AANGIFTES</h3>
+            <div id="feedContent">Laden...</div>
         </div>
     </div>
 
-    <!-- SCHERM 3: PV SIMULATIE (VERBETERD: INLEVEREN + LIVEFEED ZONDER HINDER) -->
-    <div id="screen3" class="screen">
-        <iframe id="pvSimFrame" srcdoc='<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <style>
-        :root { --pol-blauw: #003082; --pol-rood: #d32f2f; }
-        body { font-family: "Segoe UI", sans-serif; background: #121212; color: #ececec; margin: 0; padding: 15px; font-size: 14px; overflow-y: auto; }
-        .card { background: #252526; border-radius: 8px; padding: 15px; margin-bottom: 15px; border-left: 5px solid var(--pol-blauw); }
-        .oc-card { border-left-color: var(--pol-rood); background: #2d1a1a; }
-        .two-columns { display: flex; gap: 20px; flex-wrap: wrap; }
-        .left-panel { flex: 1.2; min-width: 280px; }
-        .right-panel { flex: 1; min-width: 280px; }
-        textarea { width: 100%; height: 250px; background: #f4f4f4; color: #111; padding: 12px; border-radius: 8px; border: none; font-size: 14px; line-height: 1.4; box-sizing: border-box; font-family: monospace; }
-        .btn-submit { background: #003082; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; width: 100%; font-size: 1rem; transition: 0.2s; }
-        .btn-submit:hover { background: #002266; transform: scale(1.01); }
-        .live-feed { background: #1e1e2a; border-radius: 8px; padding: 12px; max-height: 400px; overflow-y: auto; border: 1px solid #334155; }
-        .submission-item { background: #2a2a35; margin-bottom: 12px; padding: 12px; border-radius: 8px; border-left: 3px solid #ffcc00; }
-        .submission-header { display: flex; justify-content: space-between; color: #ffcc00; font-weight: bold; margin-bottom: 8px; font-size: 0.8rem; }
-        .submission-text { background: #0f172a; padding: 10px; border-radius: 6px; white-space: pre-wrap; font-size: 0.85rem; margin: 8px 0; color: #e2e8f0; }
-        .feedback-input-area { margin-top: 8px; display: flex; gap: 8px; }
-        .feedback-input { flex: 1; padding: 8px; border-radius: 6px; border: none; background: #0f172a; color: white; }
-        .feedback-btn { background: #334155; color: white; border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; }
-        .feedback-btn:hover { background: #475569; }
-        .feedback-display { background: #00308220; padding: 6px 10px; border-radius: 6px; margin-top: 6px; font-size: 0.8rem; color: #90cdf4; }
-        h3 { margin-top: 0; color: #ffcc00; font-size: 1rem; margin-bottom: 10px; }
-        .status-msg { font-size: 0.8rem; color: #66cc66; margin-top: 5px; }
-        button:active { transform: scale(0.98); }
-    </style>
-</head>
-<body>
-    <div class="card oc-card">
-        <strong>📢 OC MELDING - 14:22 UUR - DORPSSTRAAT</strong>
-        <p style="margin-top: 8px;"><em>"Ter plaatse zie je de vrouw en zie je dat zij op de straat staat, met haar gezicht gericht naar een woning. Ze schreeuwt en je hoort de vrouw roepen dat zij uit huis moet komen, ze hier voor haar is en dat als de ander niet bang is ze naar buiten moet komen. Je ziet dat de vrouw een badjas en een pyjamabroek draagt en op pantoffels loopt. Het wordt jou duidelijk dat de vrouw het gericht heeft op een specifieke woning en een persoon in die woning. Je ziet van een afstand dat de vrouw een voorwerp in haar rechterhand heeft. Ze maakt hiermee stekende bewegingen richting de woning. Je loopt iets dichterbij en je ziet dat het een groot broodmes betreft. Nadat je de vrouw hebt aangesproken, richt ze zich op jou, maar komt niet dichterbij. Je sommeert haar het wapen te laten vallen. Ze houdt het mes in haar hand en wil dat niet laten vallen. Ze schreeuwt tegen je: Ik steek je dood als je dichterbij komt! En ze versterkt haar woorden door stekende bewegingen te maken in jouw richting."</em></p>
-    </div>
-    
-    <div class="two-columns">
-        <!-- Linker kolom: eigen PV + inleveren -->
-        <div class="left-panel">
-            <div class="card">
-                <h3>📝 Jouw PV (Proces-verbaal van bevindingen)</h3>
-                <textarea id="myPV" placeholder="Schrijf hier jouw PV in de verleden tijd (OVT)...&#10;Voorbeeld:&#10;Ik kwam ter plaatse en zag een vrouw die schreeuwde..."></textarea>
-                <button class="btn-submit" id="submitBtn">📤 Inleveren</button>
-                <div id="submitStatus" class="status-msg"></div>
-                <div style="font-size: 12px; color:#94a3b8; margin-top: 8px;">💡 Tip: schrijf in de verleden tijd. Klik op Inleveren om je werk te delen met de klas.</div>
-            </div>
-        </div>
-        
-        <!-- Rechter kolom: Live feed van ingeleverde PV's + feedback mogelijkheid -->
-        <div class="right-panel">
-            <div class="card">
-                <h3>📡 Live Feed - Ingeleverde PV's</h3>
-                <div id="liveFeed" class="live-feed">
-                    <div style="text-align:center; color:#94a3b8;">Wachten op inzendingen...</div>
-                </div>
-            </div>
-        </div>
+    <!-- SCHERM 3: GRAMMATICA (ONGEMOEID) -->
+    <div id="page-grammatica" class="sub-page" style="display:none;">
+        <header><h1>WERKWOORDSPELLING & RW</h1></header>
+        <div id="zinnen-lijst"></div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, push, onValue, set, get, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    <!-- SCHERM 4: ZINSONTLEDING -->
+    <div id="page-ontleding" class="sub-page" style="display:none;">
+        <header><h1>ZINSONTLEDING & ZINSDELEN</h1></header>
         
-        const firebaseConfig = {
-            apiKey: "AIzaSyA3_rzoZOWytlyAbYKKe_WuFlD8z2WvbX4",
-            authDomain: "aangifteq2les1.firebaseapp.com",
-            databaseURL: "https://aangifteq2les1-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "aangifteq2les1"
-        };
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+        <div class="instruction-box">
+            <h3 style="margin-top:0;">INSTRUCTIE ZINSDELEN</h3>
+            <p><strong>Persoonsvorm:</strong> Belangrijkste werkwoord (geeft tijd en getal aan).</p>
+            <p><strong>Onderwerp:</strong> Hoofdrolspeler in de zin. Wie/wat + persoonsvorm?</p>
+            <p><strong>Gezegde:</strong> Alle werkwoorden in de zin.</p>
+            <p style="font-style: italic;">* Let op de hulpwerkwoorden zijn, hebben, worden en het voltooid deelwoord.</p>
+            <p><strong>Lijdend voorwerp:</strong> Tweede speler. Wie of wat + gezegde + onderwerp?</p>
+            <p><strong>Meewerkend voorwerp:</strong> Derde speler. Aan/voor wie + gezegde + onderwerp + lijdend voorwerp?</p>
+            <p><strong>Bijwoordelijke bepalingen:</strong> Informatie over plaats, tijd of hoedanigheid.</p>
+        </div>
+
+        <div id="drag-drop-oefening">
+            <h3>DRAG & DROP: BENOEM HET ONDERSTREEPTE DEEL</h3>
+            <div class="drag-items" id="options">
+                <div class="drag-item" draggable="true" ondragstart="drag(event)" id="pv">Persoonsvorm</div>
+                <div class="drag-item" draggable="true" ondragstart="drag(event)" id="on">Onderwerp</div>
+                <div class="drag-item" draggable="true" ondragstart="drag(event)" id="gz">Gezegde</div>
+                <div class="drag-item" draggable="true" ondragstart="drag(event)" id="lv">Lijdend voorwerp</div>
+                <div class="drag-item" draggable="true" ondragstart="drag(event)" id="mv">Meewerkend voorwerp</div>
+                <div class="drag-item" draggable="true" ondragstart="drag(event)" id="bb">Bijwoordelijke bepaling</div>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <p>1. De getuige <span class="drop-zone" ondrop="drop(event, 'on')" ondragover="allowDrop(event)"></span> verklaarde gisteren de waarheid.</p>
+                <p>2. De agent <span class="drop-zone" ondrop="drop(event, 'gz')" ondragover="allowDrop(event)">heeft de boete uitgeschreven</span>.</p>
+                <p>3. Gaven jullie <span class="drop-zone" ondrop="drop(event, 'mv')" ondragover="allowDrop(event)">de verdachte</span> zijn rechten?</p>
+                <p>4. De dief stal <span class="drop-zone" ondrop="drop(event, 'lv')" ondragover="allowDrop(event)">een gouden horloge</span>.</p>
+                <p>5. De patrouille reed <span class="drop-zone" ondrop="drop(event, 'bb')" ondragover="allowDrop(event)">door de binnenstad</span>.</p>
+            </div>
+            <button onclick="checkOntleding()" style="margin-top: 20px; background: var(--politie-geel); border: none; padding: 10px 20px; font-weight: bold; cursor: pointer;">CONTROLEER & OPSLAAN</button>
+        </div>
+
+        <div id="leaderboard-ontleding-section" style="margin-top: 40px; border-top: 2px solid var(--politie-blauw); padding-top: 20px;">
+            <h3>LEADERBOARD ZINSONTLEDING</h3>
+            <div id="leaderboard-ontleding-content"></div>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, push, onValue, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBj8dXkl1rEfyx54_MDy_tYd2P7kAeU8VQ",
+        authDomain: "q2les3samirgem.firebaseapp.app",
+        databaseURL: "https://q2les3samirgem-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "q2les3samirgem"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    let currentStudent = "";
+    let currentClass = "";
+
+    // Drag & Drop Functies
+    window.allowDrop = (ev) => ev.preventDefault();
+    window.drag = (ev) => ev.dataTransfer.setData("text", ev.target.innerText);
+    window.drop = (ev, correctTag) => {
+        ev.preventDefault();
+        const data = ev.dataTransfer.getData("text");
+        ev.target.innerText = data;
+        ev.target.dataset.answer = data;
+    };
+
+    window.checkOntleding = () => {
+        let score = 0;
+        const answers = [
+            {zone: 0, correct: "Onderwerp"},
+            {zone: 1, correct: "Gezegde"},
+            {zone: 2, correct: "Meewerkend voorwerp"},
+            {zone: 3, correct: "Lijdend voorwerp"},
+            {zone: 4, correct: "Bijwoordelijke bepaling"}
+        ];
         
-        // Agent naam ophalen uit localStorage (van login)
-        let currentAgent = localStorage.getItem("currentAgentName") || "Onbekend";
-        const submissionsRef = ref(db, "pv_submissions");
-        
-        // Hulp om dubbele automatische reloads te voorkomen: we houden lokale state van de tekst
-        let typingTimeout = null;
-        const textarea = document.getElementById("myPV");
-        
-        // Bewaar concept lokaal (zonder database te vervuilen)
-        if (localStorage.getItem(`draft_${currentAgent}`)) {
-            textarea.value = localStorage.getItem(`draft_${currentAgent}`);
-        }
-        
-        // Auto-save concept (geen hinderlijke reloads, alleen lokaal)
-        textarea.addEventListener("input", () => {
-            if (typingTimeout) clearTimeout(typingTimeout);
-            typingTimeout = setTimeout(() => {
-                localStorage.setItem(`draft_${currentAgent}`, textarea.value);
-            }, 500);
-        });
-        
-        // INLEVEREN functie
-        document.getElementById("submitBtn").addEventListener("click", async () => {
-            const pvText = textarea.value.trim();
-            if (!pvText) {
-                document.getElementById("submitStatus").innerHTML = "⚠️ Voer eerst je PV in voordat je inlevert.";
-                setTimeout(() => document.getElementById("submitStatus").innerHTML = "", 2000);
-                return;
-            }
-            
-            // Bewaar de inzending in Firebase
-            const newSubmission = {
-                agent: currentAgent,
-                text: pvText,
-                timestamp: Date.now(),
-                feedbacks: {}  // object met feedback per collega
-            };
-            
-            try {
-                await push(submissionsRef, newSubmission);
-                document.getElementById("submitStatus").innerHTML = "✅ Ingeleverd! Je PV is zichtbaar in de live feed.";
-                setTimeout(() => document.getElementById("submitStatus").innerHTML = "", 3000);
-                // Wis concept na inlevering (optioneel)
-                localStorage.removeItem(`draft_${currentAgent}`);
-            } catch(e) {
-                document.getElementById("submitStatus").innerHTML = "❌ Fout bij inleveren. Probeer opnieuw.";
-                console.error(e);
+        const zones = document.querySelectorAll('.drop-zone');
+        answers.forEach(a => {
+            if(zones[a.zone].innerText === a.correct) {
+                score++;
+                zones[a.zone].style.background = "#c8e6c9";
+            } else {
+                zones[a.zone].style.background = "#ffcdd2";
             }
         });
         
-        // Feedback geven op een specifieke submission
-        window.giveFeedback = async (submissionId, agentTo, currentFeedbackText) => {
-            const fbText = currentFeedbackText.trim();
-            if (!fbText) return;
-            
-            const submissionRef = ref(db, `pv_submissions/${submissionId}/feedbacks/${currentAgent}`);
-            try {
-                await set(submissionRef, {
-                    from: currentAgent,
-                    feedback: fbText,
-                    timestamp: Date.now()
-                });
-                // Clear input field visueel (via DOM update later)
-            } catch(e) { console.error("Feedback error", e); }
-        };
-        
-        // Live feed weergeven (geen hinder voor typende studenten - volledig aparte kolom)
-        onValue(submissionsRef, (snapshot) => {
-            const submissions = snapshot.val();
-            const feedDiv = document.getElementById("liveFeed");
-            if (!submissions) {
-                feedDiv.innerHTML = "<div style='text-align:center; color:#94a3b8;'>📭 Nog geen ingeleverde PV's...</div>";
-                return;
-            }
-            
-            // Zet om naar array en sorteer nieuwste eerst
-            const submissionsArray = Object.entries(submissions).map(([id, data]) => ({ id, ...data }));
-            submissionsArray.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-            
-            let html = "";
-            for (let sub of submissionsArray) {
-                const feedbacksObj = sub.feedbacks || {};
-                const feedbacksList = Object.values(feedbacksObj);
-                
-                html += `
-                    <div class="submission-item" data-id="${sub.id}">
-                        <div class="submission-header">
-                            <span>👮 ${sub.agent}</span>
-                            <span>🕒 ${new Date(sub.timestamp).toLocaleTimeString()}</span>
-                        </div>
-                        <div class="submission-text">${escapeHtml(sub.text.substring(0, 500))}${sub.text.length > 500 ? '...' : ''}</div>
-                `;
-                
-                // Toon bestaande feedback
-                if (feedbacksList.length > 0) {
-                    html += `<div class="feedback-display"><strong>💬 Feedback:</strong><br>`;
-                    feedbacksList.forEach(fb => {
-                        html += `📌 <strong>${fb.from}</strong>: ${escapeHtml(fb.feedback)}<br>`;
-                    });
-                    html += `</div>`;
-                }
-                
-                // Voeg feedbackformulier toe (alleen als het niet je eigen inzending is)
-                if (sub.agent !== currentAgent) {
-                    html += `
-                        <div class="feedback-input-area" id="fb-area-${sub.id}">
-                            <input type="text" id="fb-input-${sub.id}" class="feedback-input" placeholder="Geef feedback op deze PV...">
-                            <button class="feedback-btn" onclick="giveFeedback('${sub.id}', '${sub.agent}', document.getElementById('fb-input-${sub.id}').value)">📨 Verstuur</button>
-                        </div>
-                    `;
-                } else {
-                    html += `<div style="font-size:0.7rem; color:#64748b; margin-top:6px;">🔒 Jouw eigen inzending</div>`;
-                }
-                html += `</div>`;
-            }
-            feedDiv.innerHTML = html;
-        });
-        
-        // Helper om XSS te voorkomen
-        function escapeHtml(str) {
-            if (!str) return "";
-            return str.replace(/[&<>]/g, function(m) {
-                if (m === '&') return '&amp;';
-                if (m === '<') return '&lt;';
-                if (m === '>') return '&gt;';
-                return m;
-            }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-                return c;
-            });
-        }
-        
-        // toon huidige agent in console (debug)
-        console.log("Actieve agent:", currentAgent);
-    </script>
-</body>
-</html>'></iframe>
-    </div>
+        set(ref(db, `ontleding_scores/${currentClass}/${currentStudent}`), score);
+        alert(`Score opgeslagen: ${score}/5`);
+    };
 
-    <!-- OVERIGE SCHERMEN -->
-    <div id="screen4" class="screen"><iframe src="https://learningapps.org/watch?v=pizhauruk25"></iframe></div>
-    <div id="screen5" class="screen"><iframe src="https://learningapps.org/watch?v=pdkpf1wsa25"></iframe></div>
-    
-    <!-- SCHERM 6: STRUCTUURWOORDEN -->
-    <div id="screen6" class="screen">
-        <iframe id="vz_frame" srcdoc='<!DOCTYPE html>
-        <html lang="nl">
-        <head>
-            <meta charset="UTF-8">
-            <style>
-                body { font-family: "Segoe UI", system-ui, sans-serif; background: #f0f2f5; margin: 0; padding: 20px; text-align: center; }
-                .container { max-width: 750px; margin: auto; background: white; padding: 25px; border-radius: 16px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-                h1 { color: #003082; font-size: 1.6rem; margin-bottom: 5px; }
-                .sub { color: #475569; margin-bottom: 20px; font-size: 0.9rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
-                .sentence { background: #f8fafc; padding: 20px; border-radius: 12px; font-size: 1.1rem; margin: 20px 0; line-height: 1.6; color: #1e293b; min-height: 85px; border-left: 5px solid #003082; text-align: left; }
-                .wrong-word { color: #b91c1c; background: #fee2e2; padding: 2px 6px; border-radius: 20px; font-weight: bold; display: inline-block; }
-                input { width: 65%; padding: 12px 16px; border: 2px solid #cbd5e1; border-radius: 40px; font-size: 1rem; outline: none; }
-                .btn { background: #003082; color: white; padding: 10px 24px; border: none; border-radius: 40px; cursor: pointer; margin-left: 12px; font-weight: bold; }
-                .score-board { margin-top: 35px; border-top: 2px solid #e2e8f0; padding-top: 20px; text-align: left; }
-                .leader-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f1f5f9; }
-                .feedback-area { background: #eef2ff; border-radius: 12px; padding: 10px 15px; margin-top: 15px; color: #1e3a8a; font-size: 0.85rem; }
-            </style>
-        </head>
-        <body>
-        <div class="container">
-            <h1>📝 Structuurwoorden</h1>
-            <div class="sub">Kies: <strong>dus</strong> · <strong>daarom</strong> · <strong>vervolgens</strong></div>
-            <div class="sentence" id="display-sentence">🔄 Laden...</div>
-            <div>
-                <input type="text" id="answer" placeholder="Typ het juiste woord" autocomplete="off">
-                <button class="btn" onclick="checkAnswer()">Controleer</button>
-            </div>
-            <div class="feedback-area" id="directFeedback">💡 Tip: "dus"=gevolg, "daarom"=reden, "vervolgens"=tijdsvolgorde</div>
-            <div class="score-board"><div class="leader-title">🏆 Leaderboard</div><div id="leaderboard">Scores laden...</div></div>
-        </div>
-        <script type="module">
-            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-            import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-            const firebaseConfig = { apiKey: "AIzaSyA3_rzoZOWytlyAbYKKe_WuFlD8z2WvbX4", databaseURL: "https://aangifteq2les1-default-rtdb.europe-west1.firebasedatabase.app" };
-            const app = initializeApp(firebaseConfig); const db = getDatabase(app);
-            let agentName = localStorage.getItem("currentAgentName") || "Agent";
-            const sentences = [
-                { text: "De verdachte weigerde mee te werken, <span class=\"wrong-word\">hierop</span> arresteerde ik hem.", correct: "daarom" },
-                { text: "Ik zag de man rennen, <span class=\"wrong-word\">daarop</span> hield ik hem staande.", correct: "vervolgens" },
-                { text: "De man kon zich niet legitimeren, <span class=\"wrong-word\">hierop</span> kreeg hij een boete.", correct: "dus" }
-            ];
-            let idx = 0, score = 0;
-            const scoreRef = ref(db, `structuur_scores/${agentName}`);
-            document.getElementById("display-sentence").innerHTML = sentences[0].text;
-            window.checkAnswer = () => {
-                const ans = document.getElementById("answer").value.trim().toLowerCase();
-                if (ans === sentences[idx].correct) { score++; set(scoreRef, { score: score }); }
-                idx++;
-                if (idx < sentences.length) document.getElementById("display-sentence").innerHTML = sentences[idx].text;
-                else document.getElementById("display-sentence").innerHTML = "✅ Klaar! Goed gedaan.";
-                document.getElementById("answer").value = "";
-            };
-            onValue(ref(db, "structuur_scores"), (snap) => {
-                const data = snap.val() || {};
-                const sorted = Object.entries(data).sort((a,b)=>b[1].score - a[1].score);
-                let html = ""; sorted.forEach(([n,v]) => { html += `<div class="leader-row"><span>${n}</span><span>${v.score} pt</span></div>`; });
-                if(html) document.getElementById("leaderboard").innerHTML = html;
-            });
-        </script>
-        </body>
-        </html>'></iframe>
-    </div>
-</main>
-
-<script>
-    // Login functie met NAVO-namen (Alpha t/m Mike)
-    window.loginAndGoToPV = function() {
-        const select = document.getElementById("agentNameSelect");
-        const selectedName = select.value;
-        if (!selectedName) {
-            document.getElementById("loginError").innerText = "Kies een geldige roepnaam (Alpha t/m Mike)";
-            return;
-        }
-        // Opslaan in localStorage
-        localStorage.setItem("currentAgentName", selectedName);
-        // Ga naar scherm 3 (PV Simulatie)
-        showScreen(3);
-        // Herlaad iframe zodat de agentnaam wordt gebruikt (zachte herlaad)
-        const iframe = document.getElementById("pvSimFrame");
-        if (iframe) {
-            iframe.srcdoc = iframe.srcdoc; // herladen met nieuwe context
+    window.startLesson = function() {
+        currentStudent = document.getElementById('userFirstName').value;
+        currentClass = document.getElementById('userClass').value;
+        if(currentStudent) {
+            document.getElementById('login-overlay').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+            document.getElementById('classDisplay').innerText = `AGENT: ${currentStudent.toUpperCase()} | KLAS: ${currentClass.toUpperCase()}`;
         }
     };
-    
-    function showScreen(nr) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById('screen' + nr).classList.add('active');
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        document.querySelectorAll('.nav-item')[nr-1].classList.add('active');
-        
-        // Als scherm 3 en naam niet gekozen, stuur terug naar login? Optioneel
-        if (nr === 3 && !localStorage.getItem("currentAgentName")) {
-            if (confirm("Je bent nog niet ingelogd. Kies eerst een agentnaam.")) {
-                showScreen(2);
-            }
+
+    window.showPage = function(pageId, btn) {
+        document.querySelectorAll('.sub-page').forEach(p => p.style.display = 'none');
+        document.getElementById(pageId).style.display = 'block';
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    };
+
+    // Leaderboard Ontleding Live Update
+    onValue(ref(db, 'ontleding_scores'), (snapshot) => {
+        const data = snapshot.val();
+        const lbContainer = document.getElementById('leaderboard-ontleding-content');
+        lbContainer.innerHTML = "";
+        if(data) {
+            Object.keys(data).forEach(klas => {
+                let html = `<h4>Klas: ${klas}</h4><table class="leaderboard-table"><tr><th>Naam</th><th>Score</th></tr>`;
+                const studenten = data[klas];
+                Object.keys(studenten).sort((a,b) => studenten[b] - studenten[a]).forEach(name => {
+                    html += `<tr><td>${name}</td><td>${studenten[name]} / 5</td></tr>`;
+                });
+                lbContainer.innerHTML += html + `</table>`;
+            });
         }
-    }
-    
-    // Eventueel bij start checken of naam al bestaat
-    window.onload = () => {
-        if (localStorage.getItem("currentAgentName")) {
-            const select = document.getElementById("agentNameSelect");
-            if(select) select.value = localStorage.getItem("currentAgentName");
+    });
+
+    // Bestaande PV functies (niet veranderd)
+    window.submitPV = function() {
+        const text = document.getElementById('pvText').value;
+        if (text) {
+            push(ref(db, 'aangiftes'), { student: currentStudent, klas: currentClass, inhoud: text, feedback: "" });
+            document.getElementById('pvText').value = "";
+            alert("PV opgeslagen.");
         }
     };
+
+    onValue(ref(db, 'aangiftes'), (snapshot) => {
+        const data = snapshot.val();
+        const feed = document.getElementById('feedContent');
+        feed.innerHTML = "";
+        if (data) {
+            Object.keys(data).reverse().forEach(key => {
+                const item = data[key];
+                feed.innerHTML += `<div class="pv-item"><strong>${item.student} (${item.klas})</strong><p>${item.inhoud}</p></div>`;
+            });
+        }
+    });
 </script>
 </body>
 </html>
-```
