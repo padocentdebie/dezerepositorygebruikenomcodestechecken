@@ -30,21 +30,21 @@
         #login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--politie-blauw); display: flex; justify-content: center; align-items: center; z-index: 1000; }
         .login-card { background: white; padding: 40px; border-radius: 4px; width: 400px; }
 
-        /* Grammatica & Zinsontleding */
-        .instruction-box { background: #f9f9f9; border: 1px solid #ccc; padding: 20px; margin-bottom: 25px; }
-        .grammatica-tabel { width: 100%; border-collapse: collapse; margin: 20px 0; background: #fff; font-size: 13px; }
-        .grammatica-tabel th, .grammatica-tabel td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        .grammatica-tabel th { background: var(--politie-blauw); color: white; }
+        /* Instructieblokje Styling */
+        .instruction-box { background: #f9f9f9; border: 1px solid #ccc; padding: 20px; margin-bottom: 25px; line-height: 1.6; }
+        .instruction-box h3 { margin-top: 0; color: var(--politie-blauw); border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+        .instruction-box ul { padding-left: 20px; margin: 5px 0; }
 
         /* Drag & Drop Styling */
-        .drop-zone { display: inline-block; min-width: 120px; min-height: 30px; border-bottom: 2px dashed var(--politie-blauw); vertical-align: bottom; margin: 0 5px; padding: 2px 10px; background: #fffde7; }
-        .drag-items { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
-        .drag-item { background: var(--politie-blauw); color: white; padding: 8px 12px; cursor: grab; font-size: 12px; border-radius: 4px; }
+        .drop-zone { display: inline-block; min-width: 140px; min-height: 25px; border-bottom: 2px dashed var(--politie-blauw); vertical-align: bottom; margin: 0 5px; padding: 2px 5px; background: #fffde7; text-align: center; font-weight: bold; color: var(--politie-blauw); }
+        .drag-items { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; background: #eee; padding: 15px; border-radius: 4px; }
+        .drag-item { background: var(--politie-blauw); color: white; padding: 8px 12px; cursor: grab; font-size: 12px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.2); }
         .drag-item:active { cursor: grabbing; }
 
         /* Leaderboard */
-        .leaderboard-table { width: 100%; margin-top: 20px; border-collapse: collapse; }
-        .leaderboard-table th, .leaderboard-table td { padding: 8px; border-bottom: 1px solid #ddd; text-align: left; font-size: 13px; }
+        .leaderboard-table { width: 100%; margin-top: 20px; border-collapse: collapse; background: white; }
+        .leaderboard-table th, .leaderboard-table td { padding: 10px; border: 1px solid #ddd; text-align: left; font-size: 13px; }
+        .leaderboard-table th { background: var(--politie-blauw); color: white; }
 
         textarea { width: 100%; padding: 10px; border: 1px solid #999; font-family: 'Courier New', monospace; box-sizing: border-box; }
         .pv-item { background: #fff; border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; }
@@ -77,11 +77,10 @@
 <div class="container page" id="mainContent">
     <nav class="nav-tabs">
         <button class="nav-btn active" onclick="showPage('page-aangifte', this)">1. PV Aangifte</button>
-        <button class="nav-btn" onclick="showPage('page-grammatica', this)">2. Grammatica Training</button>
-        <button class="nav-btn" onclick="showPage('page-ontleding', this)">3. Zinsontleding</button>
+        <button class="nav-btn" onclick="showPage('page-grammatica', this)">2. Grammatica & Zinsontleding</button>
     </nav>
 
-    <!-- SCHERM 2: AANGIFTE (ONGEMOEID) -->
+    <!-- SCHERM 1: AANGIFTE (ONGEMOEID) -->
     <div id="page-aangifte" class="sub-page active">
         <header>
             <h1>PROCES-VERBAAL VAN AANGIFTE - LES 6</h1>
@@ -101,29 +100,49 @@
         </div>
     </div>
 
-    <!-- SCHERM 3: GRAMMATICA (ONGEMOEID) -->
+    <!-- SCHERM 2: GRAMMATICA & ZINSONTLEDING (NU INCLUSIEF INSTRUCTIEBLOK) -->
     <div id="page-grammatica" class="sub-page" style="display:none;">
-        <header><h1>WERKWOORDSPELLING & RW</h1></header>
-        <div id="zinnen-lijst"></div>
-    </div>
+        <header><h1>ZINSONTLEDING OEFENEN</h1></header>
 
-    <!-- SCHERM 4: ZINSONTLEDING -->
-    <div id="page-ontleding" class="sub-page" style="display:none;">
-        <header><h1>ZINSONTLEDING & ZINSDELEN</h1></header>
-        
+        <!-- HET INSTRUCTIEBLOKJE -->
         <div class="instruction-box">
-            <h3 style="margin-top:0;">INSTRUCTIE ZINSDELEN</h3>
-            <p><strong>Persoonsvorm:</strong> Belangrijkste werkwoord (geeft tijd en getal aan).</p>
-            <p><strong>Onderwerp:</strong> Hoofdrolspeler in de zin. Wie/wat + persoonsvorm?</p>
-            <p><strong>Gezegde:</strong> Alle werkwoorden in de zin.</p>
-            <p style="font-style: italic;">* Let op de hulpwerkwoorden zijn, hebben, worden en het voltooid deelwoord.</p>
-            <p><strong>Lijdend voorwerp:</strong> Tweede speler. Wie of wat + gezegde + onderwerp?</p>
-            <p><strong>Meewerkend voorwerp:</strong> Derde speler. Aan/voor wie + gezegde + onderwerp + lijdend voorwerp?</p>
-            <p><strong>Bijwoordelijke bepalingen:</strong> Informatie over plaats, tijd of hoedanigheid.</p>
+            <h3>Persoonsvorm</h3>
+            <p>Belangrijkste werkwoord:</p>
+            <ul>
+                <li>geeft de verleden tijd of de tegenwoordige tijd aan.</li>
+                <li>geeft enkelvoud of meervoud aan.</li>
+            </ul>
+            
+            <h3>Onderwerp</h3>
+            <p>Hoofdrolspeler(s) in de zin. Voert of voeren het belangrijkste werkwoord uit.</p>
+
+            <h3>Gezegde</h3>
+            <p>Alle werkwoorden in de zin.</p>
+            <p><em>* let op de hulpwerkwoorden zijn hebben worden en</em></p>
+            <p><em>* let op het voltooid deelwoord</em></p>
+
+            <h3>Lijdend voorwerp</h3>
+            <p>Tweede speler in de zin.<br>
+            Je vindt het lijdend voorwerp door de vraag te stellen: <strong>Wie of wat + gezegde + onderwerp?</strong></p>
+
+            <h3>Meewerkend voorwerp</h3>
+            <p>Derde speler in de zin.<br>
+            Je vindt het meewerkend voorwerp door de vraag te stellen: <strong>Aan wie/Voor wie + gezegde + onderwerp + lijdend voorwerp?</strong></p>
+
+            <h3>Bijwoordelijke bepalingen</h3>
+            <p>Stukjes informatie in de zin die gaan over:</p>
+            <ul>
+                <li>plaats</li>
+                <li>tijd</li>
+                <li>hoedanigheid</li>
+            </ul>
         </div>
 
-        <div id="drag-drop-oefening">
-            <h3>DRAG & DROP: BENOEM HET ONDERSTREEPTE DEEL</h3>
+        <!-- DE OEFENING -->
+        <div id="drag-drop-oefening" style="margin-top: 40px; padding-top: 20px; border-top: 2px solid var(--politie-blauw);">
+            <h3>DRAG & DROP: BENOEM DE ZINSDELEN</h3>
+            <p>Sleep het juiste zinsdeel naar de lege plek in de zin.</p>
+            
             <div class="drag-items" id="options">
                 <div class="drag-item" draggable="true" ondragstart="drag(event)" id="pv">Persoonsvorm</div>
                 <div class="drag-item" draggable="true" ondragstart="drag(event)" id="on">Onderwerp</div>
@@ -133,19 +152,22 @@
                 <div class="drag-item" draggable="true" ondragstart="drag(event)" id="bb">Bijwoordelijke bepaling</div>
             </div>
 
-            <div style="margin-top: 30px;">
-                <p>1. De getuige <span class="drop-zone" ondrop="drop(event, 'on')" ondragover="allowDrop(event)"></span> verklaarde gisteren de waarheid.</p>
-                <p>2. De agent <span class="drop-zone" ondrop="drop(event, 'gz')" ondragover="allowDrop(event)">heeft de boete uitgeschreven</span>.</p>
-                <p>3. Gaven jullie <span class="drop-zone" ondrop="drop(event, 'mv')" ondragover="allowDrop(event)">de verdachte</span> zijn rechten?</p>
-                <p>4. De dief stal <span class="drop-zone" ondrop="drop(event, 'lv')" ondragover="allowDrop(event)">een gouden horloge</span>.</p>
-                <p>5. De patrouille reed <span class="drop-zone" ondrop="drop(event, 'bb')" ondragover="allowDrop(event)">door de binnenstad</span>.</p>
+            <div class="exercise-sentences" style="background: white; padding: 20px; border: 1px solid #ddd;">
+                <p>1. <span class="drop-zone" data-correct="Onderwerp" ondrop="drop(event)" ondragover="allowDrop(event)">...</span> <strong>arresteerde</strong> gisteren de verdachte op heterdaad.</p>
+                <p>2. De officier van justitie <strong>heeft</strong> de agenten <span class="drop-zone" data-correct="Lijdend voorwerp" ondrop="drop(event)" ondragover="allowDrop(event)">...</span> <strong>gegeven</strong>.</p>
+                <p>3. In de vroege ochtend <span class="drop-zone" data-correct="Persoonsvorm" ondrop="drop(event)" ondragover="allowDrop(event)">...</span> de rechercheur een belangrijk spoor.</p>
+                <p>4. De wijkagent <strong>geeft</strong> <span class="drop-zone" data-correct="Meewerkend voorwerp" ondrop="drop(event)" ondragover="allowDrop(event)">...</span> een duidelijke waarschuwing.</p>
+                <p>5. Het hele team <span class="drop-zone" data-correct="Gezegde" ondrop="drop(event)" ondragover="allowDrop(event)">...</span> de hele dag aan het dossier.</p>
+                <p>6. De verdachte werd direct <span class="drop-zone" data-correct="Bijwoordelijke bepaling" ondrop="drop(event)" ondragover="allowDrop(event)">...</span> naar het bureau gebracht.</p>
             </div>
-            <button onclick="checkOntleding()" style="margin-top: 20px; background: var(--politie-geel); border: none; padding: 10px 20px; font-weight: bold; cursor: pointer;">CONTROLEER & OPSLAAN</button>
+            
+            <button onclick="checkOntleding()" style="margin-top: 20px; background: var(--politie-geel); border: none; padding: 12px 25px; font-weight: bold; cursor: pointer; border-radius: 4px;">CONTROLEER & SCORES OPSLAAN</button>
         </div>
 
-        <div id="leaderboard-ontleding-section" style="margin-top: 40px; border-top: 2px solid var(--politie-blauw); padding-top: 20px;">
-            <h3>LEADERBOARD ZINSONTLEDING</h3>
-            <div id="leaderboard-ontleding-content"></div>
+        <!-- LEADERBOARD -->
+        <div id="leaderboard-section" style="margin-top: 50px;">
+            <h3 style="color: var(--politie-blauw);">LEADERBOARD ZINSONTLEDING (PER KLAS)</h3>
+            <div id="leaderboard-content">Laden...</div>
         </div>
     </div>
 </div>
@@ -166,50 +188,20 @@
     let currentStudent = "";
     let currentClass = "";
 
-    // Drag & Drop Functies
-    window.allowDrop = (ev) => ev.preventDefault();
-    window.drag = (ev) => ev.dataTransfer.setData("text", ev.target.innerText);
-    window.drop = (ev, correctTag) => {
-        ev.preventDefault();
-        const data = ev.dataTransfer.getData("text");
-        ev.target.innerText = data;
-        ev.target.dataset.answer = data;
-    };
-
-    window.checkOntleding = () => {
-        let score = 0;
-        const answers = [
-            {zone: 0, correct: "Onderwerp"},
-            {zone: 1, correct: "Gezegde"},
-            {zone: 2, correct: "Meewerkend voorwerp"},
-            {zone: 3, correct: "Lijdend voorwerp"},
-            {zone: 4, correct: "Bijwoordelijke bepaling"}
-        ];
-        
-        const zones = document.querySelectorAll('.drop-zone');
-        answers.forEach(a => {
-            if(zones[a.zone].innerText === a.correct) {
-                score++;
-                zones[a.zone].style.background = "#c8e6c9";
-            } else {
-                zones[a.zone].style.background = "#ffcdd2";
-            }
-        });
-        
-        set(ref(db, `ontleding_scores/${currentClass}/${currentStudent}`), score);
-        alert(`Score opgeslagen: ${score}/5`);
-    };
-
+    // Login Logica
     window.startLesson = function() {
-        currentStudent = document.getElementById('userFirstName').value;
+        currentStudent = document.getElementById('userFirstName').value.trim();
         currentClass = document.getElementById('userClass').value;
         if(currentStudent) {
             document.getElementById('login-overlay').style.display = 'none';
             document.getElementById('mainContent').style.display = 'block';
             document.getElementById('classDisplay').innerText = `AGENT: ${currentStudent.toUpperCase()} | KLAS: ${currentClass.toUpperCase()}`;
+        } else {
+            alert("Voer a.u.b. je voornaam in.");
         }
     };
 
+    // Navigatie
     window.showPage = function(pageId, btn) {
         document.querySelectorAll('.sub-page').forEach(p => p.style.display = 'none');
         document.getElementById(pageId).style.display = 'block';
@@ -217,30 +209,63 @@
         btn.classList.add('active');
     };
 
-    // Leaderboard Ontleding Live Update
-    onValue(ref(db, 'ontleding_scores'), (snapshot) => {
+    // Drag & Drop Logica
+    window.allowDrop = (ev) => ev.preventDefault();
+    window.drag = (ev) => ev.dataTransfer.setData("text", ev.target.innerText);
+    window.drop = (ev) => {
+        ev.preventDefault();
+        const data = ev.dataTransfer.getData("text");
+        ev.target.innerText = data;
+    };
+
+    // Correctie & Leaderboard
+    window.checkOntleding = () => {
+        let score = 0;
+        const zones = document.querySelectorAll('.drop-zone');
+        const total = zones.length;
+
+        zones.forEach(zone => {
+            if(zone.innerText.trim() === zone.dataset.correct) {
+                score++;
+                zone.style.background = "#c8e6c9"; // Groen
+            } else {
+                zone.style.background = "#ffcdd2"; // Rood
+            }
+        });
+        
+        // Opslaan in Firebase
+        set(ref(db, `zinsontleding_scores/${currentClass}/${currentStudent}`), score);
+        alert(`Je score is ${score} van de ${total}. Je resultaat is opgeslagen in het leaderboard.`);
+    };
+
+    // Leaderboard Live Update
+    onValue(ref(db, 'zinsontleding_scores'), (snapshot) => {
         const data = snapshot.val();
-        const lbContainer = document.getElementById('leaderboard-ontleding-content');
-        lbContainer.innerHTML = "";
+        const container = document.getElementById('leaderboard-content');
+        container.innerHTML = "";
+        
         if(data) {
             Object.keys(data).forEach(klas => {
-                let html = `<h4>Klas: ${klas}</h4><table class="leaderboard-table"><tr><th>Naam</th><th>Score</th></tr>`;
+                let tableHtml = `<h4>Klas ${klas}</h4><table class="leaderboard-table"><tr><th>Naam</th><th>Score</th></tr>`;
                 const studenten = data[klas];
-                Object.keys(studenten).sort((a,b) => studenten[b] - studenten[a]).forEach(name => {
-                    html += `<tr><td>${name}</td><td>${studenten[name]} / 5</td></tr>`;
+                const gesorteerd = Object.keys(studenten).sort((a,b) => studenten[b] - studenten[a]);
+                
+                gesorteerd.forEach(naam => {
+                    tableHtml += `<tr><td>${naam}</td><td>${studenten[naam]} pnt</td></tr>`;
                 });
-                lbContainer.innerHTML += html + `</table>`;
+                tableHtml += `</table>`;
+                container.innerHTML += tableHtml;
             });
         }
     });
 
-    // Bestaande PV functies (niet veranderd)
+    // PV Aangifte Functies (Onveranderd)
     window.submitPV = function() {
         const text = document.getElementById('pvText').value;
         if (text) {
-            push(ref(db, 'aangiftes'), { student: currentStudent, klas: currentClass, inhoud: text, feedback: "" });
+            push(ref(db, 'aangiftes'), { student: currentStudent, klas: currentClass, inhoud: text });
             document.getElementById('pvText').value = "";
-            alert("PV opgeslagen.");
+            alert("Je PV is ingeleverd en zichtbaar in de feed.");
         }
     };
 
