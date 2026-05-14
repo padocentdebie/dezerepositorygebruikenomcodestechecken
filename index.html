@@ -54,6 +54,7 @@
         <button class="nav-btn active" onclick="showPage('page-aangifte', this)">1. PV PRISCILLA</button>
         <button class="nav-btn" onclick="showPage('page-ww', this)">2. REDENEN VAN WETENSCHAP (22)</button>
         <button class="nav-btn" onclick="showPage('page-ontleding', this)">3. ZINSONTLEDING (20)</button>
+        <button onclick="resetAll()" class="btn-check" style="background: #666; margin-top: 10px;">ALLES RESETTEN / NIEUWE POGING</button>
     </nav>
 
     <!-- SCHERM 1: PV -->
@@ -221,6 +222,27 @@
         const t = document.getElementById('pvText').value;
         if(t) push(ref(db, 'aangiftes'), { agent, klas, inhoud: t });
         alert("PV opgeslagen in klasarchief.");
+        window.resetAll = () => {
+    if(confirm("Weet je zeker dat je alle antwoorden wilt wissen voor een nieuwe poging?")) {
+        // 1. Reset alle dropdowns (werkwoorden)
+        document.querySelectorAll('select[id^="wwsel-"]').forEach(select => {
+            select.selectedIndex = 0;
+        });
+
+        // 2. Reset alle drop-zones (ontleding)
+        document.querySelectorAll('.drop-zone').forEach(dz => {
+            dz.innerText = "... sleep hier ...";
+            dz.style.color = "black";
+        });
+
+        // 3. Wis het PV tekstveld
+        const pvField = document.getElementById('pvText');
+        if(pvField) pvField.value = "";
+
+        // 4. Scroll naar boven voor een frisse start
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+};
     };
 </script>
 </body>
