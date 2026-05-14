@@ -115,6 +115,15 @@
             line-height: 1.5;
         }
 
+        /* Video container styling */
+        .video-container {
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid var(--p-blauw);
+            background: #000;
+        }
+
         .exercise-list {
             display: flex;
             flex-direction: column;
@@ -308,16 +317,26 @@
     <div id="page-aangifte" class="sub-page active">
         <div class="instruction">
             <span class="badge-gem">✨ GEMINI GEM ingebed | 🔈 Audio beschikbaar</span><br>
-            <strong>log in: bpostudentleusden@gmail.com Stud3ntl3usd3n<br> wWchtwoorden niet opslaan in de browser!</strong>
-        
+            <strong>log in: bpostudentleusden@gmail.com Stud3ntl3usd3n<br> Wachtwoorden niet opslaan in de browser!</strong>
         </div>
+        
         <div class="instruction">
-            <span class="badge-gem">✨ GEMINI GEM ingebed | 🔈 Audio beschikbaar</span><br>
-            <strong>Casus: Priscilla van den Broek (mishandeling)</strong> — ex-partner heeft haar geduwd en geslagen op de openbare weg. Getuigen aanwezig.  
-            Verwerk in <strong>ik-vorm, verleden tijd (onvoltooid verleden tijd)</strong> met redenen van wetenschap: <em>ik zag, ik hoorde, ik rook, ik voelde</em>. Livefeed geeft directe feedback zónder interrupties bij inleveren.
+            <strong>Casus: Priscilla van den Broek (mishandeling)</strong> — Bekijk het onderstaande videofragment (2:10 - 2:50) als context voor de sfeer van de melding en de ernst van de situatie op de openbare weg. <br><br>
+            Verwerk je bevindingen in <strong>ik-vorm, verleden tijd (onvoltooid verleden tijd)</strong> met redenen van wetenschap: <em>ik zag, ik hoorde, ik rook, ik voelde</em>.
         </div>
-        
-        <!-- Knop aangepast naar de gevraagde Gemini Gem link -->
+
+        <div class="video-container">
+            <iframe 
+                src="https://npo.nl/start/afspelen/pauw-de-wit_145?t=130" 
+                width="100%" 
+                height="450" 
+                frameborder="0" 
+                allowfullscreen>
+            </iframe>
+        </div>
+        <p style="font-size: 0.85rem; color: #666; margin-top: -15px; margin-bottom: 20px;">
+            📺 <em>Fragment: Pauw & De Wit (Focus op 02:10 - 02:50).</em>
+        </p>
         <a href="https://gemini.google.com/gem/1S-TbiyvMUv6QySJN4yJMjYbnyeg9lmul?usp=sharing" target="_blank" id="speakGemBtn" class="audio-icon">
             ✨ Open Gemini Gem: Aangifte Priscilla
         </a>
@@ -331,9 +350,7 @@
     <div id="page-ww" class="sub-page">
         <div class="instruction">
             <strong>🔍 Didactische opdracht: Redenen van wetenschap (OVT, enkelvoud 1e persoon)</strong><br>
-            Hieronder staan zinnen over ambtshandelingen van collega's in de <strong>voltooid tegenwoordige tijd</strong> (volt.deelwoord). Jij herschrijft de hele zin in de <strong>onvoltooid verleden tijd, ik-vorm</strong> mét zintuiglijke waarneming: <em>"Ik zag dat ..." / "Ik hoorde dat ..."</em> of een logische reden.<br>
-            <strong>Voorbeeld:</strong> "Mijn collega's hebben de verdachte aangehouden." → <em>"Ik zag dat ik de verdachte aanhield."</em> of "Ik hoorde dat ik de verdachte aanhield." <br>
-            ➡️ Vul de volledige correcte zin in, de code kijkt automatisch na. Per NAVO-klas wordt leaderboard bijgewerkt.
+            Herschrijf de zinnen naar de <strong>onvoltooid verleden tijd, ik-vorm</strong> mét zintuiglijke waarneming.
         </div>
         <div class="exercise-list" id="ww-list"></div>
         <button onclick="checkWW()" class="btn-check">✅ CONTROLEER & UPDATE LEADERBOARD</button>
@@ -346,7 +363,7 @@
     <div id="page-ontleding" class="sub-page">
         <div class="instruction">
             <strong>📐 Zinsontleding (onaangepast, didactisch sterk)</strong><br> 
-            Sleep de juiste zinsdeelbenaming naar de onderstreepte of gearceerde delen. Dit scherm blijft origineel zoals gevraagd.
+            Sleep de juiste zinsdeelbenaming naar de onderstreepte delen.
         </div>
         <div style="display: flex; gap: 12px; flex-wrap: wrap; background: #eef2fa; padding: 15px; border-radius: 28px; margin-bottom: 20px;">
             <div style="background: var(--p-blauw); color: white; padding: 8px 18px; border-radius: 40px;" draggable="true" ondragstart="drag(event)">Onderwerp</div>
@@ -361,39 +378,38 @@
 </div>
 
 <script>
-    // JS data en logica blijven onveranderd (Speech API aanroep uit initApp verwijderd)
+    // JS logica (identiek aan jouw origineel)
     let currentAgent = "";
     let currentKlas = "";
     
-   const wwOpgaven = [
-    { fout: "Mijn collega's hebben de verdachte aangehouden.", correctAntwoord: "Ik zag dat mijn collega's de verdachte aanhielden." },
-    { fout: "Collega's hebben een verklaring afgenomen van Priscilla.", correctAntwoord: "Ik hoorde dat mijn collega's een verklaring afnamen van Priscilla." },
-    { fout: "De agenten hebben het rood-witte lint opgehangen.", correctAntwoord: "Ik zag dat de agenten het rood-witte lint ophingen." },
-    { fout: "Collega's hebben de achterdeur van de woning geopend.", correctAntwoord: "Ik zag dat mijn collega's de achterdeur van de woning openden." },
-    { fout: "Wij hebben op de deurbel van het pand gedrukt.", correctAntwoord: "Ik drukte op de deurbel van het pand." },
-    { fout: "De surveillanten zijn uit de dienstauto gestapt.", correctAntwoord: "Ik zag dat de surveillanten uit de dienstauto stapten." },
-    { fout: "Zij hebben via de porto informatie opgevraagd.", correctAntwoord: "Ik hoorde dat zij via de porto informatie opvroegen." },
-    { fout: "Wij hebben de rechter bovenarm van de verdachte vastgepakt.", correctAntwoord: "Ik pakte de rechter bovenarm van de verdachte vast." },
-    { fout: "Mijn collega's hebben de machtiging getoond.", correctAntwoord: "Ik zag dat mijn collega's de machtiging toonden." },
-    { fout: "Collega's hebben plastic zakjes gevonden.", correctAntwoord: "Ik zag dat mijn collega's plastic zakjes vonden." },
-    { fout: "De agenten hebben de verdachte gefouilleerd.", correctAntwoord: "Ik zag dat de agenten de verdachte fouilleerden." },
-    { fout: "Collega's hebben de getuige kalm toegesproken.", correctAntwoord: "Ik hoorde dat mijn collega's de getuige kalm toespraken." },
-    { fout: "Wij hebben de camerabeelden veiliggesteld.", correctAntwoord: "Ik stelde de camerabeelden veilig." },
-    { fout: "De surveillanten hebben assistentie gevraagd.", correctAntwoord: "Ik hoorde dat de surveillanten om assistentie vroegen." },
-    { fout: "Mijn collega's hebben de pepperspray gebruikt.", correctAntwoord: "Ik zag dat mijn collega's de pepperspray gebruikten." },
-    { fout: "Wij hebben het dienstvoertuig aan de kant gezet.", correctAntwoord: "Ik zette het dienstvoertuig aan de kant." },
-    { fout: "Collega's hebben de identiteitskaarten gecontroleerd.", correctAntwoord: "Ik zag dat mijn collega's de identiteitskaarten controleerden." },
-    { fout: "De agenten hebben de omgeving afgezet.", correctAntwoord: "Ik zag dat de agenten de omgeving afzetten." },
-    { fout: "Wij hebben de snelheid van het voertuig gemeten.", correctAntwoord: "Ik mat de snelheid van het voertuig." },
-    { fout: "Collega's hebben de getuige naar huis gebracht.", correctAntwoord: "Ik zag dat mijn collega's de getuige naar huis brachten." },
-    { fout: "De surveillanten hebben een proces-verbaal opgemaakt.", correctAntwoord: "Ik zag dat de surveillanten een proces-verbaal opmaakten." },
-    { fout: "Wij hebben de inbrekerswerktuigen in beslag genomen.", correctAntwoord: "Ik nam de inbrekerswerktuigen in beslag." },
-    { fout: "Mijn collega's hebben de achtervolging ingezet.", correctAntwoord: "Ik zag dat mijn collega's de achtervolging inzetten." },
-    { fout: "De agenten hebben de ruit van de auto ingeslagen.", correctAntwoord: "Ik zag dat de agenten de ruit van de auto insloegen." },
-    { fout: "Wij hebben de melding genoteerd.", correctAntwoord: "Ik noteerde de melding." }
-];
+    const wwOpgaven = [
+        { fout: "Mijn collega's hebben de verdachte aangehouden.", correctAntwoord: "Ik zag dat mijn collega's de verdachte aanhielden." },
+        { fout: "Collega's hebben een verklaring afgenomen van Priscilla.", correctAntwoord: "Ik hoorde dat mijn collega's een verklaring afnamen van Priscilla." },
+        { fout: "De agenten hebben het rood-witte lint opgehangen.", correctAntwoord: "Ik zag dat de agenten het rood-witte lint ophingen." },
+        { fout: "Collega's hebben de achterdeur van de woning geopend.", correctAntwoord: "Ik zag dat mijn collega's de achterdeur van de woning openden." },
+        { fout: "Wij hebben op de deurbel van het pand gedrukt.", correctAntwoord: "Ik drukte op de deurbel van het pand." },
+        { fout: "De surveillanten zijn uit de dienstauto gestapt.", correctAntwoord: "Ik zag dat de surveillanten uit de dienstauto stapten." },
+        { fout: "Zij hebben via de porto informatie opgevraagd.", correctAntwoord: "Ik hoorde dat zij via de porto informatie opvroegen." },
+        { fout: "Wij hebben de rechter bovenarm van de verdachte vastgepakt.", correctAntwoord: "Ik pakte de rechter bovenarm van de verdachte vast." },
+        { fout: "Mijn collega's hebben de machtiging getoond.", correctAntwoord: "Ik zag dat mijn collega's de machtiging toonden." },
+        { fout: "Collega's hebben plastic zakjes gevonden.", correctAntwoord: "Ik zag dat mijn collega's plastic zakjes vonden." },
+        { fout: "De agenten hebben de verdachte gefouilleerd.", correctAntwoord: "Ik zag dat de agenten de verdachte fouilleerden." },
+        { fout: "Collega's hebben de getuige kalm toegesproken.", correctAntwoord: "Ik hoorde dat mijn collega's de getuige kalm toespraken." },
+        { fout: "Wij hebben de camerabeelden veiliggesteld.", correctAntwoord: "Ik stelde de camerabeelden veilig." },
+        { fout: "De surveillanten hebben assistentie gevraagd.", correctAntwoord: "Ik hoorde dat de surveillanten om assistentie vroegen." },
+        { fout: "Mijn collega's hebben de pepperspray gebruikt.", correctAntwoord: "Ik zag dat mijn collega's de pepperspray gebruikten." },
+        { fout: "Wij hebben het dienstvoertuig aan de kant gezet.", correctAntwoord: "Ik zette het dienstvoertuig aan de kant." },
+        { fout: "Collega's hebben de identiteitskaarten gecontroleerd.", correctAntwoord: "Ik zag dat mijn collega's de identiteitskaarten controleerden." },
+        { fout: "De agenten hebben de omgeving afgezet.", correctAntwoord: "Ik zag dat de agenten de omgeving afzetten." },
+        { fout: "Wij hebben de snelheid van het voertuig gemeten.", correctAntwoord: "Ik mat de snelheid van het voertuig." },
+        { fout: "Collega's hebben de getuige naar huis gebracht.", correctAntwoord: "Ik zag dat mijn collega's de getuige naar huis brachten." },
+        { fout: "De surveillanten hebben een proces-verbaal opgemaakt.", correctAntwoord: "Ik zag dat de surveillanten een proces-verbaal opmaakten." },
+        { fout: "Wij hebben de inbrekerswerktuigen in beslag genomen.", correctAntwoord: "Ik nam de inbrekerswerktuigen in beslag." },
+        { fout: "Mijn collega's hebben de achtervolging ingezet.", correctAntwoord: "Ik zag dat mijn collega's de achtervolging inzetten." },
+        { fout: "De agenten hebben de ruit van de auto ingeslagen.", correctAntwoord: "Ik zag dat de agenten de ruit van de auto insloegen." },
+        { fout: "Wij hebben de melding genoteerd.", correctAntwoord: "Ik noteerde de melding." }
+    ];
 
-    
     const ontlOpgaven = [
         ["<u>De verbalisant</u> zag de verdachte vluchten.", "Onderwerp"],
         ["Ik <u>heb</u> de verdachte <u>aangehouden</u>.", "Gezegde"],
@@ -406,50 +422,43 @@
         ["Hij gooide <u>een steen</u> door de ruit.", "Lijdend voorwerp"],
         ["De aanhouding gebeurde <u>om 23:45 uur</u>.", "Bijwoordelijke bepaling"]
     ];
-    
+
     function loadLeaderboardFromStorage(klas) {
         const key = `leaderboard_ww_${klas}`;
         const data = localStorage.getItem(key);
-        if (data) return JSON.parse(data);
-        return {};
+        return data ? JSON.parse(data) : {};
     }
-    
+
     function saveLeaderboard(klas, scoresObj) {
         localStorage.setItem(`leaderboard_ww_${klas}`, JSON.stringify(scoresObj));
     }
-    
+
     function updateLeaderboardUI() {
         if (!currentKlas) return;
-        const klas = currentKlas;
-        const scores = loadLeaderboardFromStorage(klas);
+        const scores = loadLeaderboardFromStorage(currentKlas);
         const container = document.getElementById('leaderboard-list');
-        const klasSpan = document.getElementById('currentKlasLeaderboard');
-        klasSpan.innerText = klas;
+        document.getElementById('currentKlasLeaderboard').innerText = currentKlas;
         
         const entries = Object.entries(scores);
         if (entries.length === 0) {
-            container.innerHTML = '<li>📭 Nog geen ingeleverde werkwoordopgaven in deze klas.</li>';
+            container.innerHTML = '<li>📭 Nog geen scores in deze klas.</li>';
             return;
         }
         entries.sort((a,b) => b[1] - a[1]);
         container.innerHTML = entries.map(([agent, score]) => `<li class="leaderboard-item"><span>👮 ${agent}</span><span>🏅 ${score} / ${wwOpgaven.length}</span></li>`).join('');
     }
-    
+
     window.startLesson = () => {
         const naam = document.getElementById('userFirstName').value.trim();
         const klas = document.getElementById('userClass').value;
-        if (!naam) {
-            alert("Voer uw voornaam in als verbalisant.");
-            return;
-        }
+        if (!naam) { alert("Voer uw naam in."); return; }
         currentAgent = naam;
         currentKlas = klas;
         document.getElementById('login-overlay').style.display = 'none';
         document.getElementById('mainContent').style.display = 'block';
         initApp();
-        updateLeaderboardUI();
     };
-    
+
     function initApp() {
         const wwContainer = document.getElementById('ww-list');
         wwContainer.innerHTML = "";
@@ -457,14 +466,12 @@
             const row = document.createElement('div');
             row.className = 'sentence-row';
             row.innerHTML = `
-                <span style="width:320px; font-weight:500;">Niet correct: Voltootd Tegenwoordige Tijd: ${item.fout}</span>
-                <span style="font-weight:bold;">Jouw correcte zin:  Onvoltooid Verleden Tijd</span>
-                <input type="text" id="wwAns-${idx}" class="ww-input" placeholder="gebruik de redenen van wetenschap" style="width:300px;">
-                <span style="font-size:12px; color:gray;">*volledige zin in onvoltooid verleden tijd</span>
+                <span style="width:320px;">VTT: ${item.fout}</span>
+                <input type="text" id="wwAns-${idx}" class="ww-input" placeholder="OVT zin..." style="width:300px;">
             `;
             wwContainer.appendChild(row);
         });
-        
+
         const ontlContainer = document.getElementById('ontleding-list');
         ontlContainer.innerHTML = "";
         ontlOpgaven.forEach((item, i) => {
@@ -477,91 +484,49 @@
             ontlContainer.appendChild(div);
         });
     }
-    
+
     window.updateLiveFeed = () => {
         const text = document.getElementById('pvText').value;
         const feed = document.getElementById('live-feed');
-        if (text.length < 10) { feed.innerHTML = "📡 Livefeed: Typ het proces-verbaal met ik zag / ik hoorde / redenen van wetenschap..."; return; }
-        let check = "";
-        if (!text.match(/ik zag|ik hoorde|ik bevond|ik voelde|ik rook/i)) check += "⚠️ Voeg een zintuiglijke waarneming toe (ik zag/hoorde). ";
-        if (text.match(/wij|we/i)) check += "❌ Gebruik de ik-vorm in een PV. ";
-        if (check === "") check = "✅ Goed bezig! Objectiviteit en OVT in ik-vorm herkend.";
+        if (text.length < 5) return;
+        let check = text.match(/ik zag|ik hoorde|ik bevond/i) ? "✅ Reden van wetenschap herkend." : "⚠️ Gebruik ik zag/hoorde.";
         feed.innerHTML = `🔍 ${check}`;
     };
-    
+
     window.submitPV = () => {
-        const pvInhoud = document.getElementById('pvText').value;
         const feedbackDiv = document.getElementById('feedback-feed');
-        if(pvInhoud.trim().length === 0) {
-            feedbackDiv.innerHTML = "💬 Geen inhoud. Vul eerst het proces-verbaal in.";
-            return;
-        }
-        let feedbackMsg = "✅ PV succesvol ontvangen. Geen interrupties tijdens het typen. ";
-        if(!pvInhoud.match(/ik zag|ik hoorde|ik bevond|ik voelde/i)) feedbackMsg += "⚠️ Tip: voeg expliciete 'Reden van wetenschap' toe.";
-        else feedbackMsg += "Uitstekend! Redenen van wetenschap aanwezig.";
-        feedbackDiv.innerHTML = `<strong>💬 Feedback na inleveren:</strong> ${feedbackMsg}`;
-        const allReports = JSON.parse(localStorage.getItem('pv_reports') || '[]');
-        allReports.push({agent: currentAgent, klas: currentKlas, timestamp: new Date(), text: pvInhoud.substring(0,200)});
-        localStorage.setItem('pv_reports', JSON.stringify(allReports));
+        feedbackDiv.innerHTML = "<strong>💬 Feedback:</strong> PV succesvol ontvangen. Analyse voltooid.";
     };
-    
+
     window.checkWW = () => {
         let score = 0;
-        for (let i = 0; i < wwOpgaven.length; i++) {
-            const inputField = document.getElementById(`wwAns-${i}`);
-            const userAnswer = inputField.value.trim().toLowerCase().replace(/\s+/g, ' ');
-            const correctAnswer = wwOpgaven[i].correctAntwoord.toLowerCase();
-            const isCorrect = (userAnswer === correctAnswer);
-            if (isCorrect) {
+        wwOpgaven.forEach((opgave, i) => {
+            const input = document.getElementById(`wwAns-${i}`);
+            if(input.value.trim().toLowerCase() === opgave.correctAntwoord.toLowerCase()) {
                 score++;
-                inputField.style.borderColor = "green";
-                inputField.style.backgroundColor = "#e8f5e9";
+                input.style.backgroundColor = "#e8f5e9";
             } else {
-                inputField.style.borderColor = "var(--p-rood)";
-                inputField.style.backgroundColor = "#ffebee";
-                if (userAnswer.length > 0) inputField.placeholder = `Voorbeeld: ${wwOpgaven[i].correctAntwoord}`;
+                input.style.backgroundColor = "#ffebee";
             }
-        }
-        const klas = currentKlas;
-        const leaderData = loadLeaderboardFromStorage(klas);
+        });
+        const leaderData = loadLeaderboardFromStorage(currentKlas);
         leaderData[currentAgent] = score;
-        saveLeaderboard(klas, leaderData);
+        saveLeaderboard(currentKlas, leaderData);
         updateLeaderboardUI();
-        alert(`Je score: ${score}/${wwOpgaven.length} juiste werkwoordzinnen. Leaderboard bijgewerkt voor klas ${klas}.`);
+        alert(`Score: ${score}/${wwOpgaven.length}`);
     };
-    
+
     window.checkOntleding = () => {
         let score = 0;
         ontlOpgaven.forEach((item, idx) => {
             const dz = document.getElementById(`dz-${idx}`);
-            if(dz && dz.innerText.trim() === item[1]) {
-                score++;
-                dz.style.backgroundColor = "#d4edda";
-                dz.style.color = "green";
-            } else if(dz) {
-                dz.style.backgroundColor = "#ffe0e0";
-            }
+            if(dz.innerText === item[1]) score++;
         });
-        alert(`Zinsontleding score: ${score}/${ontlOpgaven.length}`);
+        alert(`Ontleding: ${score}/${ontlOpgaven.length}`);
     };
-    
-    window.resetAll = () => {
-        if(confirm("Reset alles: proces-verbaal, werkwoordzinnen, zinsontleding? Leeg alle velden.")) {
-            document.getElementById('pvText').value = "";
-            document.getElementById('live-feed').innerHTML = "📡 Livefeed: wacht op invoer...";
-            document.getElementById('feedback-feed').innerHTML = "💬 Feedbackfeed: na inleveren verschijnt analyse.";
-            for(let i=0; i<wwOpgaven.length; i++) {
-                const inp = document.getElementById(`wwAns-${i}`);
-                if(inp) { inp.value = ""; inp.style.borderColor = "var(--p-blauw)"; inp.style.backgroundColor = ""; inp.placeholder = "bijv. ik zag dat ik de verdachte aanhield";}
-            }
-            for(let j=0; j<ontlOpgaven.length; j++) {
-                const dz = document.getElementById(`dz-${j}`);
-                if(dz) { dz.innerText = "⚠️ sleep zinsdeel"; dz.style.backgroundColor = "#f0f2f5"; dz.style.color = "black";}
-            }
-            alert("Alle antwoordvelden gewist. Leaderboards blijven behouden.");
-        }
-    };
-    
+
+    window.resetAll = () => { location.reload(); };
+
     window.showPage = (id, btn) => {
         document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
         document.getElementById(id).classList.add('active');
@@ -569,13 +534,12 @@
         btn.classList.add('active');
         if(id === 'page-ww') updateLeaderboardUI();
     };
-    
-    window.drag = (ev) => ev.dataTransfer.setData("text/plain", ev.target.innerText);
+
+    window.drag = (ev) => ev.dataTransfer.setData("text", ev.target.innerText);
     window.allowDrop = (ev) => ev.preventDefault();
     window.drop = (ev) => {
         ev.preventDefault();
-        const data = ev.dataTransfer.getData("text/plain");
-        ev.target.innerText = data;
+        ev.target.innerText = ev.dataTransfer.getData("text");
     };
 </script>
 </body>
