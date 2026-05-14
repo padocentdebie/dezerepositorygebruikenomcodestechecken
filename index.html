@@ -365,18 +365,34 @@
     let currentAgent = "";
     let currentKlas = "";
     
-    const wwOpgaven = [
-        { fout: "Mijn collega's hebben de verdachte aangehouden.", correctAntwoord: "ik zag dat ik de verdachte aanhield." },
-        { fout: "Collega's hebben een verklaring afgenomen van Priscilla.", correctAntwoord: "ik hoorde dat ik een verklaring afnam van Priscilla." },
-        { fout: "De agenten hebben het rood-witte lint opgehangen.", correctAntwoord: "ik zag dat ik het rood-witte lint ophing." },
-        { fout: "Collega's hebben de achterdeur van de woning geopend.", correctAntwoord: "ik zag dat ik de achterdeur van de woning opende." },
-        { fout: "Wij hebben op de deurbel van het pand gedrukt.", correctAntwoord: "ik hoorde dat ik op de deurbel van het pand drukte." },
-        { fout: "De surveillanten zijn uit de dienstauto gestapt.", correctAntwoord: "ik zag dat ik uit de dienstauto stapte." },
-        { fout: "Zij hebben via de porto informatie opgevraagd bij het Operationeel Centrum.", correctAntwoord: "ik hoorde dat ik via de porto informatie opvroeg bij het Operationeel Centrum." },
-        { fout: "Wij hebben de rechter bovenarm van de verdachte vastgepakt.", correctAntwoord: "ik zag dat ik de rechter bovenarm van de verdachte vastpakte." },
-        { fout: "Mijn collega's hebben de machtiging tot betreden van de woning getoond aan de bewoner.", correctAntwoord: "ik zag dat ik de machtiging tot betreden van de woning liet zien aan de bewoner." },
-        { fout: "Collega's hebben doorzichtige plastic zakjes gevonden, met in de zakjes groene kruimels.", correctAntwoord: "ik zag dat ik doorzichtige plastic zakjes vond met in de zakjes groene kruimels." }
-    ];
+   const wwOpgaven = [
+    { fout: "Mijn collega's hebben de verdachte aangehouden.", correctAntwoord: "Ik zag dat mijn collega's de verdachte aanhielden." },
+    { fout: "Collega's hebben een verklaring afgenomen van Priscilla.", correctAntwoord: "Ik hoorde dat mijn collega's een verklaring afnamen van Priscilla." },
+    { fout: "De agenten hebben het rood-witte lint opgehangen.", correctAntwoord: "Ik zag dat de agenten het rood-witte lint ophingen." },
+    { fout: "Collega's hebben de achterdeur van de woning geopend.", correctAntwoord: "Ik zag dat mijn collega's de achterdeur van de woning openden." },
+    { fout: "Wij hebben op de deurbel van het pand gedrukt.", correctAntwoord: "Ik drukte op de deurbel van het pand." },
+    { fout: "De surveillanten zijn uit de dienstauto gestapt.", correctAntwoord: "Ik zag dat de surveillanten uit de dienstauto stapten." },
+    { fout: "Zij hebben via de porto informatie opgevraagd.", correctAntwoord: "Ik hoorde dat zij via de porto informatie opvroegen." },
+    { fout: "Wij hebben de rechter bovenarm van de verdachte vastgepakt.", correctAntwoord: "Ik pakte de rechter bovenarm van de verdachte vast." },
+    { fout: "Mijn collega's hebben de machtiging getoond.", correctAntwoord: "Ik zag dat mijn collega's de machtiging toonden." },
+    { fout: "Collega's hebben plastic zakjes gevonden.", correctAntwoord: "Ik zag dat mijn collega's plastic zakjes vonden." },
+    { fout: "De agenten hebben de verdachte gefouilleerd.", correctAntwoord: "Ik zag dat de agenten de verdachte fouilleerden." },
+    { fout: "Collega's hebben de getuige kalm toegesproken.", correctAntwoord: "Ik hoorde dat mijn collega's de getuige kalm toespraken." },
+    { fout: "Wij hebben de camerabeelden veiliggesteld.", correctAntwoord: "Ik stelde de camerabeelden veilig." },
+    { fout: "De surveillanten hebben assistentie gevraagd.", correctAntwoord: "Ik hoorde dat de surveillanten om assistentie vroegen." },
+    { fout: "Mijn collega's hebben de pepperspray gebruikt.", correctAntwoord: "Ik zag dat mijn collega's de pepperspray gebruikten." },
+    { fout: "Wij hebben het dienstvoertuig aan de kant gezet.", correctAntwoord: "Ik zette het dienstvoertuig aan de kant." },
+    { fout: "Collega's hebben de identiteitskaarten gecontroleerd.", correctAntwoord: "Ik zag dat mijn collega's de identiteitskaarten controleerden." },
+    { fout: "De agenten hebben de omgeving afgezet.", correctAntwoord: "Ik zag dat de agenten de omgeving afzetten." },
+    { fout: "Wij hebben de snelheid van het voertuig gemeten.", correctAntwoord: "Ik mat de snelheid van het voertuig." },
+    { fout: "Collega's hebben de getuige naar huis gebracht.", correctAntwoord: "Ik zag dat mijn collega's de getuige naar huis brachten." },
+    { fout: "De surveillanten hebben een proces-verbaal opgemaakt.", correctAntwoord: "Ik zag dat de surveillanten een proces-verbaal opmaakten." },
+    { fout: "Wij hebben de inbrekerswerktuigen in beslag genomen.", correctAntwoord: "Ik nam de inbrekerswerktuigen in beslag." },
+    { fout: "Mijn collega's hebben de achtervolging ingezet.", correctAntwoord: "Ik zag dat mijn collega's de achtervolging inzetten." },
+    { fout: "De agenten hebben de ruit van de auto ingeslagen.", correctAntwoord: "Ik zag dat de agenten de ruit van de auto insloegen." },
+    { fout: "Wij hebben de melding genoteerd.", correctAntwoord: "Ik noteerde de melding." }
+];
+
     
     const ontlOpgaven = [
         ["<u>De verbalisant</u> zag de verdachte vluchten.", "Onderwerp"],
