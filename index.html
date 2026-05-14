@@ -37,19 +37,22 @@
             background: white;
             padding: 30px;
             width: 100%;
-            max-width: 600px;
+            max-width: 500px;
             border-radius: 8px;
             text-align: center;
             box-shadow: 0 12px 25px rgba(0,0,0,0.3);
             border-top: 6px solid var(--p-geel);
         }
 
-       <div class="video-box-login">
-    <video width="100%" height="100%" controls poster="https://www.politie.nl/binaries/content/gallery/politie/algemeen/politielogo-blauw.jpg">
-        <source src="2545Faangifteles6.mp4" type="video/mp4">
-        Je browser ondersteunt de video tag niet.
-    </video>
-</div>
+        .video-box-login {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            margin: 15px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            overflow: hidden;
+        }
 
         .container {
             max-width: 1300px;
@@ -61,32 +64,29 @@
             border-top: 8px solid var(--p-blauw);
         }
 
-        .nav-tabs { display: flex; border-bottom: 3px solid var(--p-blauw); margin-bottom: 25px; gap: 5px; }
-        .nav-btn { padding: 14px 28px; border: none; background: none; cursor: pointer; font-weight: bold; color: var(--p-blauw); opacity: 0.6; }
+        .nav-tabs { display: flex; flex-wrap: wrap; border-bottom: 3px solid var(--p-blauw); margin-bottom: 25px; gap: 5px; }
+        .nav-btn { padding: 14px 28px; border: none; background: none; cursor: pointer; font-weight: bold; color: var(--p-blauw); opacity: 0.6; font-size: 1rem; }
         .nav-btn.active { opacity: 1; border-bottom: 4px solid var(--p-geel); background: #f0f4fa; }
+
         .sub-page { display: none; }
-        .sub-page.active { display: block; }
+        .sub-page.active { display: block; animation: fade 0.2s ease; }
 
-        .instruction {
-            background: #fff8e7;
-            border-left: 6px solid var(--p-geel);
-            padding: 16px 20px;
-            margin-bottom: 25px;
-            font-size: 0.95rem;
-            border-radius: 0 8px 8px 0;
-        }
+        @keyframes fade { from { opacity: 0; transform: translateY(5px);} to { opacity: 1; transform: translateY(0);} }
 
-        .btn-check, .btn-reset {
-            border: none; padding: 14px; font-weight: bold; cursor: pointer; width: 100%; border-radius: 40px; margin-top: 20px;
-        }
+        .instruction { background: #fff8e7; border-left: 6px solid var(--p-geel); padding: 16px 20px; margin-bottom: 25px; font-size: 0.95rem; border-radius: 0 8px 8px 0; line-height: 1.5; }
+        .sentence-row { background: #fefefe; padding: 12px 16px; border-radius: 8px; border: 1px solid #e0e4e8; display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 10px; }
+
+        .ww-input { padding: 10px 14px; border: 2px solid var(--p-blauw); border-radius: 8px; width: 350px; font-family: monospace; }
+        .btn-check, .btn-reset { border: none; padding: 14px; font-weight: bold; cursor: pointer; width: 100%; border-radius: 40px; margin-top: 20px; }
         .btn-check { background: var(--p-blauw); color: white; }
         .btn-reset { background: #6c757d; color: white; margin-bottom: 25px; }
 
-        textarea { width: 100%; padding: 18px; border: 1px solid #bac8d9; font-family: monospace; border-radius: 12px; }
+        textarea { width: 100%; padding: 18px; border: 1px solid #bac8d9; font-family: 'Courier New', monospace; font-size: 1rem; border-radius: 12px; }
+        .audio-icon { background: var(--p-geel); padding: 8px 16px; border-radius: 40px; text-decoration: none; color: black; font-weight: bold; display: inline-flex; margin-bottom: 15px; }
+        .badge-gem { background: #1a2c42; color: gold; padding: 2px 12px; border-radius: 40px; font-size: 0.7rem; }
         
-        .audio-icon {
-            background: var(--p-geel); color: black; padding: 8px 16px; border-radius: 40px; text-decoration: none; font-weight: bold; display: inline-flex; margin-bottom: 10px;
-        }
+        .leaderboard-box { margin-top: 25px; background: var(--grijs); padding: 18px; border-radius: 12px; }
+        .leaderboard-item { background: white; padding: 8px 12px; border-radius: 20px; display: flex; justify-content: space-between; margin-bottom: 5px; border-left: 4px solid var(--p-geel); }
     </style>
 </head>
 <body>
@@ -94,19 +94,21 @@
 <div id="login-overlay">
     <div class="login-card">
         <h2 style="color: var(--p-blauw); margin-top: 0;">👮‍♀️ POLITIEACADEMIE</h2>
-        <p><strong>Briefing:</strong> Bekijk het fragment (2:10 - 2:50) voor de casusdetails.</p>
+        <p><strong>Briefing:</strong> Bekijk het fragment voor de casusdetails.</p>
         
         <div class="video-box-login">
-            <iframe 
-                src="https://npo.nl/start/afspelen/pauw-de-wit_145?t=130" 
-                width="100%" height="100%" frameborder="0" allowfullscreen>
-            </iframe>
+            <video width="100%" height="100%" controls poster="https://www.politie.nl/binaries/content/gallery/politie/algemeen/politielogo-blauw.jpg">
+                <source src="2545Faangifteles6.mp4" type="video/mp4">
+                Je browser ondersteunt de video tag niet.
+            </video>
         </div>
 
-        <input type="text" id="userFirstName" placeholder="Voornaam agent" style="width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 20px; border: 1px solid #ccc;">
-        <select id="userClass" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 20px;">
+        <input type="text" id="userFirstName" placeholder="Voornaam agent" style="width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 30px; border: 1px solid #ccc;">
+        <select id="userClass" style="width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 30px;">
             <option value="Alpha">NAVO Alpha</option><option value="Bravo">NAVO Bravo</option><option value="Charlie">NAVO Charlie</option>
-            <option value="Delta">NAVO Delta</option><option value="Echo">NAVO Echo</option>
+            <option value="Delta">NAVO Delta</option><option value="Echo">NAVO Echo</option><option value="Foxtrot">NAVO Foxtrot</option>
+            <option value="Golf">NAVO Golf</option><option value="Hotel">NAVO Hotel</option><option value="Juliett">NAVO Juliett</option>
+            <option value="Kilo">NAVO Kilo</option><option value="Lima">NAVO Lima</option><option value="Mike">NAVO Mike</option>
         </select>
         <button onclick="startLesson()" class="btn-check" style="background: var(--p-geel); color: black;">START DIENST</button>
     </div>
@@ -114,31 +116,42 @@
 
 <div class="container" id="mainContent" style="display:none;">
     <nav class="nav-tabs">
-        <button class="nav-btn active" onclick="showPage('page-aangifte', this)">📄 AANGIFTE</button>
-        <button class="nav-btn" onclick="showPage('page-ww', this)">✍️ WERKWOORDEN</button>
-        <button class="nav-btn" onclick="showPage('page-ontleding', this)">📚 ONTLEDING</button>
+        <button class="nav-btn active" onclick="showPage('page-aangifte', this)">📄 AANGIFTE PRISCILLA</button>
+        <button class="nav-btn" onclick="showPage('page-ww', this)">✍️ WERKWOORDEN (OVT)</button>
+        <button class="nav-btn" onclick="showPage('page-ontleding', this)">📚 ZINSONTLEDING</button>
     </nav>
+    <button onclick="resetAll()" class="btn-reset">🔄 RESET ALLES</button>
 
     <div id="page-aangifte" class="sub-page active">
         <div class="instruction">
-            <strong>Inloggegevens Gemini:</strong> bpostudentleusden@gmail.com | Stud3ntl3usd3n
+            <span class="badge-gem">✨ GEMINI GEM ingebed</span><br>
+            <strong>log in: bpostudentleusden@gmail.com | Stud3ntl3usd3n</strong>
         </div>
-        
-        <a href="https://gemini.google.com/gem/1S-TbiyvMUv6QySJN4yJMjYbnyeg9lmul?usp=sharing" target="_blank" class="audio-icon">
-            ✨ Open Gemini Gem: Analyseer mijn PV
-        </a>
-
+        <a href="https://gemini.google.com/gem/1S-TbiyvMUv6QySJN4yJMjYbnyeg9lmul?usp=sharing" target="_blank" class="audio-icon">✨ Open Gemini Gem: Analyseer mijn PV</a>
         <textarea id="pvText" rows="12" placeholder="Ik, verbalisant..." oninput="updateLiveFeed()"></textarea>
         <div id="live-feed" style="margin-top:10px; padding:10px; background:#eef2fa; border-left:4px solid var(--p-blauw);">📡 Wacht op invoer...</div>
-        <button onclick="submitPV()" class="btn-check">📨 PV DEFINITIEF VERZENDEN</button>
+        <button onclick="submitPV()" class="btn-check" style="background: var(--p-geel); color: var(--p-blauw);">📨 PV DEFINITIEF VERZENDEN</button>
     </div>
 
     <div id="page-ww" class="sub-page">
+        <div class="instruction">Herschrijf de zin in de <strong>OVT, ik-vorm</strong> mét waarneming (ik zag/hoorde dat...).</div>
         <div id="ww-list"></div>
-        <button onclick="checkWW()" class="btn-check">✅ CONTROLEER</button>
+        <button onclick="checkWW()" class="btn-check">✅ CONTROLEER & UPDATE LEADERBOARD</button>
+        <div class="leaderboard-box">
+            <h4>🏆 KLASSEMENT - NAVO KLAS: <span id="currentKlasLeaderboard">-</span></h4>
+            <ul id="leaderboard-list" style="list-style:none; padding:0;"></ul>
+        </div>
     </div>
 
     <div id="page-ontleding" class="sub-page">
+        <div class="instruction">Sleep de zinsdelen naar de juiste plek.</div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
+            <div style="background: var(--p-blauw); color: white; padding: 8px 15px; border-radius: 40px; cursor: move;" draggable="true" ondragstart="drag(event)">Onderwerp</div>
+            <div style="background: var(--p-blauw); color: white; padding: 8px 15px; border-radius: 40px; cursor: move;" draggable="true" ondragstart="drag(event)">Gezegde</div>
+            <div style="background: var(--p-blauw); color: white; padding: 8px 15px; border-radius: 40px; cursor: move;" draggable="true" ondragstart="drag(event)">Lijdend voorwerp</div>
+            <div style="background: var(--p-blauw); color: white; padding: 8px 15px; border-radius: 40px; cursor: move;" draggable="true" ondragstart="drag(event)">Meewerkend voorwerp</div>
+            <div style="background: var(--p-blauw); color: white; padding: 8px 15px; border-radius: 40px; cursor: move;" draggable="true" ondragstart="drag(event)">Bijwoordelijke bepaling</div>
+        </div>
         <div id="ontleding-list"></div>
     </div>
 </div>
@@ -147,30 +160,125 @@
     let currentAgent = "";
     let currentKlas = "";
 
+    const wwOpgaven = [
+        { fout: "Mijn collega's hebben de verdachte aangehouden.", correctAntwoord: "Ik zag dat mijn collega's de verdachte aanhielden." },
+        { fout: "Collega's hebben een verklaring afgenomen van Priscilla.", correctAntwoord: "Ik hoorde dat mijn collega's een verklaring afnamen van Priscilla." },
+        { fout: "De agenten hebben het rood-witte lint opgehangen.", correctAntwoord: "Ik zag dat de agenten het rood-witte lint ophingen." },
+        { fout: "Collega's hebben de achterdeur van de woning geopend.", correctAntwoord: "Ik zag dat mijn collega's de achterdeur van de woning openden." },
+        { fout: "Wij hebben op de deurbel van het pand gedrukt.", correctAntwoord: "Ik drukte op de deurbel van het pand." },
+        { fout: "De surveillanten zijn uit de dienstauto gestapt.", correctAntwoord: "Ik zag dat de surveillanten uit de dienstauto stapten." },
+        { fout: "Zij hebben via de porto informatie opgevraagd.", correctAntwoord: "Ik hoorde dat zij via de porto informatie opvroegen." },
+        { fout: "Wij hebben de rechter bovenarm van de verdachte vastgepakt.", correctAntwoord: "Ik pakte de rechter bovenarm van de verdachte vast." },
+        { fout: "Mijn collega's hebben de machtiging getoond.", correctAntwoord: "Ik zag dat mijn collega's de machtiging toonden." },
+        { fout: "Collega's hebben plastic zakjes gevonden.", correctAntwoord: "Ik zag dat mijn collega's plastic zakjes vonden." },
+        { fout: "De agenten hebben de verdachte gefouilleerd.", correctAntwoord: "Ik zag dat de agenten de verdachte fouilleerden." },
+        { fout: "Collega's hebben de getuige kalm toegesproken.", correctAntwoord: "Ik hoorde dat mijn collega's de getuige kalm toespraken." },
+        { fout: "Wij hebben de camerabeelden veiliggesteld.", correctAntwoord: "Ik stelde de camerabeelden veilig." },
+        { fout: "De surveillanten hebben assistentie gevraagd.", correctAntwoord: "Ik hoorde dat de surveillanten om assistentie vroegen." },
+        { fout: "Mijn collega's hebben de pepperspray gebruikt.", correctAntwoord: "Ik zag dat mijn collega's de pepperspray gebruikten." },
+        { fout: "Wij hebben het dienstvoertuig aan de kant gezet.", correctAntwoord: "Ik zette het dienstvoertuig aan de kant." },
+        { fout: "Collega's hebben de identiteitskaarten gecontroleerd.", correctAntwoord: "Ik zag dat mijn collega's de identiteitskaarten controleerden." },
+        { fout: "De agenten hebben de omgeving afgezet.", correctAntwoord: "Ik zag dat de agenten de omgeving afzetten." },
+        { fout: "Wij hebben de snelheid van het voertuig gemeten.", correctAntwoord: "Ik mat de snelheid van het voertuig." },
+        { fout: "Collega's hebben de getuige naar huis gebracht.", correctAntwoord: "Ik zag dat mijn collega's de getuige naar huis brachten." },
+        { fout: "De surveillanten hebben een proces-verbaal opgemaakt.", correctAntwoord: "Ik zag dat de surveillanten een proces-verbaal opmaakten." },
+        { fout: "Wij hebben de inbrekerswerktuigen in beslag genomen.", correctAntwoord: "Ik nam de inbrekerswerktuigen in beslag." },
+        { fout: "Mijn collega's hebben de achtervolging ingezet.", correctAntwoord: "Ik zag dat mijn collega's de achtervolging inzetten." },
+        { fout: "De agenten hebben de ruit van de auto ingeslagen.", correctAntwoord: "Ik zag dat de agenten de ruit van de auto insloegen." },
+        { fout: "Wij hebben de melding genoteerd.", correctAntwoord: "Ik noteerde de melding." }
+    ];
+
+    const ontlOpgaven = [
+        ["<u>De verbalisant</u> zag de verdachte vluchten.", "Onderwerp"],
+        ["Ik <u>heb</u> de verdachte <u>aangehouden</u>.", "Gezegde"],
+        ["Ik gaf <u>de verdachte</u> een waarschuwing.", "Meewerkend voorwerp"],
+        ["De agent droeg <u>een kogelvrij vest</u>.", "Lijdend voorwerp"],
+        ["Het incident vond plaats <u>op het Stationsplein</u>.", "Bijwoordelijke bepaling"],
+        ["<u>Een omstander</u> wees naar de vluchtroute.", "Onderwerp"],
+        ["Ik <u>zag</u> dat hij <u>rende</u>.", "Gezegde"],
+        ["Ik overhandigde <u>mijn collega</u> het proces-verbaal.", "Meewerkend voorwerp"],
+        ["Hij gooide <u>een steen</u> door de ruit.", "Lijdend voorwerp"],
+        ["De aanhouding gebeurde <u>om 23:45 uur</u>.", "Bijwoordelijke bepaling"]
+    ];
+
     window.startLesson = () => {
         const naam = document.getElementById('userFirstName').value.trim();
-        if (!naam) { alert("Naam verplicht."); return; }
+        if (!naam) { alert("Voer je naam in."); return; }
         currentAgent = naam;
         currentKlas = document.getElementById('userClass').value;
         document.getElementById('login-overlay').style.display = 'none';
         document.getElementById('mainContent').style.display = 'block';
         initApp();
+        updateLeaderboardUI();
     };
 
     function initApp() {
-        // Hier worden de opgaven geladen (zoals in je eerdere code)
-        console.log("App geïnitialiseerd voor " + currentAgent);
+        const wwList = document.getElementById('ww-list');
+        wwList.innerHTML = wwOpgaven.map((item, i) => `
+            <div class="sentence-row">
+                <span style="width:100%">Fout: ${item.fout}</span>
+                <input type="text" id="wwAns-${i}" class="ww-input" placeholder="Jouw OVT zin..." style="width:100%">
+            </div>
+        `).join('');
+
+        const ontlList = document.getElementById('ontleding-list');
+        ontlList.innerHTML = ontlOpgaven.map((item, i) => `
+            <div class="sentence-row">
+                <span style="flex:1;">${item[0]}</span>
+                <span class="drop-zone" id="dz-${i}" style="min-width: 180px; background:#f0f2f5; padding: 10px; border-radius: 20px;" ondrop="drop(event)" ondragover="allowDrop(event)">⚠️ Sleep hier</span>
+            </div>
+        `).join('');
     }
 
-    function showPage(id, btn) {
+    window.showPage = (id, btn) => {
         document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
+    };
+
+    window.updateLiveFeed = () => {
+        const text = document.getElementById('pvText').value;
+        const feed = document.getElementById('live-feed');
+        if (text.length < 5) return;
+        feed.innerHTML = text.match(/ik zag|ik hoorde|ik voelde|ik rook/i) ? "✅ Redenen van wetenschap herkend." : "⚠️ Gebruik 'ik zag/hoorde'.";
+    };
+
+    window.checkWW = () => {
+        let score = 0;
+        wwOpgaven.forEach((item, i) => {
+            const input = document.getElementById(`wwAns-${i}`);
+            if (input.value.trim().toLowerCase() === item.correctAntwoord.toLowerCase()) {
+                score++; input.style.background = "#d4edda";
+            } else {
+                input.style.background = "#f8d7da";
+            }
+        });
+        let scores = JSON.parse(localStorage.getItem(`leaderboard_${currentKlas}`) || "{}");
+        scores[currentAgent] = score;
+        localStorage.setItem(`leaderboard_${currentKlas}`, JSON.stringify(scores));
+        updateLeaderboardUI();
+        alert(`Score: ${score}/${wwOpgaven.length}`);
+    };
+
+    function updateLeaderboardUI() {
+        const scores = JSON.parse(localStorage.getItem(`leaderboard_${currentKlas}`) || "{}");
+        document.getElementById('currentKlasLeaderboard').innerText = currentKlas;
+        document.getElementById('leaderboard-list').innerHTML = Object.entries(scores)
+            .sort((a,b) => b[1] - a[1])
+            .map(([n, s]) => `<li class="leaderboard-item"><span>${n}</span><span>🏅 ${s}</span></li>`).join('');
     }
 
-    window.updateLiveFeed = () => { /* Logica zoals voorheen */ };
-    window.submitPV = () => { alert("PV Verzonden."); };
+    window.drag = (ev) => ev.dataTransfer.setData("text", ev.target.innerText);
+    window.allowDrop = (ev) => ev.preventDefault();
+    window.drop = (ev) => {
+        ev.preventDefault();
+        ev.target.innerText = ev.dataTransfer.getData("text");
+        ev.target.style.background = "#eef2fa";
+    };
+
+    window.resetAll = () => { if(confirm("Alles resetten?")) location.reload(); };
+    window.submitPV = () => { alert("PV verzonden!"); };
 </script>
 </body>
 </html>
