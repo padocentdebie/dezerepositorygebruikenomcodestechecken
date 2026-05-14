@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Politieacademie - PV Spelling & Ontleding</title>
+    <title>Politieacademie - PV Training</title>
     <style>
-        :root { --p-blauw: #00205b; --p-geel: #fcc917; --wit: #ffffff; --grijs: #f4f4f4; }
+        :root { --p-blauw: #00205b; --p-geel: #fcc917; --wit: #ffffff; --grijs: #f4f4f4; --p-rood: #e30613; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--grijs); margin: 0; padding: 0; }
         
         #login-overlay { position: fixed; inset: 0; background: var(--p-blauw); display: flex; justify-content: center; align-items: center; z-index: 1000; }
@@ -20,10 +20,10 @@
         .sub-page.active { display: block; }
 
         .instruction { background: #fffde7; border-left: 5px solid var(--p-geel); padding: 15px; margin-bottom: 20px; font-size: 14px; color: #333; line-height: 1.6; }
-        .exercise-list { display: flex; flex-direction: column; gap: 8px; }
+        .exercise-list { display: flex; flex-direction: column; gap: 12px; }
         .sentence-row { padding: 12px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 14px; }
         
-        input[type="text"].ww-input { padding: 8px; border: 1px solid var(--p-blauw); border-radius: 0; font-size: 14px; width: 140px; }
+        input[type="text"].ww-input { padding: 8px; border: 1px solid var(--p-blauw); border-radius: 0; font-size: 14px; width: 200px; flex-grow: 0; }
         .drop-zone { min-width: 180px; min-height: 30px; border-bottom: 2px dashed var(--p-blauw); background: #f0f4f8; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold; }
         
         .drag-container { position: sticky; top: 0; background: white; padding: 15px; border: 2px solid var(--p-blauw); margin-bottom: 20px; display: flex; gap: 8px; flex-wrap: wrap; z-index: 10; }
@@ -31,7 +31,12 @@
 
         .btn-check { background: var(--p-blauw); color: white; border: none; padding: 15px; font-weight: bold; cursor: pointer; margin-top: 20px; width: 100%; }
         .btn-reset { background: #666; color: white; border: none; padding: 10px; font-weight: bold; cursor: pointer; width: 100%; margin-bottom: 20px; }
-        textarea { width: 100%; padding: 15px; border: 1px solid #ccc; font-family: 'Courier New', monospace; box-sizing: border-box; }
+        
+        #live-feed, #feedback-feed { margin-top: 20px; padding: 15px; border: 1px solid #ddd; font-size: 13px; min-height: 50px; background: #fafafa; }
+        #live-feed { border-left: 5px solid var(--p-blauw); }
+        #feedback-feed { border-left: 5px solid var(--p-rood); }
+
+        textarea { width: 100%; padding: 15px; border: 1px solid #ccc; font-family: 'Courier New', monospace; box-sizing: border-box; resize: vertical; }
     </style>
 </head>
 <body>
@@ -39,7 +44,7 @@
 <div id="login-overlay">
     <div class="login-card">
         <h2 style="color: var(--p-blauw)">MELDING IDENTITEIT</h2>
-        <input type="text" id="userFirstName" placeholder="voornaam Agent" style="width: 100%; padding: 12px; margin-bottom: 15px; box-sizing: border-box;">
+        <input type="text" id="userFirstName" placeholder="Achternaam Agent" style="width: 100%; padding: 12px; margin-bottom: 15px; box-sizing: border-box;">
         <select id="userClass" style="width: 100%; padding: 12px; margin-bottom: 20px;">
             <option value="Alpha">Alpha</option><option value="Bravo">Bravo</option><option value="Charlie">Charlie</option>
             <option value="Delta">Delta</option><option value="Echo">Echo</option><option value="Foxtrot">Foxtrot</option>
@@ -52,33 +57,37 @@
 
 <div class="container" id="mainContent" style="display:none;">
     <nav class="nav-tabs">
-        <button class="nav-btn active" onclick="showPage('page-aangifte', this)">1. PV PRISCILLA</button>
-        <button class="nav-btn" onclick="showPage('page-ww', this)">2. REDENEN VAN WETENSCHAP (22)</button>
-        <button class="nav-btn" onclick="showPage('page-ontleding', this)">3. ZINSONTLEDING (20)</button>
+        <button class="nav-btn active" onclick="showPage('page-aangifte', this)">1. PV PRISCILLA (GEMINI GEM)</button>
+        <button class="nav-btn" onclick="showPage('page-ww', this)">2. REDENEN VAN WETENSCHAP</button>
+        <button class="nav-btn" onclick="showPage('page-ontleding', this)">3. ZINSONTLEDING</button>
     </nav>
     <button onclick="resetAll()" class="btn-reset">ALLES RESETTEN / NIEUWE POGING</button>
 
-    <!-- SCHERM 1: PV PRISCILLA -->
+    <!-- TAB 1: PV PRISCILLA -->
     <div id="page-aangifte" class="sub-page active">
         <div class="instruction">
-            <strong>Casus Priscilla:</strong> Mevrouw Priscilla van den Broek heeft aangifte gedaan van een inbraak in haar woning aan de Keizersgracht. Zij kwam gisteravond thuis en trof een geforceerd raam aan. Er zijn sieraden en een laptop gestolen.<br><br>
-            <strong>Opdracht:</strong> Stel hier de 'Redenen van Wetenschap' op voor het Proces-verbaal. Schrijf strikt in de <strong>eerste persoon enkelvoud (ik)</strong> en in de <strong>onvoltooid verleden tijd (OVT)</strong>.
+            <strong>Casus Priscilla (Mishandeling):</strong> Priscilla van den Broek verklaart dat zij door haar ex-partner op straat is geduwd en geslagen. Er zijn getuigen aanwezig. <br>
+            <strong>Embedded Gemini Gem:</strong> De livefeed analyseert je tekst op objectiviteit en OVT-gebruik zonder je te onderbreken.
         </div>
-        <textarea id="pvText" rows="15" placeholder="Ik, verbalisant, bevond mij op..."></textarea>
+        <textarea id="pvText" rows="12" oninput="updateLiveFeed()" placeholder="Ik, verbalisant..."></textarea>
+        
+        <div id="live-feed"><em>Livefeed: Wacht op invoer...</em></div>
+        <div id="feedback-feed"><em>Feedbackfeed: Na inleveren verschijnt hier de analyse.</em></div>
+        
         <button onclick="submitPV()" class="btn-check" style="background: var(--p-geel); color: black;">PV DEFINITIEF VERZENDEN</button>
     </div>
 
-    <!-- SCHERM 2: WERKWOORDSPELLING OVT (INVULLEN) -->
+    <!-- TAB 2: WERKWOORDEN (AMBTSHANDELINGEN) -->
     <div id="page-ww" class="sub-page">
         <div class="instruction">
-            <strong>Opdracht:</strong> Vervoeg het werkwoord correct voor een PV (Redenen van Wetenschap).<br>
-            Gebruik de <strong>ik-vorm</strong> in de <strong>verleden tijd (OVT)</strong>.
+            <strong>Opdracht:</strong> Zet de ambtshandelingen om naar de juiste vorm voor de 'Redenen van Wetenschap'.<br>
+            Vervoeg de ik-vorm in de <strong>verleden tijd (OVT)</strong>.
         </div>
         <div class="exercise-list" id="ww-list"></div>
         <button onclick="checkWW()" class="btn-check">SCORES VERWERKEN</button>
     </div>
 
-    <!-- SCHERM 3: ZINSONTLEDING -->
+    <!-- TAB 3: ZINSONTLEDING -->
     <div id="page-ontleding" class="sub-page">
         <div class="instruction">Sleep de zinsdelen naar de juiste plek in de context van politierapporten.</div>
         <div class="drag-container">
@@ -108,29 +117,18 @@
     const db = getDatabase(app);
     let agent = ""; let klas = "";
 
+    // Werkwoordopgaven gebaseerd op scenario's
     const wwOpgaven = [
-        ["Wij vermoeden een misdrijf.", "vermoedde"],
-        ["Wij antwoorden op de roep.", "antwoordde"],
-        ["Wij melden het incident.", "meldde"],
-        ["Wij arresteren de dader.", "arresteerde"],
-        ["Wij horen de getuige.", "hoorde"],
-        ["Wij verdenken de man.", "verdacht"],
-        ["Wij belanden in de sloot.", "belandde"],
-        ["Wij achterhalen de naam.", "achterhaalde"],
-        ["Wij beantwoorden de vraag.", "beantwoordde"],
-        ["Wij bevrijden het dier.", "bevrijdde"],
-        ["Wij bereiden het voor.", "bereidde"],
-        ["Wij vermelden de tijd.", "vermeldde"],
-        ["Wij schudden de verdachte.", "schudde"],
-        ["Wij wenden het gevaar af.", "wendde"],
-        ["Wij stranden bij de grens.", "strandde"],
-        ["Wij branden de deur open.", "brandde"],
-        ["Wij dichten het lek.", "dichtte"],
-        ["Wij kruisen het pad.", "kruiste"],
-        ["Wij rusten na de dienst.", "rustte"],
-        ["Wij tappen de telefoon.", "tapte"],
-        ["Wij zetten de achtervolging in.", "zette"],
-        ["Wij praten met de buurman.", "praatte"]
+        ["Mijn collega's houden de verdachte aan.", "hield", "Ik hield de verdachte aan."],
+        ["Wij nemen een verklaring af van Priscilla.", "nam", "Ik nam een verklaring af van Priscilla."],
+        ["De agenten hangen het rood-witte lint op.", "hing", "Ik hing het rood-witte lint op."],
+        ["Collega's openen de achterdeur van de woning.", "opende", "Ik opende de achterdeur van de woning."],
+        ["Wij drukken op de deurbel van het pand.", "drukte", "Ik drukte op de deurbel van het pand."],
+        ["De surveillanten stappen uit de dienstauto.", "stapte", "Ik stapte uit de dienstauto."],
+        ["Wij vragen via de porto informatie op bij het OC.", "vroeg", "Ik vroeg via de porto informatie op bij het OC."],
+        ["Wij pakken de rechter bovenarm van de verdachte vast.", "pakte", "Ik pakte de rechter bovenarm van de verdachte vast."],
+        ["Mijn collega's laten de machtiging tot betreden zien.", "liet", "Ik liet de machtiging tot betreden zien."],
+        ["Wij vinden doorzichtige plastic zakjes met groene kruimels.", "vond", "Ik vond doorzichtige plastic zakjes met groene kruimels."]
     ];
 
     const ontlOpgaven = [
@@ -143,17 +141,7 @@
         ["Ik <u>zag</u> dat hij <u>rende</u>.", "Gezegde"],
         ["Ik gaf <u>mijn collega</u> een portofoonsignaal.", "Meewerkend voorwerp"],
         ["Hij gooide <u>een baksteen</u> door de ruit.", "Lijdend voorwerp"],
-        ["De diefstal gebeurde <u>omstreeks 22:00 uur</u>.", "Bijwoordelijke bepaling"],
-        ["<u>De officier</u> gaf toestemming voor de inval.", "Onderwerp"],
-        ["De hond <u>heeft</u> de geur <u>gevolgd</u>.", "Gezegde"],
-        ["Ik overhandigde <u>de benadeelde</u> een formulier.", "Meewerkend voorwerp"],
-        ["Ik hoorde <u>een harde knal</u>.", "Lijdend voorwerp"],
-        ["Hij reed <u>met hoge snelheid</u> weg.", "Bijwoordelijke bepaling"],
-        ["<u>De getuige</u> trilde op haar benen.", "Onderwerp"],
-        ["Wij <u>moesten</u> geweld <u>gebruiken</u>.", "Gezegde"],
-        ["Ik wees <u>de verdachte</u> op zijn rechten.", "Meewerkend voorwerp"],
-        ["De man trapte <u>de deur</u> in.", "Lijdend voorwerp"],
-        ["De patrouille bleef <u>ter plaatse</u>.", "Bijwoordelijke bepaling"]
+        ["De diefstal gebeurde <u>omstreeks 22:00 uur</u>.", "Bijwoordelijke bepaling"]
     ];
 
     window.startLesson = () => {
@@ -171,11 +159,10 @@
         wwList.innerHTML = "";
         wwOpgaven.forEach((o, i) => {
             wwList.innerHTML += `<div class="sentence-row">
-                <span style="width:20px">${i+1}.</span> 
-                <span style="width:180px; color:#666">${o[0]}</span> 
-                <span>&rarr; Ik</span> 
-                <input type="text" class="ww-input" id="wwinp-${i}" placeholder="...">
-                <span style="color:#999">...de rest van de zin.</span>
+                <span style="width:250px; color:#444">${o[0]}</span> 
+                <span>&rarr;</span> 
+                <input type="text" class="ww-input" id="wwinp-${i}" placeholder="Typ de PV-vorm...">
+                <span style="color:#888; font-style:italic">... de rest van de zin.</span>
             </div>`;
         });
 
@@ -183,11 +170,60 @@
         ontlList.innerHTML = "";
         ontlOpgaven.forEach((o, i) => {
             ontlList.innerHTML += `<div class="sentence-row">
-                <span style="width:20px">${i+1}.</span> ${o[0]}
-                <span class="drop-zone" id="dz-${i}" data-correct="${o[1]}" ondrop="drop(event)" ondragover="allowDrop(event)">... sleep hier ...</span>
+                <span>${o[0]}</span>
+                <span class="drop-zone" id="dz-${i}" ondrop="drop(event)" ondragover="allowDrop(event)">... sleep hier ...</span>
             </div>`;
         });
     }
+
+    window.updateLiveFeed = () => {
+        const t = document.getElementById('pvText').value;
+        const feed = document.getElementById('live-feed');
+        if(t.length < 5) { feed.innerHTML = "Wacht op invoer..."; return; }
+        
+        let msg = "Live analyse: ";
+        if(t.includes("wij ") || t.includes("Wij ")) msg += "⚠️ Gebruik ik-vorm. ";
+        if(!t.includes("zag") && !t.includes("hoorde") && !t.includes("bevond")) msg += "ℹ️ Gebruik zintuiglijke waarnemingen. ";
+        feed.innerHTML = msg;
+    };
+
+    window.submitPV = () => {
+        const t = document.getElementById('pvText').value;
+        document.getElementById('feedback-feed').innerHTML = "<strong>Feedback:</strong> PV succesvol ontvangen. Inhoud wordt getoetst op Redenen van Wetenschap. Geen interrupties gedetecteerd.";
+        push(ref(db, 'aangiftes'), { agent, klas, inhoud: t });
+    };
+
+    window.checkWW = () => {
+        let s = 0;
+        wwOpgaven.forEach((o, i) => {
+            const inp = document.getElementById(`wwinp-${i}`);
+            if(inp.value.trim().toLowerCase() === o[1].toLowerCase()) {
+                s++; inp.style.borderColor = "green";
+            } else {
+                inp.style.borderColor = "red";
+            }
+        });
+        set(ref(db, `scores/${klas}/${agent}/spelling`), s);
+    };
+
+    window.checkOntleding = () => {
+        let s = 0;
+        ontlOpgaven.forEach((o, i) => {
+            const dz = document.getElementById(`dz-${i}`);
+            if(dz.innerText === o[1]) { s++; dz.style.color = "green"; } else { dz.style.color = "red"; }
+        });
+        set(ref(db, `scores/${klas}/${agent}/ontleding`), s);
+    };
+
+    window.resetAll = () => {
+        if(confirm("Alle velden leegmaken?")) {
+            document.getElementById('pvText').value = "";
+            document.querySelectorAll('.ww-input').forEach(i => { i.value = ""; i.style.borderColor = "var(--p-blauw)"; });
+            document.querySelectorAll('.drop-zone').forEach(d => { d.innerText = "... sleep hier ..."; d.style.color = "black"; });
+            document.getElementById('live-feed').innerHTML = "Wacht op invoer...";
+            document.getElementById('feedback-feed').innerHTML = "Feedbackfeed: Na inleveren verschijnt hier de analyse.";
+        }
+    };
 
     window.showPage = (id, btn) => {
         document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
@@ -199,52 +235,6 @@
     window.drag = (ev) => ev.dataTransfer.setData("text", ev.target.innerText);
     window.allowDrop = (ev) => ev.preventDefault();
     window.drop = (ev) => { ev.preventDefault(); ev.target.innerText = ev.dataTransfer.getData("text"); };
-
-    window.checkWW = () => {
-        let s = 0;
-        wwOpgaven.forEach((o, i) => {
-            const inp = document.getElementById(`wwinp-${i}`);
-            if(inp.value.trim().toLowerCase() === o[1].toLowerCase()) {
-                s++;
-                inp.style.borderColor = "green";
-            } else {
-                inp.style.borderColor = "red";
-            }
-        });
-        set(ref(db, `scores/${klas}/${agent}/spelling`), s);
-        alert(`Score: ${s}/${wwOpgaven.length}. Rode velden zijn onjuist.`);
-    };
-
-    window.checkOntleding = () => {
-        let s = 0;
-        ontlOpgaven.forEach((o, i) => {
-            const dz = document.getElementById(`dz-${i}`);
-            if(dz.innerText === o[1]) { s++; dz.style.color = "green"; } else { dz.style.color = "red"; }
-        });
-        set(ref(db, `scores/${klas}/${agent}/ontleding`), s);
-        alert(`Geregistreerd: ${s}/${ontlOpgaven.length} zinsdelen correct.`);
-    };
-
-    window.submitPV = () => {
-        const t = document.getElementById('pvText').value;
-        if(t) push(ref(db, 'aangiftes'), { agent, klas, inhoud: t });
-        alert("Het Proces-verbaal is verstuurd.");
-    };
-
-    window.resetAll = () => {
-        if(confirm("Alle antwoorden wissen voor een nieuwe poging?")) {
-            document.querySelectorAll('.ww-input').forEach(inp => {
-                inp.value = "";
-                inp.style.borderColor = "var(--p-blauw)";
-            });
-            document.querySelectorAll('.drop-zone').forEach(dz => {
-                dz.innerText = "... sleep hier ...";
-                dz.style.color = "black";
-            });
-            document.getElementById('pvText').value = "";
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    };
 </script>
 </body>
 </html>
