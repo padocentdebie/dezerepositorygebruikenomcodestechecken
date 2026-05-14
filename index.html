@@ -12,25 +12,26 @@
         .login-card { background: white; padding: 40px; width: 350px; border-radius: 2px; text-align: center; }
         
         .container { max-width: 1000px; margin: 20px auto; background: var(--wit); padding: 40px; border-top: 10px solid var(--p-blauw); }
-        .nav-tabs { display: flex; border-bottom: 2px solid var(--p-blauw); margin-bottom: 30px; }
+        .nav-tabs { display: flex; border-bottom: 2px solid var(--p-blauw); margin-bottom: 10px; }
         .nav-btn { padding: 15px 25px; border: none; background: none; cursor: pointer; font-weight: bold; color: var(--p-blauw); opacity: 0.6; }
         .nav-btn.active { opacity: 1; border-bottom: 4px solid var(--p-geel); }
 
         .sub-page { display: none; }
         .sub-page.active { display: block; }
 
-        .instruction { background: #fffde7; border-left: 5px solid var(--p-geel); padding: 15px; margin-bottom: 20px; font-size: 14px; color: #333; }
+        .instruction { background: #fffde7; border-left: 5px solid var(--p-geel); padding: 15px; margin-bottom: 20px; font-size: 14px; color: #333; line-height: 1.6; }
         .exercise-list { display: flex; flex-direction: column; gap: 8px; }
         .sentence-row { padding: 12px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 14px; }
         
-        select { padding: 6px; border: 1px solid var(--p-blauw); border-radius: 0; font-size: 14px; background: white; }
+        input[type="text"].ww-input { padding: 8px; border: 1px solid var(--p-blauw); border-radius: 0; font-size: 14px; width: 140px; }
         .drop-zone { min-width: 180px; min-height: 30px; border-bottom: 2px dashed var(--p-blauw); background: #f0f4f8; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold; }
         
         .drag-container { position: sticky; top: 0; background: white; padding: 15px; border: 2px solid var(--p-blauw); margin-bottom: 20px; display: flex; gap: 8px; flex-wrap: wrap; z-index: 10; }
         .drag-item { background: var(--p-blauw); color: white; padding: 6px 12px; cursor: grab; font-size: 11px; text-transform: uppercase; }
 
         .btn-check { background: var(--p-blauw); color: white; border: none; padding: 15px; font-weight: bold; cursor: pointer; margin-top: 20px; width: 100%; }
-        textarea { width: 100%; padding: 15px; border: 1px solid #ccc; font-family: 'Courier New', monospace; }
+        .btn-reset { background: #666; color: white; border: none; padding: 10px; font-weight: bold; cursor: pointer; width: 100%; margin-bottom: 20px; }
+        textarea { width: 100%; padding: 15px; border: 1px solid #ccc; font-family: 'Courier New', monospace; box-sizing: border-box; }
     </style>
 </head>
 <body>
@@ -54,21 +55,24 @@
         <button class="nav-btn active" onclick="showPage('page-aangifte', this)">1. PV PRISCILLA</button>
         <button class="nav-btn" onclick="showPage('page-ww', this)">2. REDENEN VAN WETENSCHAP (22)</button>
         <button class="nav-btn" onclick="showPage('page-ontleding', this)">3. ZINSONTLEDING (20)</button>
-        <button onclick="resetAll()" class="btn-check" style="background: #666; margin-top: 10px;">ALLES RESETTEN / NIEUWE POGING</button>
     </nav>
+    <button onclick="resetAll()" class="btn-reset">ALLES RESETTEN / NIEUWE POGING</button>
 
-    <!-- SCHERM 1: PV -->
+    <!-- SCHERM 1: PV PRISCILLA -->
     <div id="page-aangifte" class="sub-page active">
-        <div class="instruction">Stel hier het Proces-verbaal op. Schrijf in de ik-vorm (OVT).</div>
-        <textarea id="pvText" rows="15" placeholder="Ik, [Naam], verbalisant..."></textarea>
+        <div class="instruction">
+            <strong>Casus Priscilla:</strong> Mevrouw Priscilla van den Broek heeft aangifte gedaan van een inbraak in haar woning aan de Keizersgracht. Zij kwam gisteravond thuis en trof een geforceerd raam aan. Er zijn sieraden en een laptop gestolen.<br><br>
+            <strong>Opdracht:</strong> Stel hier de 'Redenen van Wetenschap' op voor het Proces-verbaal. Schrijf strikt in de <strong>eerste persoon enkelvoud (ik)</strong> en in de <strong>onvoltooid verleden tijd (OVT)</strong>.
+        </div>
+        <textarea id="pvText" rows="15" placeholder="Ik, verbalisant, bevond mij op..."></textarea>
         <button onclick="submitPV()" class="btn-check" style="background: var(--p-geel); color: black;">PV DEFINITIEF VERZENDEN</button>
     </div>
 
-    <!-- SCHERM 2: WERKWOORDSPELLING OVT 1e PERSOON -->
+    <!-- SCHERM 2: WERKWOORDSPELLING OVT (INVULLEN) -->
     <div id="page-ww" class="sub-page">
         <div class="instruction">
-            <strong>Opdracht:</strong> Zet de zin om naar een correcte zin voor een PV (Redenen van Wetenschap). 
-            Schrijf in de <strong>eerste persoon enkelvoud (ik)</strong> en in de <strong>verleden tijd (OVT)</strong>.
+            <strong>Opdracht:</strong> Vervoeg het werkwoord correct voor een PV (Redenen van Wetenschap).<br>
+            Gebruik de <strong>ik-vorm</strong> in de <strong>verleden tijd (OVT)</strong>.
         </div>
         <div class="exercise-list" id="ww-list"></div>
         <button onclick="checkWW()" class="btn-check">SCORES VERWERKEN</button>
@@ -91,7 +95,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getDatabase, ref, push, onValue, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBj8dXkl1rEfyx54_MDy_tYd2P7kAeU8VQ",
@@ -104,30 +108,29 @@
     const db = getDatabase(app);
     let agent = ""; let klas = "";
 
-    // Opgaven Werkwoordspelling: Van TT Meervoud naar OVT Ik-vorm
     const wwOpgaven = [
-        ["Wij vermoeden een misdrijf.", "Ik vermoedde een misdrijf.", "vermoedde", "vermoede"],
-        ["Wij antwoorden op de roep.", "Ik antwoordde op de roep.", "antwoordde", "antwoorde"],
-        ["Wij melden het incident.", "Ik meldde het incident.", "meldde", "melde"],
-        ["Wij arresteren de dader.", "Ik arresteerde de dader.", "arresteerde", "arresterde"],
-        ["Wij horen de getuige.", "Ik hoorde de getuige.", "hoorde", "hoorde"],
-        ["Wij verdenken de man.", "Ik verdacht de man.", "verdacht", "verdachte"],
-        ["Wij belanden in de sloot.", "Ik belandde in de sloot.", "belandde", "belande"],
-        ["Wij achterhalen de naam.", "Ik achterhaalde de naam.", "achterhaalde", "achterhaalde"],
-        ["Wij beantwoorden de vraag.", "Ik beantwoordde de vraag.", "beantwoordde", "antwoorde"],
-        ["Wij bevrijden het dier.", "Ik bevrijdde het dier.", "bevrijdde", "bevrijde"],
-        ["Wij bereiden het voor.", "Ik bereidde het voor.", "bereidde", "bereide"],
-        ["Wij vermelden de tijd.", "Ik vermeldde de tijd.", "vermeldde", "vermelde"],
-        ["Wij schudden de verdachte.", "Ik schudde de verdachte.", "schudde", "schude"],
-        ["Wij wenden het gevaar af.", "Ik wendde het gevaar af.", "wendde", "wende"],
-        ["Wij stranden bij de grens.", "Ik strandde bij de grens.", "strandde", "strande"],
-        ["Wij branden de deur open.", "Ik brandde de deur open.", "brandde", "brande"],
-        ["Wij dichten het lek.", "Ik dichtte het lek.", "dichtte", "dichte"],
-        ["Wij kruisen het pad.", "Ik kruiste het pad.", "kruiste", "kruisde"],
-        ["Wij rusten na de dienst.", "Ik rustte na de dienst.", "rustte", "ruste"],
-        ["Wij tappen de telefoon.", "Ik tapte de telefoon.", "tapte", "tabde"],
-        ["Wij zetten de achtervolging in.", "Ik zette de achtervolging in.", "zette", "zette"],
-        ["Wij praten met de buurman.", "Ik praatte met de buurman.", "praatte", "prate"]
+        ["Wij vermoeden een misdrijf.", "vermoedde"],
+        ["Wij antwoorden op de roep.", "antwoordde"],
+        ["Wij melden het incident.", "meldde"],
+        ["Wij arresteren de dader.", "arresteerde"],
+        ["Wij horen de getuige.", "hoorde"],
+        ["Wij verdenken de man.", "verdacht"],
+        ["Wij belanden in de sloot.", "belandde"],
+        ["Wij achterhalen de naam.", "achterhaalde"],
+        ["Wij beantwoorden de vraag.", "beantwoordde"],
+        ["Wij bevrijden het dier.", "bevrijdde"],
+        ["Wij bereiden het voor.", "bereidde"],
+        ["Wij vermelden de tijd.", "vermeldde"],
+        ["Wij schudden de verdachte.", "schudde"],
+        ["Wij wenden het gevaar af.", "wendde"],
+        ["Wij stranden bij de grens.", "strandde"],
+        ["Wij branden de deur open.", "brandde"],
+        ["Wij dichten het lek.", "dichtte"],
+        ["Wij kruisen het pad.", "kruiste"],
+        ["Wij rusten na de dienst.", "rustte"],
+        ["Wij tappen de telefoon.", "tapte"],
+        ["Wij zetten de achtervolging in.", "zette"],
+        ["Wij praten met de buurman.", "praatte"]
     ];
 
     const ontlOpgaven = [
@@ -165,21 +168,19 @@
 
     function initApp() {
         const wwList = document.getElementById('ww-list');
+        wwList.innerHTML = "";
         wwOpgaven.forEach((o, i) => {
             wwList.innerHTML += `<div class="sentence-row">
                 <span style="width:20px">${i+1}.</span> 
                 <span style="width:180px; color:#666">${o[0]}</span> 
                 <span>&rarr; Ik</span> 
-                <select id="wwsel-${i}">
-                    <option value="">-- kies spelling --</option>
-                    <option value="${o[2]}">${o[2]}</option>
-                    <option value="${o[3]}">${o[3]}</option>
-                </select>
+                <input type="text" class="ww-input" id="wwinp-${i}" placeholder="...">
                 <span style="color:#999">...de rest van de zin.</span>
             </div>`;
         });
 
         const ontlList = document.getElementById('ontleding-list');
+        ontlList.innerHTML = "";
         ontlOpgaven.forEach((o, i) => {
             ontlList.innerHTML += `<div class="sentence-row">
                 <span style="width:20px">${i+1}.</span> ${o[0]}
@@ -202,10 +203,16 @@
     window.checkWW = () => {
         let s = 0;
         wwOpgaven.forEach((o, i) => {
-            if(document.getElementById(`wwsel-${i}`).value === o[2]) s++;
+            const inp = document.getElementById(`wwinp-${i}`);
+            if(inp.value.trim().toLowerCase() === o[1].toLowerCase()) {
+                s++;
+                inp.style.borderColor = "green";
+            } else {
+                inp.style.borderColor = "red";
+            }
         });
         set(ref(db, `scores/${klas}/${agent}/spelling`), s);
-        alert(`Geregistreerd: ${s}/${wwOpgaven.length} correcte PV-vormen.`);
+        alert(`Score: ${s}/${wwOpgaven.length}. Rode velden zijn onjuist.`);
     };
 
     window.checkOntleding = () => {
@@ -215,34 +222,28 @@
             if(dz.innerText === o[1]) { s++; dz.style.color = "green"; } else { dz.style.color = "red"; }
         });
         set(ref(db, `scores/${klas}/${agent}/ontleding`), s);
-        alert(`Geregistreerd: ${s}/${ontlOpgaven.length} zinsdelen correct benoemd.`);
+        alert(`Geregistreerd: ${s}/${ontlOpgaven.length} zinsdelen correct.`);
     };
 
     window.submitPV = () => {
         const t = document.getElementById('pvText').value;
         if(t) push(ref(db, 'aangiftes'), { agent, klas, inhoud: t });
-        alert("PV opgeslagen in klasarchief.");
-        window.resetAll = () => {
-    if(confirm("Weet je zeker dat je alle antwoorden wilt wissen voor een nieuwe poging?")) {
-        // 1. Reset alle dropdowns (werkwoorden)
-        document.querySelectorAll('select[id^="wwsel-"]').forEach(select => {
-            select.selectedIndex = 0;
-        });
+        alert("Het Proces-verbaal is verstuurd.");
+    };
 
-        // 2. Reset alle drop-zones (ontleding)
-        document.querySelectorAll('.drop-zone').forEach(dz => {
-            dz.innerText = "... sleep hier ...";
-            dz.style.color = "black";
-        });
-
-        // 3. Wis het PV tekstveld
-        const pvField = document.getElementById('pvText');
-        if(pvField) pvField.value = "";
-
-        // 4. Scroll naar boven voor een frisse start
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-};
+    window.resetAll = () => {
+        if(confirm("Alle antwoorden wissen voor een nieuwe poging?")) {
+            document.querySelectorAll('.ww-input').forEach(inp => {
+                inp.value = "";
+                inp.style.borderColor = "var(--p-blauw)";
+            });
+            document.querySelectorAll('.drop-zone').forEach(dz => {
+                dz.innerText = "... sleep hier ...";
+                dz.style.color = "black";
+            });
+            document.getElementById('pvText').value = "";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     };
 </script>
 </body>
