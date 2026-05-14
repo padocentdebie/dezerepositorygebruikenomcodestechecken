@@ -3,172 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PV Aangifte - Les 6 - Politieacademie</title>
+    <title>Politieacademie - PV Spelling & Ontleding</title>
     <style>
-        :root {
-            --politie-blauw: #00205b;
-            --politie-geel: #fcc917;
-            --licht-grijs: #f4f4f4;
-            --wit: #ffffff;
-            --gevaar-rood: #d9534f;
-            --succes-groen: #28a745;
-        }
+        :root { --p-blauw: #00205b; --p-geel: #fcc917; --wit: #ffffff; --grijs: #f4f4f4; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--grijs); margin: 0; padding: 0; }
+        
+        #login-overlay { position: fixed; inset: 0; background: var(--p-blauw); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        .login-card { background: white; padding: 40px; width: 350px; border-radius: 2px; text-align: center; }
+        
+        .container { max-width: 1000px; margin: 20px auto; background: var(--wit); padding: 40px; border-top: 10px solid var(--p-blauw); }
+        .nav-tabs { display: flex; border-bottom: 2px solid var(--p-blauw); margin-bottom: 30px; }
+        .nav-btn { padding: 15px 25px; border: none; background: none; cursor: pointer; font-weight: bold; color: var(--p-blauw); opacity: 0.6; }
+        .nav-btn.active { opacity: 1; border-bottom: 4px solid var(--p-geel); }
 
-        body { font-family: Arial, sans-serif; background-color: var(--licht-grijs); margin: 0; padding: 20px; color: #333; }
-        .container { max-width: 900px; margin: 0 auto; background: var(--wit); padding: 30px; border-top: 8px solid var(--politie-blauw); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .sub-page { display: none; }
+        .sub-page.active { display: block; }
 
-        /* Schermbeheer */
-        .page { display: none; }
-        .active { display: block; }
+        .instruction { background: #fffde7; border-left: 5px solid var(--p-geel); padding: 15px; margin-bottom: 20px; font-size: 14px; color: #333; }
+        .exercise-list { display: flex; flex-direction: column; gap: 8px; }
+        .sentence-row { padding: 12px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 14px; }
+        
+        select { padding: 6px; border: 1px solid var(--p-blauw); border-radius: 0; font-size: 14px; background: white; }
+        .drop-zone { min-width: 180px; min-height: 30px; border-bottom: 2px dashed var(--p-blauw); background: #f0f4f8; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold; }
+        
+        .drag-container { position: sticky; top: 0; background: white; padding: 15px; border: 2px solid var(--p-blauw); margin-bottom: 20px; display: flex; gap: 8px; flex-wrap: wrap; z-index: 10; }
+        .drag-item { background: var(--p-blauw); color: white; padding: 6px 12px; cursor: grab; font-size: 11px; text-transform: uppercase; }
 
-        /* Navigatie */
-        .nav-tabs { display: flex; gap: 5px; margin-bottom: 20px; border-bottom: 2px solid var(--politie-blauw); padding-bottom: 10px; flex-wrap: wrap; }
-        .nav-btn { padding: 8px 15px; background: #eee; border: none; cursor: pointer; font-weight: bold; font-size: 12px; }
-        .nav-btn.active { background: var(--politie-blauw); color: white; }
-
-        /* Login */
-        #login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--politie-blauw); display: flex; justify-content: center; align-items: center; z-index: 1000; }
-        .login-card { background: white; padding: 40px; border-radius: 4px; width: 400px; }
-
-        /* Instructieblokje Styling */
-        .instruction-box { background: #f9f9f9; border: 1px solid #ccc; padding: 20px; margin-bottom: 25px; line-height: 1.6; }
-        .instruction-box h3 { margin-top: 0; color: var(--politie-blauw); border-bottom: 1px solid #ccc; padding-bottom: 5px; }
-        .instruction-box ul { padding-left: 20px; margin: 5px 0; }
-
-        /* Drag & Drop Styling */
-        .drop-zone { display: inline-block; min-width: 140px; min-height: 25px; border-bottom: 2px dashed var(--politie-blauw); vertical-align: bottom; margin: 0 5px; padding: 2px 5px; background: #fffde7; text-align: center; font-weight: bold; color: var(--politie-blauw); }
-        .drag-items { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; background: #eee; padding: 15px; border-radius: 4px; }
-        .drag-item { background: var(--politie-blauw); color: white; padding: 8px 12px; cursor: grab; font-size: 12px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.2); }
-        .drag-item:active { cursor: grabbing; }
-
-        /* Leaderboard */
-        .leaderboard-table { width: 100%; margin-top: 20px; border-collapse: collapse; background: white; }
-        .leaderboard-table th, .leaderboard-table td { padding: 10px; border: 1px solid #ddd; text-align: left; font-size: 13px; }
-        .leaderboard-table th { background: var(--politie-blauw); color: white; }
-
-        textarea { width: 100%; padding: 10px; border: 1px solid #999; font-family: 'Courier New', monospace; box-sizing: border-box; }
-        .pv-item { background: #fff; border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; }
-        #feedContent { max-height: 400px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; }
+        .btn-check { background: var(--p-blauw); color: white; border: none; padding: 15px; font-weight: bold; cursor: pointer; margin-top: 20px; width: 100%; }
+        textarea { width: 100%; padding: 15px; border: 1px solid #ccc; font-family: 'Courier New', monospace; }
     </style>
 </head>
 <body>
 
 <div id="login-overlay">
     <div class="login-card">
-        <h2 style="color: var(--politie-blauw); margin-top:0;">LOGIN LES 6</h2>
-        <input type="text" id="userFirstName" placeholder="Voornaam" style="width: 100%; padding: 8px; margin-bottom: 10px;">
-        <select id="userClass" style="width: 100%; padding: 8px; margin-bottom: 20px;">
-            <option value="Alpha">Alpha</option>
-            <option value="Bravo">Bravo</option>
-            <option value="Delta">Delta</option>
-            <option value="Echo">Echo</option>
-            <option value="Foxtrot">Foxtrot</option>
-            <option value="Golf">Golf</option>
-            <option value="Hotel">Hotel</option>
-            <option value="Juliett">Juliett</option>
-            <option value="Kilo">Kilo</option>
-            <option value="Lima">Lima</option>
-            <option value="Mike">Mike</option>
+        <h2 style="color: var(--p-blauw)">MELDING IDENTITEIT</h2>
+        <input type="text" id="userFirstName" placeholder="Achternaam Agent" style="width: 100%; padding: 12px; margin-bottom: 15px; box-sizing: border-box;">
+        <select id="userClass" style="width: 100%; padding: 12px; margin-bottom: 20px;">
+            <option value="Alpha">Alpha</option><option value="Bravo">Bravo</option><option value="Charlie">Charlie</option>
+            <option value="Delta">Delta</option><option value="Echo">Echo</option><option value="Foxtrot">Foxtrot</option>
+            <option value="Golf">Golf</option><option value="Hotel">Hotel</option><option value="Juliett">Juliett</option>
+            <option value="Kilo">Kilo</option><option value="Lima">Lima</option><option value="Mike">Mike</option>
         </select>
-        <button onclick="startLesson()" style="background: var(--politie-blauw); color: white; width: 100%; padding: 12px; border: none; cursor: pointer; font-weight: bold;">TOEGANG</button>
+        <button onclick="startLesson()" class="btn-check">VERIFICEER</button>
     </div>
 </div>
 
-<div class="container page" id="mainContent">
+<div class="container" id="mainContent" style="display:none;">
     <nav class="nav-tabs">
-        <button class="nav-btn active" onclick="showPage('page-aangifte', this)">1. PV Aangifte</button>
-        <button class="nav-btn" onclick="showPage('page-grammatica', this)">2. Grammatica & Zinsontleding</button>
+        <button class="nav-btn active" onclick="showPage('page-aangifte', this)">1. PV PRISCILLA</button>
+        <button class="nav-btn" onclick="showPage('page-ww', this)">2. REDENEN VAN WETENSCHAP (22)</button>
+        <button class="nav-btn" onclick="showPage('page-ontleding', this)">3. ZINSONTLEDING (20)</button>
     </nav>
 
-    <!-- SCHERM 1: AANGIFTE (ONGEMOEID) -->
+    <!-- SCHERM 1: PV -->
     <div id="page-aangifte" class="sub-page active">
-        <header>
-            <h1>PROCES-VERBAAL VAN AANGIFTE - LES 6</h1>
-            <p id="classDisplay" style="font-weight:bold;"></p>
-        </header>
-        <div class="instruction-box">
-            <strong>STAPPENPLAN:</strong> Verhoor Priscilla en stel hieronder je PV op.
-            <div style="text-align: center; margin-top: 15px;">
-                <a href="https://gemini.google.com/gem/1S-TbiyvMUv6QySJN4yJMjYbnyeg9lmul?usp=sharing" target="_blank" style="background: var(--politie-blauw); color: white; padding: 10px; text-decoration: none; font-weight: bold;">START VERHOOR</a>
-            </div>
-        </div>
-        <textarea id="pvText" rows="10" placeholder="Start hier uw verslaglegging..."></textarea>
-        <button onclick="submitPV()" style="background: var(--politie-blauw); color: white; margin-top: 10px; padding: 10px 20px; border: none; cursor: pointer;">PV INLEVEREN</button>
-        <div id="livefeed" style="margin-top:30px;">
-            <h3>LIVEFEED AANGIFTES</h3>
-            <div id="feedContent">Laden...</div>
-        </div>
+        <div class="instruction">Stel hier het Proces-verbaal op. Schrijf in de ik-vorm (OVT).</div>
+        <textarea id="pvText" rows="15" placeholder="Ik, [Naam], verbalisant..."></textarea>
+        <button onclick="submitPV()" class="btn-check" style="background: var(--p-geel); color: black;">PV DEFINITIEF VERZENDEN</button>
     </div>
 
-    <!-- SCHERM 2: GRAMMATICA & ZINSONTLEDING (NU INCLUSIEF INSTRUCTIEBLOK) -->
-    <div id="page-grammatica" class="sub-page" style="display:none;">
-        <header><h1>ZINSONTLEDING OEFENEN</h1></header>
-
-        <!-- HET INSTRUCTIEBLOKJE -->
-        <div class="instruction-box">
-            <h3>Persoonsvorm</h3>
-            <p>Belangrijkste werkwoord:</p>
-            <ul>
-                <li>geeft de verleden tijd of de tegenwoordige tijd aan.</li>
-                <li>geeft enkelvoud of meervoud aan.</li>
-            </ul>
-            
-            <h3>Onderwerp</h3>
-            <p>Hoofdrolspeler(s) in de zin. Voert of voeren het belangrijkste werkwoord uit.</p>
-
-            <h3>Gezegde</h3>
-            <p>Alle werkwoorden in de zin.</p>
-            <p><em>* let op de hulpwerkwoorden zijn hebben worden en</em></p>
-            <p><em>* let op het voltooid deelwoord</em></p>
-
-            <h3>Lijdend voorwerp</h3>
-            <p>Tweede speler in de zin.<br>
-            Je vindt het lijdend voorwerp door de vraag te stellen: <strong>Wie of wat + gezegde + onderwerp?</strong></p>
-
-            <h3>Meewerkend voorwerp</h3>
-            <p>Derde speler in de zin.<br>
-            Je vindt het meewerkend voorwerp door de vraag te stellen: <strong>Aan wie/Voor wie + gezegde + onderwerp + lijdend voorwerp?</strong></p>
-
-            <h3>Bijwoordelijke bepalingen</h3>
-            <p>Stukjes informatie in de zin die gaan over:</p>
-            <ul>
-                <li>plaats</li>
-                <li>tijd</li>
-                <li>hoedanigheid</li>
-            </ul>
+    <!-- SCHERM 2: WERKWOORDSPELLING OVT 1e PERSOON -->
+    <div id="page-ww" class="sub-page">
+        <div class="instruction">
+            <strong>Opdracht:</strong> Zet de zin om naar een correcte zin voor een PV (Redenen van Wetenschap). 
+            Schrijf in de <strong>eerste persoon enkelvoud (ik)</strong> en in de <strong>verleden tijd (OVT)</strong>.
         </div>
+        <div class="exercise-list" id="ww-list"></div>
+        <button onclick="checkWW()" class="btn-check">SCORES VERWERKEN</button>
+    </div>
 
-        <!-- DE OEFENING -->
-        <div id="drag-drop-oefening" style="margin-top: 40px; padding-top: 20px; border-top: 2px solid var(--politie-blauw);">
-            <h3>DRAG & DROP: BENOEM DE ZINSDELEN</h3>
-            <p>Sleep het juiste zinsdeel naar de lege plek in de zin.</p>
-            
-            <div class="drag-items" id="options">
-                <div class="drag-item" draggable="true" ondragstart="drag(event)" id="pv">Persoonsvorm</div>
-                <div class="drag-item" draggable="true" ondragstart="drag(event)" id="on">Onderwerp</div>
-                <div class="drag-item" draggable="true" ondragstart="drag(event)" id="gz">Gezegde</div>
-                <div class="drag-item" draggable="true" ondragstart="drag(event)" id="lv">Lijdend voorwerp</div>
-                <div class="drag-item" draggable="true" ondragstart="drag(event)" id="mv">Meewerkend voorwerp</div>
-                <div class="drag-item" draggable="true" ondragstart="drag(event)" id="bb">Bijwoordelijke bepaling</div>
-            </div>
-
-            <div class="exercise-sentences" style="background: white; padding: 20px; border: 1px solid #ddd;">
-                <p>1. <span class="drop-zone" data-correct="Onderwerp" ondrop="drop(event)" ondragover="allowDrop(event)">...</span> <strong>arresteerde</strong> gisteren de verdachte op heterdaad.</p>
-                <p>2. De officier van justitie <strong>heeft</strong> de agenten <span class="drop-zone" data-correct="Lijdend voorwerp" ondrop="drop(event)" ondragover="allowDrop(event)">...</span> <strong>gegeven</strong>.</p>
-                <p>3. In de vroege ochtend <span class="drop-zone" data-correct="Persoonsvorm" ondrop="drop(event)" ondragover="allowDrop(event)">...</span> de rechercheur een belangrijk spoor.</p>
-                <p>4. De wijkagent <strong>geeft</strong> <span class="drop-zone" data-correct="Meewerkend voorwerp" ondrop="drop(event)" ondragover="allowDrop(event)">...</span> een duidelijke waarschuwing.</p>
-                <p>5. Het hele team <span class="drop-zone" data-correct="Gezegde" ondrop="drop(event)" ondragover="allowDrop(event)">...</span> de hele dag aan het dossier.</p>
-                <p>6. De verdachte werd direct <span class="drop-zone" data-correct="Bijwoordelijke bepaling" ondrop="drop(event)" ondragover="allowDrop(event)">...</span> naar het bureau gebracht.</p>
-            </div>
-            
-            <button onclick="checkOntleding()" style="margin-top: 20px; background: var(--politie-geel); border: none; padding: 12px 25px; font-weight: bold; cursor: pointer; border-radius: 4px;">CONTROLEER & SCORES OPSLAAN</button>
+    <!-- SCHERM 3: ZINSONTLEDING -->
+    <div id="page-ontleding" class="sub-page">
+        <div class="instruction">Sleep de zinsdelen naar de juiste plek in de context van politierapporten.</div>
+        <div class="drag-container">
+            <div class="drag-item" draggable="true" ondragstart="drag(event)">Onderwerp</div>
+            <div class="drag-item" draggable="true" ondragstart="drag(event)">Gezegde</div>
+            <div class="drag-item" draggable="true" ondragstart="drag(event)">Lijdend voorwerp</div>
+            <div class="drag-item" draggable="true" ondragstart="drag(event)">Meewerkend voorwerp</div>
+            <div class="drag-item" draggable="true" ondragstart="drag(event)">Bijwoordelijke bepaling</div>
         </div>
-
-        <!-- LEADERBOARD -->
-        <div id="leaderboard-section" style="margin-top: 50px;">
-            <h3 style="color: var(--politie-blauw);">LEADERBOARD ZINSONTLEDING (PER KLAS)</h3>
-            <div id="leaderboard-content">Laden...</div>
-        </div>
+        <div id="ontleding-list" class="exercise-list"></div>
+        <button onclick="checkOntleding()" class="btn-check">SCORES VERWERKEN</button>
     </div>
 </div>
 
@@ -185,101 +101,127 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
-    let currentStudent = "";
-    let currentClass = "";
+    let agent = ""; let klas = "";
 
-    // Login Logica
-    window.startLesson = function() {
-        currentStudent = document.getElementById('userFirstName').value.trim();
-        currentClass = document.getElementById('userClass').value;
-        if(currentStudent) {
+    // Opgaven Werkwoordspelling: Van TT Meervoud naar OVT Ik-vorm
+    const wwOpgaven = [
+        ["Wij vermoeden een misdrijf.", "Ik vermoedde een misdrijf.", "vermoedde", "vermoede"],
+        ["Wij antwoorden op de roep.", "Ik antwoordde op de roep.", "antwoordde", "antwoorde"],
+        ["Wij melden het incident.", "Ik meldde het incident.", "meldde", "melde"],
+        ["Wij arresteren de dader.", "Ik arresteerde de dader.", "arresteerde", "arresterde"],
+        ["Wij horen de getuige.", "Ik hoorde de getuige.", "hoorde", "hoorde"],
+        ["Wij verdenken de man.", "Ik verdacht de man.", "verdacht", "verdachte"],
+        ["Wij belanden in de sloot.", "Ik belandde in de sloot.", "belandde", "belande"],
+        ["Wij achterhalen de naam.", "Ik achterhaalde de naam.", "achterhaalde", "achterhaalde"],
+        ["Wij beantwoorden de vraag.", "Ik beantwoordde de vraag.", "beantwoordde", "antwoorde"],
+        ["Wij bevrijden het dier.", "Ik bevrijdde het dier.", "bevrijdde", "bevrijde"],
+        ["Wij bereiden het voor.", "Ik bereidde het voor.", "bereidde", "bereide"],
+        ["Wij vermelden de tijd.", "Ik vermeldde de tijd.", "vermeldde", "vermelde"],
+        ["Wij schudden de verdachte.", "Ik schudde de verdachte.", "schudde", "schude"],
+        ["Wij wenden het gevaar af.", "Ik wendde het gevaar af.", "wendde", "wende"],
+        ["Wij stranden bij de grens.", "Ik strandde bij de grens.", "strandde", "strande"],
+        ["Wij branden de deur open.", "Ik brandde de deur open.", "brandde", "brande"],
+        ["Wij dichten het lek.", "Ik dichtte het lek.", "dichtte", "dichte"],
+        ["Wij kruisen het pad.", "Ik kruiste het pad.", "kruiste", "kruisde"],
+        ["Wij rusten na de dienst.", "Ik rustte na de dienst.", "rustte", "ruste"],
+        ["Wij tappen de telefoon.", "Ik tapte de telefoon.", "tapte", "tabde"],
+        ["Wij zetten de achtervolging in.", "Ik zette de achtervolging in.", "zette", "zette"],
+        ["Wij praten met de buurman.", "Ik praatte met de buurman.", "praatte", "prate"]
+    ];
+
+    const ontlOpgaven = [
+        ["<u>De verbalisant</u> zag de auto rijden.", "Onderwerp"],
+        ["Ik <u>heb</u> de verdachte <u>staande gehouden</u>.", "Gezegde"],
+        ["Ik vroeg <u>de man</u> naar zijn ID-bewijs.", "Meewerkend voorwerp"],
+        ["De verdachte droeg <u>een zwarte jas</u>.", "Lijdend voorwerp"],
+        ["Het incident vond plaats <u>op de Markt</u>.", "Bijwoordelijke bepaling"],
+        ["<u>Een omstander</u> wees naar de vluchtweg.", "Onderwerp"],
+        ["Ik <u>zag</u> dat hij <u>rende</u>.", "Gezegde"],
+        ["Ik gaf <u>mijn collega</u> een portofoonsignaal.", "Meewerkend voorwerp"],
+        ["Hij gooide <u>een baksteen</u> door de ruit.", "Lijdend voorwerp"],
+        ["De diefstal gebeurde <u>omstreeks 22:00 uur</u>.", "Bijwoordelijke bepaling"],
+        ["<u>De officier</u> gaf toestemming voor de inval.", "Onderwerp"],
+        ["De hond <u>heeft</u> de geur <u>gevolgd</u>.", "Gezegde"],
+        ["Ik overhandigde <u>de benadeelde</u> een formulier.", "Meewerkend voorwerp"],
+        ["Ik hoorde <u>een harde knal</u>.", "Lijdend voorwerp"],
+        ["Hij reed <u>met hoge snelheid</u> weg.", "Bijwoordelijke bepaling"],
+        ["<u>De getuige</u> trilde op haar benen.", "Onderwerp"],
+        ["Wij <u>moesten</u> geweld <u>gebruiken</u>.", "Gezegde"],
+        ["Ik wees <u>de verdachte</u> op zijn rechten.", "Meewerkend voorwerp"],
+        ["De man trapte <u>de deur</u> in.", "Lijdend voorwerp"],
+        ["De patrouille bleef <u>ter plaatse</u>.", "Bijwoordelijke bepaling"]
+    ];
+
+    window.startLesson = () => {
+        agent = document.getElementById('userFirstName').value.trim();
+        klas = document.getElementById('userClass').value;
+        if(agent) {
             document.getElementById('login-overlay').style.display = 'none';
             document.getElementById('mainContent').style.display = 'block';
-            document.getElementById('classDisplay').innerText = `AGENT: ${currentStudent.toUpperCase()} | KLAS: ${currentClass.toUpperCase()}`;
-        } else {
-            alert("Voer a.u.b. je voornaam in.");
+            initApp();
         }
     };
 
-    // Navigatie
-    window.showPage = function(pageId, btn) {
-        document.querySelectorAll('.sub-page').forEach(p => p.style.display = 'none');
-        document.getElementById(pageId).style.display = 'block';
+    function initApp() {
+        const wwList = document.getElementById('ww-list');
+        wwOpgaven.forEach((o, i) => {
+            wwList.innerHTML += `<div class="sentence-row">
+                <span style="width:20px">${i+1}.</span> 
+                <span style="width:180px; color:#666">${o[0]}</span> 
+                <span>&rarr; Ik</span> 
+                <select id="wwsel-${i}">
+                    <option value="">-- kies spelling --</option>
+                    <option value="${o[2]}">${o[2]}</option>
+                    <option value="${o[3]}">${o[3]}</option>
+                </select>
+                <span style="color:#999">...de rest van de zin.</span>
+            </div>`;
+        });
+
+        const ontlList = document.getElementById('ontleding-list');
+        ontlOpgaven.forEach((o, i) => {
+            ontlList.innerHTML += `<div class="sentence-row">
+                <span style="width:20px">${i+1}.</span> ${o[0]}
+                <span class="drop-zone" id="dz-${i}" data-correct="${o[1]}" ondrop="drop(event)" ondragover="allowDrop(event)">... sleep hier ...</span>
+            </div>`;
+        });
+    }
+
+    window.showPage = (id, btn) => {
+        document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
     };
 
-    // Drag & Drop Logica
-    window.allowDrop = (ev) => ev.preventDefault();
     window.drag = (ev) => ev.dataTransfer.setData("text", ev.target.innerText);
-    window.drop = (ev) => {
-        ev.preventDefault();
-        const data = ev.dataTransfer.getData("text");
-        ev.target.innerText = data;
-    };
+    window.allowDrop = (ev) => ev.preventDefault();
+    window.drop = (ev) => { ev.preventDefault(); ev.target.innerText = ev.dataTransfer.getData("text"); };
 
-    // Correctie & Leaderboard
-    window.checkOntleding = () => {
-        let score = 0;
-        const zones = document.querySelectorAll('.drop-zone');
-        const total = zones.length;
-
-        zones.forEach(zone => {
-            if(zone.innerText.trim() === zone.dataset.correct) {
-                score++;
-                zone.style.background = "#c8e6c9"; // Groen
-            } else {
-                zone.style.background = "#ffcdd2"; // Rood
-            }
+    window.checkWW = () => {
+        let s = 0;
+        wwOpgaven.forEach((o, i) => {
+            if(document.getElementById(`wwsel-${i}`).value === o[2]) s++;
         });
-        
-        // Opslaan in Firebase
-        set(ref(db, `zinsontleding_scores/${currentClass}/${currentStudent}`), score);
-        alert(`Je score is ${score} van de ${total}. Je resultaat is opgeslagen in het leaderboard.`);
+        set(ref(db, `scores/${klas}/${agent}/spelling`), s);
+        alert(`Geregistreerd: ${s}/${wwOpgaven.length} correcte PV-vormen.`);
     };
 
-    // Leaderboard Live Update
-    onValue(ref(db, 'zinsontleding_scores'), (snapshot) => {
-        const data = snapshot.val();
-        const container = document.getElementById('leaderboard-content');
-        container.innerHTML = "";
-        
-        if(data) {
-            Object.keys(data).forEach(klas => {
-                let tableHtml = `<h4>Klas ${klas}</h4><table class="leaderboard-table"><tr><th>Naam</th><th>Score</th></tr>`;
-                const studenten = data[klas];
-                const gesorteerd = Object.keys(studenten).sort((a,b) => studenten[b] - studenten[a]);
-                
-                gesorteerd.forEach(naam => {
-                    tableHtml += `<tr><td>${naam}</td><td>${studenten[naam]} pnt</td></tr>`;
-                });
-                tableHtml += `</table>`;
-                container.innerHTML += tableHtml;
-            });
-        }
-    });
-
-    // PV Aangifte Functies (Onveranderd)
-    window.submitPV = function() {
-        const text = document.getElementById('pvText').value;
-        if (text) {
-            push(ref(db, 'aangiftes'), { student: currentStudent, klas: currentClass, inhoud: text });
-            document.getElementById('pvText').value = "";
-            alert("Je PV is ingeleverd en zichtbaar in de feed.");
-        }
+    window.checkOntleding = () => {
+        let s = 0;
+        ontlOpgaven.forEach((o, i) => {
+            const dz = document.getElementById(`dz-${i}`);
+            if(dz.innerText === o[1]) { s++; dz.style.color = "green"; } else { dz.style.color = "red"; }
+        });
+        set(ref(db, `scores/${klas}/${agent}/ontleding`), s);
+        alert(`Geregistreerd: ${s}/${ontlOpgaven.length} zinsdelen correct benoemd.`);
     };
 
-    onValue(ref(db, 'aangiftes'), (snapshot) => {
-        const data = snapshot.val();
-        const feed = document.getElementById('feedContent');
-        feed.innerHTML = "";
-        if (data) {
-            Object.keys(data).reverse().forEach(key => {
-                const item = data[key];
-                feed.innerHTML += `<div class="pv-item"><strong>${item.student} (${item.klas})</strong><p>${item.inhoud}</p></div>`;
-            });
-        }
-    });
+    window.submitPV = () => {
+        const t = document.getElementById('pvText').value;
+        if(t) push(ref(db, 'aangiftes'), { agent, klas, inhoud: t });
+        alert("PV opgeslagen in klasarchief.");
+    };
 </script>
 </body>
 </html>
