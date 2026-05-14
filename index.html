@@ -441,9 +441,9 @@
             const row = document.createElement('div');
             row.className = 'sentence-row';
             row.innerHTML = `
-                <span style="width:320px; font-weight:500;">❌ FOUT (volt.t.t.): ${item.fout}</span>
-                <span style="font-weight:bold;">➡️ Jouw correcte OVT (ik + reden):</span>
-                <input type="text" id="wwAns-${idx}" class="ww-input" placeholder="bijv. ik zag dat ik de verdachte aanhield" style="width:300px;">
+                <span style="width:320px; font-weight:500;">Niet correct: Voltootd Tegenwoordige Tijd: ${item.fout}</span>
+                <span style="font-weight:bold;">Jouw correcte zin:  Onvoltooid Verleden Tijd</span>
+                <input type="text" id="wwAns-${idx}" class="ww-input" placeholder="gebruik de redenen van wetenschap" style="width:300px;">
                 <span style="font-size:12px; color:gray;">*volledige zin in onvoltooid verleden tijd</span>
             `;
             wwContainer.appendChild(row);
