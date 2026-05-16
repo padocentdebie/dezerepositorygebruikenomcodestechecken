@@ -444,7 +444,7 @@ Hier is de aangepaste code met de gewenste functionaliteiten:
             const heeftWaarneming = /ik zag|ik hoorde|ik rook|ik voelde/i.test(tekst);
             const heeftOVT = /\b(deed|stond|liep|vond|hoorde|zag|nam|pakte|opende|vroeg|stapte|hield|zette|controleerde|mat|bracht|maakte|sloeg|noteerde|drukte|aanhielden|afnamen|ophingen|openden|stapten|opvroegen|toonden|vonden)\b/i.test(tekst);
             const heeftDatumTijd = /\b(\d{1,2}\s?(januari|februari|maart|april|mei|juni|juli|augustus|september|oktober|november|december|maandag|dinsdag|woensdag|donderdag|vrijdag|zaterdag|zondag)|\d{1,2}:\d{2}\b)/i.test(tekst);
-            if(!heeftWaarneming) fb += "Geen waarnemingswoord. ";
+            if(!heeftWaarneming) fb += "Geen redenen van wetenschap. ";
             if(!heeftOVT) fb += "Geen verleden tijd (OVT). ";
             if(!heeftDatumTijd) fb += "Vermeld dag, datum en tijd. ";
             if(heeftWaarneming && heeftOVT && heeftDatumTijd) fb = "Voldoet aan de eisen (filmisch, OVT, datum/tijd).";
