@@ -72,6 +72,14 @@
             background: var(--p-geel);
             color: black;
         }
+        .btn-reset {
+            background: #dc3545;
+            color: white;
+            margin-top: 10px;
+        }
+        .btn-reset:hover {
+            background: #b02a37;
+        }
         /* Main app */
         .container {
             max-width: 1200px;
@@ -239,6 +247,15 @@
             content: "↗";
             font-size: 1.2em;
         }
+        .login-credentials {
+            font-size: 0.8rem;
+            color: #555;
+            margin-top: 8px;
+            background: #fff3cd;
+            padding: 5px 10px;
+            border-radius: 8px;
+            display: inline-block;
+        }
         /* Stijl voor de leesbare weergave bij inleveren */
         .submitted-pv {
             background: #f8f9fa;
@@ -287,6 +304,7 @@
             <option value="Mike">NATO - Mike</option>
         </select>
         <button class="btn-main btn-geel" onclick="startDienst()">Dienst starten</button>
+        <button class="btn-main btn-reset" onclick="resetVoorLes()">Reset alle velden (begin les)</button>
     </div>
 </div>
 
@@ -300,26 +318,36 @@
     <!-- PV BEVINDINGEN (Aangifte) -->
     <div id="page-pv" class="sub-page active">
         <div class="instruction">
-            <strong>Opdracht PV Bevindingen:</strong> Schrijf een filmisch proces-verbaal op basis van de verklaring van Priscilla. Gebruik verleden tijd (OVT), een waarnemingswoord (zag/hoorde/voelde/rook) en vermeld dag, datum en tijd.
+            <strong>Opdracht PV Bevindingen:</strong> Schrijf een filmisch proces-verbaal op basis van de verklaring van Priscilla.<br>
+            <strong>Vereisten:</strong>
+            <ul style="margin: 5px 0 0 20px;">
+                <li>Verleden tijd (onvoltooid verleden tijd / OVT)</li>
+                <li><strong>Waarneming</strong> – vermeld uw <em>reden van wetenschap</em> (eigen waarneming: "ik zag/hoorde/voelde/rook", of van horen zeggen, etc.)</li>
+                <li>Dag, datum en tijdstip van de waarneming</li>
+            </ul>
         </div>
         
-        <!-- Gemini actiekaart -->
+        <!-- Gemini actiekaart met inloggegevens -->
         <div class="gemini-card">
             <div class="gemini-text">
                 <h3>Lesinstructies en voorbeelden</h3>
                 <p>Bekijk de volledige les met uitleg, voorbeeldzinnen en feedback via Gemini.</p>
+                <div class="login-credentials">
+                    🔑 Inloggen Gemini: <strong>bpostudentleusden@gmail.com</strong> | <strong>Stud3ntl3usd3n</strong><br>
+                    <span style="font-size:0.7rem;">☝️ Nooit wachtwoord opslaan in de browser</span>
+                </div>
             </div>
             <a href="https://gemini.google.com/gem/1S-TbiyvMUv6QySJN4yJMjYbnyeg9lmul?usp=sharing" target="_blank" class="gemini-button">Open in Gemini</a>
         </div>
         
-        <textarea id="inputPV" placeholder="Voorbeeld: Op maandag 10 maart 2025 om 14:30 uur zag ik dat de verdachte wegliep..."></textarea>
+        <textarea id="inputPV" placeholder="Voorbeeld: Op maandag 10 maart 2025 om 14:30 uur zag ik (eigen waarneming) dat de verdachte wegliep..."></textarea>
         
         <div class="live-grid">
             <div><strong>Live voorbeeld:</strong><div id="livePreview" class="live-box"></div></div>
-            <div><strong>Coach feedback:</strong><div id="liveFeedback" class="live-box feedback-box"></div></div>
+            <div><strong>Coach feedback (waarneming & OVT):</strong><div id="liveFeedback" class="live-box feedback-box"></div></div>
         </div>
 
-        <!-- Nieuw: Studentfeedback veld (onder de livefeed) -->
+        <!-- Studentfeedback veld -->
         <div style="margin: 20px 0;">
             <label for="studentFeedback" style="font-weight: bold; display: block; margin-bottom: 5px;">Eigen feedback / opmerkingen (verplicht voor inlevering):</label>
             <textarea id="studentFeedback" rows="3" placeholder="Typ hier uw eigen reflectie, opmerkingen of vragen bij uw PV..."></textarea>
@@ -327,7 +355,6 @@
 
         <button class="btn-main" onclick="leverPVin()">Inleveren ter beoordeling</button>
         
-        <!-- Hier komt de leesbare weergave van de ingeleverde tekst + studentfeedback -->
         <div id="definitieveFeedback" class="feedback-summary" style="display:none;"></div>
     </div>
 
@@ -339,7 +366,7 @@
         <div id="ww-container"></div>
         <button class="btn-main" onclick="checkWW()">Controleer werkwoorden</button>
         <div class="leaderboard">
-            <strong>Klassement NATO <span id="klasLabel"></span>:</strong>
+            <strong>Klassement NATO <span id="klasLabel"></span> (op naam):</strong>
             <div id="leaderboard-list">Nog geen scores</div>
         </div>
     </div>
@@ -390,6 +417,46 @@
     let currentAgent = "";
     let currentKlas = "";
 
+    function resetVoorLes() {
+        sessionStorage.setItem('resetVoortgang', 'true');
+        alert("Alle lesgegevens worden gewist bij de volgende 'Dienst starten'. Klik nu op 'Dienst starten' om met een schone lei te beginnen.");
+    }
+
+    function resetAlleVelden() {
+        // PV-pagina
+        const inputPV = document.getElementById('inputPV');
+        if (inputPV) inputPV.value = "";
+        const studentFeedback = document.getElementById('studentFeedback');
+        if (studentFeedback) studentFeedback.value = "";
+        const definitieveFeedback = document.getElementById('definitieveFeedback');
+        if (definitieveFeedback) {
+            definitieveFeedback.style.display = "none";
+            definitieveFeedback.innerHTML = "";
+        }
+        const livePreview = document.getElementById('livePreview');
+        if (livePreview) livePreview.innerText = "Wacht op invoer...";
+        const liveFeedback = document.getElementById('liveFeedback');
+        if (liveFeedback) liveFeedback.innerText = "Voer tekst in voor analyse...";
+        
+        // Werkwoordpagina
+        for (let i = 0; i < wwOpgaven.length; i++) {
+            const wwInput = document.getElementById(`ww-${i}`);
+            if (wwInput) {
+                wwInput.value = "";
+                wwInput.style.background = "";
+            }
+        }
+        const leaderboardList = document.getElementById('leaderboard-list');
+        if (leaderboardList) leaderboardList.innerHTML = "Nog geen scores";
+        
+        // Zinsontleding
+        const dropZones = document.querySelectorAll('#ontleding-container .drop-zone');
+        dropZones.forEach((zone) => {
+            zone.innerText = "Sleep hier";
+            zone.classList.remove("dropped-correct", "dropped-wrong");
+        });
+    }
+
     function startDienst() {
         currentAgent = document.getElementById('agentNaam').value.trim();
         if (!currentAgent) currentAgent = "Agent";
@@ -399,6 +466,11 @@
         document.getElementById('mainApp').style.display = 'block';
         laadOefeningen();
         initLivePreview();
+        
+        if (sessionStorage.getItem('resetVoortgang') === 'true') {
+            resetAlleVelden();
+            sessionStorage.removeItem('resetVoortgang');
+        }
     }
 
     function laadOefeningen() {
@@ -434,13 +506,14 @@
             const tekst = inputPV.value;
             preview.innerText = tekst || "Wacht op invoer...";
             let fb = "";
-            const heeftWaarneming = /ik zag|ik hoorde|ik rook|ik voelde/i.test(tekst);
+            // Waarneming (reden van wetenschap)
+            const heeftWaarneming = /ik zag|ik hoorde|ik rook|ik voelde|eigen waarneming|van horen zeggen|uit waarneming/i.test(tekst);
             const heeftOVT = /\b(deed|stond|liep|vond|hoorde|zag|nam|pakte|opende|vroeg|stapte|hield|zette|controleerde|mat|bracht|maakte|sloeg|noteerde|drukte|aanhielden|afnamen|ophingen|openden|stapten|opvroegen|toonden|vonden)\b/i.test(tekst);
             const heeftDatumTijd = /\b(\d{1,2}\s?(januari|februari|maart|april|mei|juni|juli|augustus|september|oktober|november|december|maandag|dinsdag|woensdag|donderdag|vrijdag|zaterdag|zondag)|\d{1,2}:\d{2}\b)/i.test(tekst);
-            if(!heeftWaarneming) fb += "Geen redenen van wetenschap. ";
-            if(!heeftOVT) fb += "Geen verleden tijd (OVT). ";
-            if(!heeftDatumTijd) fb += "Vermeld dag, datum en tijd. ";
-            if(heeftWaarneming && heeftOVT && heeftDatumTijd) fb = "Voldoet aan de eisen (filmisch, OVT, datum/tijd).";
+            if(!heeftWaarneming) fb += "⚠️ Geen waarneming / reden van wetenschap (gebruik 'ik zag', 'ik hoorde', 'eigen waarneming', etc.). ";
+            if(!heeftOVT) fb += "⚠️ Geen verleden tijd (OVT). ";
+            if(!heeftDatumTijd) fb += "⚠️ Vermeld dag, datum en tijd. ";
+            if(heeftWaarneming && heeftOVT && heeftDatumTijd) fb = "✅ Voldoet aan de eisen: waarneming (reden van wetenschap) + OVT + datum/tijd.";
             feedbackLive.innerText = fb || "Schrijf verder...";
         });
     }
@@ -451,23 +524,21 @@
         if (!tekst) return alert("Schrijf eerst uw PV.");
         if (!studentFeedback) return alert("Vul uw eigen feedback/opmerkingen in voordat u inlevert.");
 
-        // Controleer op vereiste elementen in de PV
-        const heeftWaarneming = /ik zag|ik hoorde|ik rook|ik voelde/i.test(tekst);
+        const heeftWaarneming = /ik zag|ik hoorde|ik rook|ik voelde|eigen waarneming|van horen zeggen|uit waarneming/i.test(tekst);
         const heeftOVT = /\b(deed|stond|liep|vond|hoorde|zag|nam|pakte|opende|vroeg|stapte|hield|zette|controleerde|mat|bracht|maakte|sloeg|noteerde|drukte|aanhielden|afnamen|ophingen|openden|stapten|opvroegen|toonden|vonden)\b/i.test(tekst);
         const heeftDatumTijd = /\b(\d{1,2}\s?(januari|februari|maart|april|mei|juni|juli|augustus|september|oktober|november|december|maandag|dinsdag|woensdag|donderdag|vrijdag|zaterdag|zondag)|\d{1,2}:\d{2}\b)/i.test(tekst);
         
         let beoordeling = "";
         if (heeftWaarneming && heeftOVT && heeftDatumTijd) {
-            beoordeling = "Goedgekeurd. Uw PV voldoet aan alle eisen.";
+            beoordeling = "Goedgekeurd. Uw PV bevat een geldige waarneming (reden van wetenschap), OVT en datum/tijd.";
         } else {
             let missend = "";
-            if (!heeftWaarneming) missend += "waarnemingswoord ";
+            if (!heeftWaarneming) missend += "waarneming/rede van wetenschap ";
             if (!heeftOVT) missend += "OVT ";
             if (!heeftDatumTijd) missend += "dag/datum/tijd";
             beoordeling = `Afkeuring. Ontbrekend: ${missend}`;
         }
 
-        // Bouw de leesbare weergave
         const inleverDatum = new Date().toLocaleString();
         const leesbareWeergave = `
             <div class="submitted-pv">
@@ -487,8 +558,6 @@
         const fbDiv = document.getElementById('definitieveFeedback');
         fbDiv.style.display = "block";
         fbDiv.innerHTML = leesbareWeergave;
-        
-        // Optioneel: velden leegmaken? Nee, student wil misschien kopiëren. Laten we ze laten staan.
     }
 
     function checkWW() {
