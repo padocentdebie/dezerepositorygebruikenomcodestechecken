@@ -1,6 +1,3 @@
-Zeker, hier is een meer sophisticated versie: de Gemini-link wordt getoond in een elegant iframe met een mooie rand en schaduw, direct in de PV Aangifte-pagina. De functionaliteiten blijven volledig behouden.
-
-```html
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -194,42 +191,53 @@ Zeker, hier is een meer sophisticated versie: de Gemini-link wordt getoond in ee
         button {
             font-size: 1rem;
         }
-        /* Stijl voor de Gemini-iframe container */
-        .gemini-container {
+        /* Stijl voor de Gemini actiekaart (geen iframe) */
+        .gemini-card {
             margin: 20px 0;
             border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            background: var(--wit);
-            border: 1px solid var(--p-geel);
-        }
-        .gemini-header {
-            background: var(--p-geel);
-            padding: 8px 15px;
-            font-weight: bold;
-            color: var(--p-blauw);
+            background: linear-gradient(135deg, #fff8e7 0%, #fff1d6 100%);
+            border: 2px solid var(--p-geel);
+            padding: 20px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        .gemini-header a {
+        .gemini-text {
+            flex: 1;
+        }
+        .gemini-text h3 {
+            margin: 0 0 5px 0;
             color: var(--p-blauw);
-            text-decoration: none;
+        }
+        .gemini-text p {
+            margin: 0;
+            color: #333;
             font-size: 0.9rem;
         }
-        .gemini-header a:hover {
-            text-decoration: underline;
-        }
-        .gemini-iframe {
-            width: 100%;
-            height: 500px;
+        .gemini-button {
+            background: var(--p-blauw);
+            color: white;
             border: none;
-            display: block;
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
         }
-        @media (max-width: 768px) {
-            .gemini-iframe {
-                height: 400px;
-            }
+        .gemini-button:hover {
+            background: #00337a;
+            transform: scale(1.02);
+        }
+        .gemini-button::after {
+            content: "↗";
+            font-size: 1.2em;
         }
     </style>
 </head>
@@ -277,13 +285,13 @@ Zeker, hier is een meer sophisticated versie: de Gemini-link wordt getoond in ee
             <strong>Opdracht PV Bevindingen:</strong> Schrijf een filmisch proces-verbaal op basis van de verklaring van Priscilla. Gebruik verleden tijd (OVT), een waarnemingswoord (zag/hoorde/voelde/rook) en vermeld dag, datum en tijd.
         </div>
         
-        <!-- Sophisticated Gemini iframe embed -->
-        <div class="gemini-container">
-            <div class="gemini-header">
-                <span>Lesinstructies - Gemini AI</span>
-                <a href="https://gemini.google.com/gem/1S-TbiyvMUv6QySJN4yJMjYbnyeg9lmul?usp=sharing" target="_blank">Open in nieuw tabblad ↗</a>
+        <!-- Gemini actiekaart (geen iframe, werkt altijd) -->
+        <div class="gemini-card">
+            <div class="gemini-text">
+                <h3>Lesinstructies en voorbeelden</h3>
+                <p>Bekijk de volledige les met uitleg, voorbeeldzinnen en feedback via Gemini.</p>
             </div>
-            <iframe class="gemini-iframe" src="https://gemini.google.com/gem/1S-TbiyvMUv6QySJN4yJMjYbnyeg9lmul?usp=sharing" title="Gemini lesinstructies" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-downloads"></iframe>
+            <a href="https://gemini.google.com/gem/1S-TbiyvMUv6QySJN4yJMjYbnyeg9lmul?usp=sharing" target="_blank" class="gemini-button">Open in Gemini</a>
         </div>
         
         <textarea id="inputPV" placeholder="Voorbeeld: Op maandag 10 maart 2025 om 14:30 uur zag ik dat de verdachte wegliep..."></textarea>
@@ -473,13 +481,3 @@ Zeker, hier is een meer sophisticated versie: de Gemini-link wordt getoond in ee
 </script>
 </body>
 </html>
-```
-
-Wat er verbeterd is:
-
-· De Gemini-link is nu ingebed in een iframe met een professionele uitstraling.
-· Het iframe heeft een gouden header met de tekst "Lesinstructies - Gemini AI" en een link om de pagina in een nieuw tabblad te openen.
-· Het geheel is voorzien van schaduw, afgeronde hoeken en een border.
-· Responsieve hoogte (500px op desktop, 400px op mobiel).
-· De iframe heeft een sandbox attribuut voor veiligheid, maar met voldoende rechten om de inhoud correct weer te geven.
-· Alle bestaande functionaliteiten (PV-invoer, live feedback, werkwoorden, ontleding, inlog zonder wachtwoord, video) zijn volledig ongewijzigd gebleven.
