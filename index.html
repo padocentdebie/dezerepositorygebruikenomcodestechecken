@@ -1,14 +1,3 @@
-Hier is de definitieve, volledige code.
-
-· Inlogscherm met specifieke inloggegevens (bpostudent@gmail.com / Stud3ntl3usd3n) en de waarschuwing "Nooit het wachtwoord opslaan in de browser!".
-· Instructievideo 2545Faangifteles6.mp4 wordt afgespeeld in de login.
-· PVAangifte (PV Bevindingen) met live feedback én inleverknop voor definitieve beoordeling.
-· Werkwoordspelling (OVT met dag/datum/tijd, ik-vorm).
-· Zinsontleding met werkende drag & drop.
-· NAVO-klassen tot en met Mike (geen India).
-· Geen overbodige pictogrammen of emoji's.
-
-```html
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -82,12 +71,6 @@ Hier is de definitieve, volledige code.
         .btn-geel {
             background: var(--p-geel);
             color: black;
-        }
-        .warning {
-            font-size: 0.85rem;
-            color: #c00;
-            text-align: center;
-            margin-top: 10px;
         }
         /* Main app */
         .container {
@@ -220,8 +203,8 @@ Hier is de definitieve, volledige code.
                 Browser ondersteunt video niet.
             </video>
         </div>
-
-            <select id="natoKlas">
+        <input type="text" id="agentNaam" placeholder="Naam agent" value="Agent">
+        <select id="natoKlas">
             <option value="Alpha">NATO - Alpha</option>
             <option value="Bravo">NATO - Bravo</option>
             <option value="Charlie">NATO - Charlie</option>
@@ -236,7 +219,7 @@ Hier is de definitieve, volledige code.
             <option value="Lima">NATO - Lima</option>
             <option value="Mike">NATO - Mike</option>
         </select>
-        <button class="btn-main btn-geel" onclick="login()">Inloggen</button>
+        <button class="btn-main btn-geel" onclick="startDienst()">Dienst starten</button>
     </div>
 </div>
 
@@ -251,7 +234,6 @@ Hier is de definitieve, volledige code.
     <div id="page-pv" class="sub-page active">
         <div class="instruction">
             <strong>Opdracht PV Bevindingen:</strong> Schrijf een filmisch proces-verbaal op basis van de verklaring van Priscilla. Gebruik verleden tijd (OVT), een waarnemingswoord (zag/hoorde/voelde/rook) en vermeld dag, datum en tijd.
-            <div class="warning">Let op: Log bij Gemini in met <strongbpostudentleusden@gmail.com</strong>Gebruik het wachtwoord <strong>Stud3ntl3usd3n</strong><br>Nooit het wachtwoord opslaan in de browser!</div>
         </div>
         <textarea id="inputPV" placeholder="Voorbeeld: Op maandag 10 maart 2025 om 14:30 uur zag ik dat de verdachte wegliep..."></textarea>
         <div class="live-grid">
@@ -291,7 +273,7 @@ Hier is de definitieve, volledige code.
 </div>
 
 <script>
-    // Werkwoordopgaven (fout -> correct met variabele dag/datum/tijd, maar student moet zelf toevoegen)
+    // Werkwoordopgaven (fout -> correct met sleutel)
     const wwOpgaven = [
         { fout: "Mijn collega's hebben de verdachte aangehouden.", correctSleutel: "zag ik dat mijn collega's de verdachte aanhielden" },
         { fout: "Collega's hebben een verklaring afgenomen van Priscilla.", correctSleutel: "hoorde ik dat mijn collega's een verklaring afnamen van Priscilla" },
@@ -321,14 +303,9 @@ Hier is de definitieve, volledige code.
     let currentAgent = "";
     let currentKlas = "";
 
-    function login() {
-        const email = document.getElementById('loginEmail').value.trim();
-        const password = document.getElementById('loginPassword').value.trim();
-        if (email !== "bpostudent@gmail.com" || password !== "Stud3ntl3usd3n") {
-            alert("Ongeldige inloggegevens. Gebruik bpostudent@gmail.com en Stud3ntl3usd3n");
-            return;
-        }
-        currentAgent = email;
+    function startDienst() {
+        currentAgent = document.getElementById('agentNaam').value.trim();
+        if (!currentAgent) currentAgent = "Agent";
         currentKlas = document.getElementById('natoKlas').value;
         document.getElementById('klasLabel').innerText = currentKlas;
         document.getElementById('login-overlay').style.display = 'none';
@@ -445,4 +422,3 @@ Hier is de definitieve, volledige code.
 </script>
 </body>
 </html>
-```
