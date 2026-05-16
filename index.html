@@ -1,10 +1,3 @@
-Hier is de aangepaste code met de gewenste functionaliteiten:
-
-· Studentfeedback-veld onder de livefeed (tussen live-grid en inleverknop).
-· Bij Inleveren ter beoordeling wordt de ingetypte PV-tekst leesbaar weergegeven (in een wit vlak met monospace), samen met de door de student ingevulde eigen feedback en de automatische beoordeling.
-· Alle andere functionaliteiten (werkwoordspelling, zinsontleding, inlog, video) blijven volledig ongewijzigd.
-
-```html
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -545,15 +538,3 @@ Hier is de aangepaste code met de gewenste functionaliteiten:
 </script>
 </body>
 </html>
-```
-
-Wat er is toegevoegd/gewijzigd:
-
-1. Studentfeedback-veld – een textarea met het label "Eigen feedback / opmerkingen (verplicht voor inlevering)" direct onder de live-grid.
-2. Inleverfunctie (leverPVin()) is uitgebreid:
-   · Controleert of zowel de PV als de eigen feedback zijn ingevuld.
-   · Toont de ingeleverde PV-tekst leesbaar (wit vak met monospace, behoud van witregels).
-   · Toont de ingevulde eigen feedback.
-   · Toont de automatische beoordeling (goed/afkeuring).
-3. CSS voor de leesbare weergave: .submitted-pv en .submitted-feedback zorgen voor een duidelijke, professionele presentatie.
-4. Alle andere functionaliteiten (werkwoordspelling, zinsontleding, inlog, video, Gemini-link) bleven volledig ongewijzigd.
